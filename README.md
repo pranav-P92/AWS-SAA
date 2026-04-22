@@ -1,5 +1,3 @@
-# AWS-SAA
-
 https://www.youtube.com/watch?v=Rnr5hp4njq0
 
 - Resources
@@ -24,7 +22,7 @@ https://www.youtube.com/watch?v=Rnr5hp4njq0
 AWS Cloud Use Cases
 
 - Used to build scalable applications
-- Enterprise IT, Backup & Storage, Big Data Analytics
+- Backup & Storage, Big Data Analytics
 - host website, Mobile & Social Apps
 - Gaming servers
 
@@ -48,8 +46,7 @@ AWS Cloud Use Cases
 - Each Region contains **multiple Availability Zones (AZs)**
     - AZs are **separate data centres**
     - Designed to prevent failure if one data centre goes down
-- **Data stays in the region you choose**
-    - Important for **security, compliance, and legal rules**
+- Data stays in the region you choose
 - **Choose region closer to users** → lower latency (faster apps)
     
     ## **How to choose an AWS Region?**
@@ -72,7 +69,7 @@ Independent Data Centres inside a AWS Region.
 
 ## AWS Edge Locations
 
-Edge Locations are AWS sites placed close to end users to deliver content faster.
+These are AWS sites placed close to end users **to deliver content faster.**
 
 They are mainly used by:
 
@@ -80,9 +77,7 @@ They are mainly used by:
 - Route 53
 - AWS Shield / WAF
 
-They **do NOT run your EC2 servers or databases.**
-
-They only **cache and serve content.**
+They **do NOT run your EC2 servers or databases.** They only **cache and serve content.**
 
 ## What do Edge Locations do?
 
@@ -109,7 +104,6 @@ So users don’t need to go all the way to your main Region every time.
 ## IAM : Identity and Access Management
 
 - IAM allows you to **create users, roles, and permissions** to securely control access to AWS services and resources.
-- It is a Global Service
 - Root account is created by default, it shouldn’t be shared or used.
 - Create users in IAM & users can be grouped.
 
@@ -141,11 +135,10 @@ So users don’t need to go all the way to your main Region every time.
      Instead of giving permissions to users one by one, you add users to a group.
     
     - Group only contains users, not other groups.
-    - users don’t have to belong to a group, and user can belong to multiple groups.
+    - one user can belong to multiple groups.
 
 ### IAM Policies
 
-- **Rules that define permissions**.
 - Users or groups can be assigned JSON documents called **Policies**.
 - These policies define the permissions of the user.
 - They answer:
@@ -167,7 +160,7 @@ So users don’t need to go all the way to your main Region every time.
 
 ### IAM Policy Inheritance
 
-It refers to the mechanism where permissions defined at a higher level in a hierarchy (organisation, folder, group) automatically apply to lower-level entities (projects, resources, users).
+ permissions defined at a higher level in a hierarchy (organisation, folder, group) automatically apply to lower-level entities (projects, resources, users).
 
 ### IAM Policy Structure (JSON)
 
@@ -283,14 +276,12 @@ An **IAM policy** is a **JSON document** that defines **permissions**
 ## Amazon Elastic Compute Cloud  (EC2)
 
 - It is an AWS service that lets you **rent virtual computers (servers)** in the cloud to run your applications.
-- Instead of buying a physical server, you **launch a virtual machine** on AWS and pay **only for the time you use it**.
-- EC2=IaaS
+- Instead of buying a physical server, you **launch a virtual machine** on AWS and pay **only for the time you use it.**
 
 ### What you can do with EC2
 
 - Host **websites & backend APIs**
 - Run **applications** (Java, Python, Node.js, etc.)
-- Perform **data processing**
 - Deploy **microservices**
 - EC2 consists in the capability of :
     - Renting virtual servers (EC2)
@@ -407,7 +398,7 @@ They decide **which traffic is allowed IN and OUT** of your instance.
 | Windows<10 |  |            ✅ |                  ✅ |
 | Windows≥10 |             ✅ |            ✅ |                  ✅ |
 
-**EC2 Instance Connect (EIC)** is a secure way to **connect to a Linux EC2 instance using SSH without managing permanent key pairs** in advance.
+**EC2 Instance Connect (EIC): connect to a Linux EC2 instance using SSH without managing permanent key pairs** in advance.
 
 | **Method** | **Used On** | **How it Works** | **Best For** | **Key Needed** |
 | --- | --- | --- | --- | --- |
@@ -462,7 +453,7 @@ They decide **which traffic is allowed IN and OUT** of your instance.
 
 ### EC2 Spot Instances
 
-An **EC2 Spot Instance Request** is how you **ask AWS for unused EC2 capacity at a very low price** in **Amazon EC2**.
+- **ask AWS for unused EC2 capacity at a very low price** in **Amazon EC2**.
 
 - these instances can be interrupted by AWS with a 2-minute notice when capacity is needed
 - Types:
@@ -476,8 +467,8 @@ An **EC2 Spot Instance Request** is how you **ask AWS for unused EC2 capacity at
 
 ### Spot Fleets
 
-- It is a way to **request and manage a group of Spot Instances (and optionally On-Demand)** to meet a **target capacity** at the **lowest possible cost** in **Amazon EC2**.
-- It is a set of spot instances and on-demand instances.
+- **request and manage a group of Spot Instances** to meet a **target capacity** at the **lowest possible cost** in **Amazon EC2**.
+- It is a set of spot instancs and on-demand instances.
     
     **Allocation Strategies:**
     
@@ -523,8 +514,6 @@ Networking has 2 sorts of IPs:
 - Used for **instance-to-instance** communication
 - best for : backend servers, databases, internal APIs, App-DB communication.
 
-****
-
 ### Elastic IP (EIP)
 
 - A **static public IP** that **does not change**
@@ -561,7 +550,7 @@ Types:
 
 ### **Elastic Network Interface (ENI)**
 
-An **Elastic Network Interface (ENI)** is a **virtual network card** that you can attach to an EC2 instance in **Amazon EC2**.
+**It is virtual network card** that is attached to an EC2 instance in **Amazon EC2**.
 
 An ENI comes with:
 
@@ -701,16 +690,13 @@ An **EC2 Instance Store** is a **temporary (ephemeral) block storage** that is p
     ### Suitable For:
     
     - Cache (Redis, Memcached)
-    - Temporary data
-    - Buffers
-    - Scratch data
     - Big data processing
 
 ### EC2 volume types (check in office laptop)
 
 ### EFS (Elastic File System)
 
-It is a fully managed, scalable file storage service in AWS that allows multiple EC2 instances to access the same file system at the same time
+allows multiple EC2 instances to access the same file system at the same time
 
 - highly available, scalable, expensive, pay per use
 - data is stored across multiple Availability Zones
@@ -719,7 +705,7 @@ It is a fully managed, scalable file storage service in AWS that allows multiple
     **How It Works (Step-by-Step)**
     
     1. Create an EFS file system in AWS
-    2. Attach (mount) it to EC2 instances using **NFS protocol**
+    2. Attach it to EC2 instances using **NFS protocol**
     3. EC2 instances access it like a local directory
     4. All instances see the same files in real-time
 
@@ -762,7 +748,7 @@ example:
 
 ### LOAD BALANCING
 
-**Load balancing** means **automatically distributing incoming traffic across multiple servers** so that:
+ **automatically distributing incoming traffic across multiple servers** so that:
 
 - No single server is overloaded
 - Your app stays **fast**, **available**, and **fault-tolerant**
@@ -842,7 +828,7 @@ Deploy, Scale and Manage a fleet of 3rd party network virtual appliances in AWS.
 
 Combines the following functions:
 
-- Transparent Network Gateway: single entry/ exit for all traffic.
+- Transparent Network Gateway: single entry/exit for all traffic.
 - Load Balancer: distributes traffic to virtual appliances.
 
 Uses the GENEVE protocol on port 6081
@@ -863,7 +849,7 @@ GLB Target groups:
 
 ---
 
-### 4️⃣ Classic Load Balancer (CLB) ⚠️
+### 4️⃣ Classic Load Balancer (CLB)
 
 - Supports TCP(Layer 4) , HTTP & HTTPS(Layer 7)
 - Old generation/ version
@@ -883,7 +869,7 @@ It distributes traffic at the **Transport Layer (Layer 4)** of the OSI model.
 
 It handles **TCP, UDP, and TLS** traffic and is designed for **high performance and low latency**.
 
-- NLB allows to forward TCP & UDP traffice to instances
+- NLB allows to forward TCP & UDP traffic to instances
 - NLB handles **millions of requests** per seconds
 - NLB has less latency ~100 ms
 - NLB has one static IP per AZ, and supports  Elastic IP(helpful for whitelisting specific IP)
@@ -897,7 +883,7 @@ NLB Target Groups:
 
 ### STICKY SESSIONS (Session Affinity)
 
-**Sticky Sessions** means a user’s requests are always sent to the **same backend server** for a period of time.
+ user’s requests are always sent to the **same backend server** for a period of time.
 
 Instead of distributing each request randomly, the load balancer “sticks” the user to **one instance**.
 
@@ -1047,40 +1033,36 @@ Today, **TLS** is used (SSL is outdated).
 
 - SSL: encrypt connections.
 - TLS: encrypt connections (newer version)
-- Public SSL certificates are issued by Certificate Authority (CA).
-- SSL certificates have an expiration date and must be renewed.
+
+### Why We Need SSL/TLS?
+
+Without SSL/TLS:
+
+- Data travels in **plain text**
+- Hackers can read passwords, card numbers
+- ex: [http://mybank.com](http://mybank.com/)
+
+With SSL/TLS:
+
+- Data is **encrypted**
+- Secure communication
+- HTTPS instead of HTTP
+- ex: [https://mybank.com](http://mybank.com/)
     
-    ### Why We Need SSL/TLS?
     
-    Without SSL/TLS:
-    
-    - Data travels in **plain text**
-    - Hackers can read passwords, card numbers
-    - ex: [http://mybank.com](http://mybank.com/)
-    
-    With SSL/TLS:
-    
-    - Data is **encrypted**
-    - Secure communication
-    - HTTPS instead of HTTP
-    - ex: [https://mybank.com](http://mybank.com/)
-        
-        
-        | Load Balancer | SSL/TLS Support |
-        | --- | --- |
-        | ALB | ✅ HTTPS (Layer 7) |
-        | NLB | ✅ TLS (Layer 4) |
-        | CLB | ✅ Supported |
-        | GLB | ❌ No TLS termination |
-    
-    **TLS Termination:** Load Balancer decrypts traffic before sending to backend servers.
-    
+    | Load Balancer | SSL/TLS Support |
+    | --- | --- |
+    | ALB | ✅ HTTPS (Layer 7) |
+    | NLB | ✅ TLS (Layer 4) |
+    | CLB | ✅ Supported |
+    | GLB | ❌ No TLS termination |
+
+**TLS Termination:** Load Balancer decrypts traffic before sending to backend servers.
 
 ### Load Balancer - SSL Certificates
 
 - load balancer uses an X.509 certificate (SSL/TLS server certificate)
 - manage certificates using ACM (AWS certificate manager)
-- client can use SNI(Server Name Indication) to specify the hostname they reach.
 
 ### SSL- SNI (Server Name Indication)
 
@@ -1204,7 +1186,7 @@ Feature naming:
 
 ### Auto Scaling Group
 
-An **Auto Scaling Group (ASG)** in AWS automatically manages a group of EC2 instances to ensure:
+automatically manages a group of EC2 instances to ensure:
 
 - ✅ High availability
 - ✅ Fault tolerance
@@ -1393,7 +1375,6 @@ Now AWS automatically:
                 > 
                 > Cooldown = 300 seconds
                 > 
-            
         - **Step Scaling (Better)**
             
             Scaling depends on how much threshold is crossed.
@@ -1472,7 +1453,7 @@ Now AWS automatically:
         
         👉 At 7:45 PM → launches extra instances
         
-        👉 At midnight → scales down
+        👉 At midnight → scales down.
         
         ### **Scaling Cooldown**
         
@@ -1503,7 +1484,6 @@ Now AWS automatically:
         
         After cooldown ends → ASG can scale again if needed.
         
-    
 
 ### Amazon CloudFront
 
@@ -1552,7 +1532,7 @@ The main source of content. It can be:
 1. User requests website
 2. Request goes to nearest **Edge Location**
 3. If cached:
-    - ✔ Served immediately
+    - Served immediately
 4. If not cached:
     - Fetch from Origin
     - Store in cache
@@ -1615,7 +1595,6 @@ If you host a static website in S3:
     ### CloudFront - Pricing:
     
     CloudFront edge locations all over the world.
-    
     The cost of data out per edge locations varies.
     
     **How CloudFront Charges You?**
@@ -1784,7 +1763,6 @@ Global Accelerator can route traffic to:
 - Consistent Performance:
     - intelligent routing to lowest latency and fast regional failover
     - no issue with client cache
-    - internal AWS network
 - Health Check:
     - Global Accelerator performs a health check for the application.
     - great for the disaster recovery.
@@ -1850,7 +1828,7 @@ Need static IP
 
 ### **Lambda container image**
 
-It is a package format that allows developers to deploy their AWS Lambda function code and dependencies using standard container tooling like [Docker](https://www.docker.com/), in addition to the traditional ZIP archive method
+It is a package format that allows developers to deploy their AWS Lambda function code and dependencies using standard container tooling like [Docker](https://www.docker.com/), in addition to the traditional ZIP archive method.
 
 ### Cloud Front Functions
 
@@ -1859,9 +1837,7 @@ It is a package format that allows developers to deploy their AWS Lambda functi
 It allows you to run **small pieces of JavaScript code at AWS edge locations**.
 
 👉 It runs **before the request reaches your origin server**
-
 👉 Used for **simple request/response modifications**
-
 👉 Extremely fast and low cost
 
 **Where Does It Run?**
@@ -1878,17 +1854,7 @@ It runs at **CloudFront Edge Locations** during:
 
 To modify:
 
-URL
-
-Headers
-
-Cookies
-
-Redirects
-
-Basic authentication
-
-A/B testing
+URL, Headers, Cookies, Redirects, Basic authentication, A/B testing
 
 Without touching:
 
@@ -1922,13 +1888,10 @@ Forwarded to origin (or served from cache)
 ### **Lambda@Edge**
 
 It is an extension of AWS Lambda that allows you to run code at **CloudFront edge locations**.
-
 It lets you execute logic **closer to users**, before or after content is served.
-
-It works together with Amazon CloudFront
+It works together with Amazon CloudFront.
 
 **Where Can It Run?**
-
 Lambda@Edge can execute at 4 different stages:
 
 | **Stage** | **What It Means** |
@@ -1973,7 +1936,7 @@ This cannot be done using CloudFront Functions.
 
 ### Lambda in VPC
 
-Lambda in VPC allows serverless functions to securely access **private**, **network-isolated resources** such as Amazon **RDS** databases, **ElastiCache**, or internal services. It places an Elastic Network Interface (ENI) in your subnet, providing private IP connectivity, though it requires specific configuration for internet access.
+Lambda function is connected to your private network so it can **securely access resources inside that VPC** (like databases or internal services).
 
 ### AWS ROUTE 53
 
