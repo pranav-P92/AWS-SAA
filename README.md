@@ -824,6 +824,19 @@ example:
 - If file is not accessed for 30days → move to Infrequent access.
 - If file is not accessed for 90days→ move to archive.
 
+### Scaling & Availability
+
+**Vertical Scaling** 
+- Increase instance size
+**Horizontal Scaling**
+- Increase number of instances
+    - Auto Scaling Group
+    - Load Balancers 
+
+**High Availability**
+- Run instances for the same applications across multi AZs
+    - Auto Scaling group multi AZ
+    - Load balance multi AZ
 ### LOAD BALANCING
 
  **automatically distributing incoming traffic across multiple servers** so that:
@@ -848,7 +861,7 @@ to keep your application **highly available, scalable, and fault-tolerant**
 
 It is a mechanisms to monitor the availability of resources by sending periodic requests, allowing Elastic Load Balancing (ELB), Route 53, and Auto Scaling to detect failures and redirect traffic or replace unhealthy nodes.
 
-If the response is not 200(OK), then the instance is unhealthy.
+If the response is not 200(OK), then the instance is unhealthy and ELB will not send traffic to the instance.
 
 ### Types of Load Balancers
 
@@ -2040,3 +2053,112 @@ Lambda function is connected to your private network so it can **securely access
     - Health checks
     - Routing policy
 - You pay $0.50 per month per hosted zone.
+
+
+### Amazon RDS
+
+- RDS : Relational Database Service
+- Instead of installing a database on your own server, AWS gives you a ready-to-use database.
+
+Advantage over using RDS VS deploying DB on EC2
+- RDS is a managed service:
+  - continuous backups and restore to specific timestamps
+  - Sets up the database
+  - Updates software (patching)
+  - Provides security
+  - Scales storage and performance
+ 
+### RDS storage auto scaling
+- helps to incease storage on your RDS DB instance dynamically.
+- when RDS detects running out of database storage, it scales automatically.(avoid manual scaling)
+- useful for application with unpredictable workloads
+
+### RDS Read Replicas for read scalability
+-  copies of your database used to handle more read traffic and improve performance
+
+- You have one main database (primary DB).
+- AWS creates copies (Read Replicas) of that database.
+- These replicas are used only for reading data.
+
+Writes (INSERT, UPDATE, DELETE) → go to the main DB
+Reads (SELECT) → go to Read Replicas
+This spreads the load and makes your app faster.
+
+- upto 15 read replicas
+- within AZ, Cross AZ , Cross region
+-  Replication is ASYNC, so reads are eventually consistent
+  example: If many users are reading data (like viewing products, posts, etc.), one DB can get slow.
+Read Replicas handle those reads, so the main DB is not overloaded.
+
+- RDS read replicas within the same region- dont pay the fee.
+  for cross region - fees are applicable
+
+### RDS Multi AZ (Disaster Recovery)
+ AWS creates two copies of your database:
+- Primary DB (active)
+- Standby DB (backup, in another Availability Zone)
+
+- Your app connects only to the primary DB
+AWS automatically copies data to the standby (synchronously)
+If the primary fails → AWS automatically switches (failover) to the standby
+
+SYNC replication:
+Data is written to both primary and standby at the same time.
+
+ASYNC replication:
+Data is written to primary first, then copied later to replicas.
+
+note: The Read Replicas be setup as Multi AZ for Disaster Recovery
+
+### RDS from Single AZ to Multi AZ
+Single-AZ → one database in one data center
+Multi-AZ → one primary DB + one standby DB in another zone
+
+converting Single AZ -> Multi AZ
+- Go to RDS Dashboard
+- Select your database
+- Click Modify
+- Enable Multi-AZ deployment
+    - A snapshot is taken
+    - A new DB is restored form the snapshot in a new AZ
+    - Synchronization is established between the two DBs.
+- Save changes
+
+### RDS Custom 
+ RDS Custom = Managed database + root/admin access
+ Normal RDS is fully managed, so:
+    - You can’t access OS
+    - You can’t install custom software
+
+RDS Custom:
+- Configure settings
+-  Access the operating system (SSH or SSH session manager)
+- Install custom agents, tools, or patches
+- Customize database settings deeply
+Use features not allowed in standard RDS
+
+Supported databases:
+- Oracle
+- SQL Server
+
+
+
+### Amazon Aurora
+Aurora = faster, more powerful version of MySQL/PostgreSQL in AWS
+
+Key features:
+⚡ High performance
+Up to 5× faster than MySQL
+Up to 3× faster than PostgreSQL
+📈 Auto scaling storage
+Storage automatically grows (up to 128 TB)
+🔁 High availability
+Data is copied across multiple Availability Zones
+Automatic failover
+📖 Read scaling
+Supports up to 15 Read Replicas
+Helps handle heavy read traffic
+🔒 Reliability
+Continuous backups to S3
+Self-healing storage system
+
