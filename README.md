@@ -692,7 +692,85 @@ An **EC2 Instance Store** is a **temporary (ephemeral) block storage** that is p
     - Cache (Redis, Memcached)
     - Big data processing
 
-### EC2 volume types (check in office laptop)
+### EC2 volume types
+EBS Volume types 
+- 6 types
+### SSD backed volumes ( for performance sensitive workloads)
+    - gp3 (General Purpose SSD – latest)
+      Best default choice for most workloads
+      Balanced price + performance
+      Baseline performance with ability to provision:
+- IOPS (up to 16,000)
+- Throughput (up to 1,000 MB/s)
+
+Ideal for:
+Web servers
+Small/medium databases
+Dev/test environments
+
+
+gp2 : previous generation of gp3
+performance tied to volume size
+used gp3 instead unless you have legacy setups
+
+
+
+- io2 (Provisioned IOPS SSD)
+High-performance, mission-critical workloads
+Very high durability (99.999%)
+Up to 256,000 IOPS (with Block Express)
+
+
+- io1
+older version of io2
+less durable and flexible
+
+
+HDD backed volumes ( for through put focused workloads)
+
+st1
+Low cost, high throughput - intensive workloads
+(throughput : amount of data successfully transferred with a specific time rate)
+designed for frequently accessed.
+Good for large, sequential workloads
+
+
+sc1 (Cold HDD)
+Lowest cost option
+Designed for infrequently accessed data
+
+NOTE:
+gp3 → Default choice for most use cases
+io2 → High-performance, critical workloads
+st1 → Large sequential workloads
+sc1 → Cold/archival data
+
+
+### EBS Multi attach
+- attach the same EBS Volume to multiple EC2 in the same AZ
+- each instance has full read & write permissions to the high performance volume
+- can attach up to 16 EC2 instance at a time
+
+
+### EBS Encryption
+EBS encryption ensures that data stored in an EBS volume is:
+
+Encrypted at rest
+Encrypted in transit between EC2 and EBS
+Encrypted in snapshots and backups
+
+
+Encryption: encrypt an unencrypted EBS volume
+- create an EBS snapshot of the volume
+- encrypt the EBS snapshot (using copy)
+- create new ebs volume from the snapshot (the volume will also be encrypted)
+- now you can attach the encrypted volume to the original instance.
+
+
+
+### KMS key 
+- A KMS key in Amazon EBS is the encryption key used to protect your data when you enable EBS encryption.
+
 
 ### EFS (Elastic File System)
 
