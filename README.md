@@ -2147,18 +2147,142 @@ Supported databases:
 Aurora = faster, more powerful version of MySQL/PostgreSQL in AWS
 
 Key features:
-⚡ High performance
-Up to 5× faster than MySQL
-Up to 3× faster than PostgreSQL
+- High performance
+- Up to 5× faster than MySQL
+- Up to 3× faster than PostgreSQL
 📈 Auto scaling storage
-Storage automatically grows (up to 128 TB)
+- Storage automatically grows (up to 128 TB)
 🔁 High availability
-Data is copied across multiple Availability Zones
-Automatic failover
+- Data is copied across multiple Availability Zones
+- Automatic failover
 📖 Read scaling
-Supports up to 15 Read Replicas
-Helps handle heavy read traffic
+- Supports up to 15 Read Replicas
+- Helps handle heavy read traffic
 🔒 Reliability
-Continuous backups to S3
-Self-healing storage system
+- Continuous backups to S3
+- Self-healing storage system
 
+
+
+### Aurora High availability and Read scaling
+- 6 copies of your data across 3AZ:
+    - 4 copies out of 6 needed for writes
+    - 3 copies out of 6 need for read
+    - self healing with peer to peer replication
+    - storage is striped across 100s of volumes
+- One aurora instance takes writes (master)
+-  automated failover for master in less than 30 seconds
+
+
+
+
+### Aurora DB Cluster
+- has shared storage volume (auto scaling from 16gb to 256 tb)
+- writer endpoint pointing to the master (WRITES)
+- reader endpoint connection load balancing (connected to replicas- READ)
+
+### Aurora Replicas - Auto Scaling
+- automatically adds or removes read replicas based on demand.
+example:
+- You have an Aurora database cluster (1 writer + some readers).
+- AWS monitors load (like CPU or connections).
+- If traffic increases 👉 it adds read replicas.
+- If traffic drops 👉 it removes extra replicas.
+
+### Aurora custom endpoints
+- manual grouping of replicas for targeted traffic routing
+- Instead of sending all read traffic to all replicas, you can control where queries go.
+
+### Aurora Serverless
+- version of Amazon Aurora where you don’t manage database instances at all.
+👉 AWS automatically:
+- Starts the database
+- Scales capacity up/down
+- Can even pause when not in use
+
+- good for infrequent, intermittent or unpredictable workloads
+- no capacity planning needed
+- pay per second
+
+
+  ### RDS Backups
+  - automated Backups:
+     - daily full backup of the database
+     - transaction logs are backed-up by RDS every 5minutes.
+     - ability to restore to any piont in time
+   
+  - Manual DB snapshots:
+      -  manually triggered by the user
+      -  retention of backup for as long as you want.
+
+In a stopped RDS DB, you will still pay for storage. If you plan on stopping it for long time, then take a snapshot and restore instead.
+
+
+### Aurora Backups
+- automated backups
+    - 1 to 35 days
+    - point in time recovery in that timeframe.
+ 
+- Manual DB snapshots:
+    - manually triggered by the user
+    - retention of backup for as long as you want.
+
+  ### RBS & Aurora restore options
+  - Restoring a RDS/ Aurora backup or a snapshot creates a new DB.
+  - Restoring MySQL RDS DB from S3
+      - create a backup of your on-premise database
+      - store it on amazon s3
+      - restore the backup file onto a new RDS instance running MySQL 
+  -  Restoring MySQL Aurora cluster from S3
+      - create a backup of your on-premises database using Percona XtraBackup
+      - store the backup file on amazon S3
+      - restore the backup file onto a new aurora cluster running MySQL
+   
+    ### Aurora DB cloning
+  - create a new copy of an Aurora database cluster very quickly—without copying all the data.
+  - faster than snapshot & restore.
+  - uses copy-on-write protocol.
+
+
+  ### RDS & Aurora Security
+  
+
+- At rest encryption:
+    - DB master & replicas are encrypted using AWS KMS - must be defined at launch time.
+    - If the master is not encrypted, the read replicas cannot be encrypted.
+    - To encrypt and un-encrypted DB, go through a DB snapshot & restore as encrypted.
+ 
+- In-flight encryption: Data is encrypted while traveling between your application and the database
+- uses SSL/TLS protocols
+- prevent man-in-the-middle attacks
+
+- IAM authentication: IAM roles connect to DB (instead of username/pass)
+
+  
+
+
+### RDS Proxy
+- allows apps to pool and share DB connections established with the DB.
+
+- Databases can struggle when there are too many connections.
+👉 Instead of every app opening its own DB connection:
+
+RDS Proxy reuses (pools) connections
+Reduces load on the database
+serverless, autoscaling
+RDS proxy is never publicly accessible (must be accessed from VPC)
+
+Example
+1000 users hit your app
+Without proxy → 1000 DB connections ❌
+With proxy → maybe only 100 active connections ✅
+
+
+### ElastiCache
+- service that gives you a very fast in-memory cache.
+- caches are in-memory databases with high performance, low latency.
+- helps reduce load/traffic
+- 
+
+
+    
