@@ -2054,235 +2054,208 @@ Lambda function is connected to your private network so it can **securely access
     - Routing policy
 - You pay $0.50 per month per hosted zone.
 
-
-### Amazon RDS
+### **Amazon RDS**
 
 - RDS : Relational Database Service
 - Instead of installing a database on your own server, AWS gives you a ready-to-use database.
 
 Advantage over using RDS VS deploying DB on EC2
+
 - RDS is a managed service:
-  - continuous backups and restore to specific timestamps
-  - Sets up the database
-  - Updates software (patching)
-  - Provides security
-  - Scales storage and performance
- 
-### RDS storage auto scaling
-- helps to incease storage on your RDS DB instance dynamically.
+    - continuous backups and restore to specific timestamps
+    - Updates software (patching)
+    - Scales storage and performance
+
+**RDS storage auto scaling**
+
+- helps to increase storage on  RDS DB instance dynamically.
 - when RDS detects running out of database storage, it scales automatically.(avoid manual scaling)
-- useful for application with unpredictable workloads
+- useful for application with unpredictable workloads.
 
-### RDS Read Replicas for read scalability
--  copies of your database used to handle more read traffic and improve performance
+**RDS Read Replicas for read scalability**
 
-- You have one main database (primary DB).
-- AWS creates copies (Read Replicas) of that database.
-- These replicas are used only for reading data.
+- copies of the database used to handle more read traffic and improve performance
+- have one main database (primary DB).
+- AWS creates copies (Read Replicas) of that database. These replicas are used only for reading data.
 
-Writes (INSERT, UPDATE, DELETE) → go to the main DB
-Reads (SELECT) → go to Read Replicas
-This spreads the load and makes your app faster.
+**Writes** (INSERT, UPDATE, DELETE) → go to the main DB
+ **Reads** (SELECT) → go to Read Replicas
+- This spreads the load and makes your app faster.
 
-- upto 15 read replicas
-- within AZ, Cross AZ , Cross region
--  Replication is ASYNC, so reads are eventually consistent
-  example: If many users are reading data (like viewing products, posts, etc.), one DB can get slow.
-Read Replicas handle those reads, so the main DB is not overloaded.
+- Supports upto 15 read replicas.
+- within AZ, Cross AZ , Cross region.
+- Replication is ASYNC, so reads are eventually consistent
+**example**: If many users are reading data (like viewing products, posts, etc.), one DB can get slow. Read Replicas handle those reads, so the main DB is not overloaded.
+- RDS read replicas within the same region- don’t pay the fee. 
+for cross region - fees are applicable
 
-- RDS read replicas within the same region- dont pay the fee.
-  for cross region - fees are applicable
+**RDS Multi AZ (Disaster Recovery)**
 
-### RDS Multi AZ (Disaster Recovery)
- AWS creates two copies of your database:
+AWS creates two copies of your database:
+
 - Primary DB (active)
 - Standby DB (backup, in another Availability Zone)
+- Your app connects only to the primary DB, AWS automatically copies data to the standby DB(synchronously) 
+If the primary fails → AWS automatically switches to the standby DB.
 
-- Your app connects only to the primary DB
-AWS automatically copies data to the standby (synchronously)
-If the primary fails → AWS automatically switches (failover) to the standby
+**SYNC replication:** Data is written to both primary and standby at the same time.
 
-SYNC replication:
-Data is written to both primary and standby at the same time.
+**ASYNC replication:** Data is written to primary first, then copied later to replicas.
 
-ASYNC replication:
-Data is written to primary first, then copied later to replicas.
+**note**: The Read Replicas be setup as Multi AZ for Disaster Recovery
 
-note: The Read Replicas be setup as Multi AZ for Disaster Recovery
+**RDS from Single AZ to Multi AZ**
 
-### RDS from Single AZ to Multi AZ
-Single-AZ → one database in one data center
-Multi-AZ → one primary DB + one standby DB in another zone
+Single-AZ → one database in one data centre
+ Multi-AZ → one primary DB + one standby DB in another zone
 
 converting Single AZ -> Multi AZ
+
 - Go to RDS Dashboard
 - Select your database
 - Click Modify
-- Enable Multi-AZ deployment
+- Enable Multi-AZ deployment:
     - A snapshot is taken
     - A new DB is restored form the snapshot in a new AZ
-    - Synchronization is established between the two DBs.
+    - Synchronisation is established between the two DBs.
 - Save changes
 
-### RDS Custom 
- RDS Custom = Managed database + root/admin access
- Normal RDS is fully managed, so:
-    - You can’t access OS
-    - You can’t install custom software
+**RDS Custom**
 
-RDS Custom:
+RDS Custom = Managed database + root/admin access
+Normal RDS is fully managed, so You can’t access OS and  can’t install custom software.
+
+RDS Custom can:
+
 - Configure settings
--  Access the operating system (SSH or SSH session manager)
+- Access the operating system (SSH or SSH session manager)
 - Install custom agents, tools, or patches
-- Customize database settings deeply
-Use features not allowed in standard RDS
+- Customise database settings deeply
 
 Supported databases:
+
 - Oracle
 - SQL Server
 
+### **Amazon Aurora**
 
-
-### Amazon Aurora
 Aurora = faster, more powerful version of MySQL/PostgreSQL in AWS
 
 Key features:
+
 - High performance
 - Up to 5× faster than MySQL
-- Up to 3× faster than PostgreSQL
-📈 Auto scaling storage
-- Storage automatically grows (up to 128 TB)
-🔁 High availability
+- Up to 3× faster than PostgreSQL; Auto scaling storage
+- Storage automatically grows (up to 128 TB) - High availability
 - Data is copied across multiple Availability Zones
-- Automatic failover
-📖 Read scaling
 - Supports up to 15 Read Replicas
 - Helps handle heavy read traffic
-🔒 Reliability
 - Continuous backups to S3
 - Self-healing storage system
 
+**Aurora High availability and Read scaling**
 
-
-### Aurora High availability and Read scaling
-- 6 copies of your data across 3AZ:
-    - 4 copies out of 6 needed for writes
-    - 3 copies out of 6 need for read
+- 6 copies of your data across 3 AZ:
+    - 4 copies out of 6 needed for writes (4/6)
+    - 3 copies out of 6 need for read (3/6)
     - self healing with peer to peer replication
     - storage is striped across 100s of volumes
-- One aurora instance takes writes (master)
--  automated failover for master in less than 30 seconds
+- **One aurora instance takes writes (master)**
+- automated failover for master in less than 30 seconds
 
+**Aurora DB Cluster**
 
-
-
-### Aurora DB Cluster
-- has shared storage volume (auto scaling from 16gb to 256 tb)
+- shared storage volume (auto scaling from 16Gb to 256 Tb)
 - writer endpoint pointing to the master (WRITES)
 - reader endpoint connection load balancing (connected to replicas- READ)
 
-### Aurora Replicas - Auto Scaling
-- automatically adds or removes read replicas based on demand.
-example:
-- You have an Aurora database cluster (1 writer + some readers).
-- AWS monitors load (like CPU or connections).
-- If traffic increases 👉 it adds read replicas.
-- If traffic drops 👉 it removes extra replicas.
+**Aurora Replicas - Auto Scaling**
 
-### Aurora custom endpoints
-- manual grouping of replicas for targeted traffic routing
+- automatically adds or removes read replicas based on demand. 
+**example**:
+    - You have an Aurora database cluster (1 writer + some readers).
+    - AWS monitors load (like CPU or connections).
+    - If traffic increases : it adds read replicas.
+    - If traffic drops : it removes extra replicas.
+
+**Aurora custom endpoints**
+
+- manual grouping of replicas for targeted traffic routing.
 - Instead of sending all read traffic to all replicas, you can control where queries go.
 
-### Aurora Serverless
-- version of Amazon Aurora where you don’t manage database instances at all.
-👉 AWS automatically:
-- Starts the database
-- Scales capacity up/down
-- Can even pause when not in use
+**Aurora Serverless**
 
-- good for infrequent, intermittent or unpredictable workloads
-- no capacity planning needed
-- pay per second
+- version of Amazon Aurora where you don’t manage database instances at all. 
+ AWS automatically:
+    - Starts the database
+    - Scales capacity up/down
+    - Can pause when not in use
+    - good for infrequent, intermittent or unpredictable workloads
+    - pay per second
+    
+    **RDS Backups**
+    
+    - automated Backups:
+        - daily full backup of the database
+        - transaction logs are backed-up by RDS every 5minutes.
+        - ability to restore to any piont in time
+    - Manual DB snapshots:
+        - manually triggered by the user
+        - retention of backup for as long as you want.
 
+In a stopped RDS DB, you will still pay for storage.
+If you plan on stopping it for long time, then take a snapshot and restore instead.
 
-  ### RDS Backups
-  - automated Backups:
-     - daily full backup of the database
-     - transaction logs are backed-up by RDS every 5minutes.
-     - ability to restore to any piont in time
-   
-  - Manual DB snapshots:
-      -  manually triggered by the user
-      -  retention of backup for as long as you want.
+**Aurora Backups**
 
-In a stopped RDS DB, you will still pay for storage. If you plan on stopping it for long time, then take a snapshot and restore instead.
-
-
-### Aurora Backups
 - automated backups
     - 1 to 35 days
     - point in time recovery in that timeframe.
- 
 - Manual DB snapshots:
     - manually triggered by the user
     - retention of backup for as long as you want.
+    
+    **RBS & Aurora restore options**
+    
+    - Restoring a RDS/ Aurora backup or a snapshot creates a new DB.
+    - Restoring MySQL RDS DB from S3
+        - create a backup of your on-premise database
+        - store it on amazon s3
+        - restore the backup file onto a new RDS instance running MySQL
+    - Restoring MySQL Aurora cluster from S3
+        - create a backup of your on-premises database using Percona XtraBackup
+        - store the backup file on amazon S3
+        - restore the backup file onto a new aurora cluster running MySQL
+    
+    **Aurora DB cloning**
+    
+    - create a new copy of an Aurora database cluster very quickly—without copying all the data.
+    - faster than snapshot & restore.
+    - uses copy-on-write protocol.
+    
+    **RDS & Aurora Security**
+    
+    - At rest encryption:
+        - DB master & replicas are encrypted using **AWS KMS** - must be defined at launch time.
+        - If the master is not encrypted, the read replicas cannot be encrypted.
+        - To encrypt and un-encrypted DB, go through a DB snapshot & restore as encrypted.
+    - **In-flight encryption:** Data is encrypted while traveling between your application and the database
+    - uses SSL/TLS protocols
+    - prevent man-in-the-middle attacks
+    - IAM authentication: IAM roles connect to DB (instead of username/pass)
 
-  ### RBS & Aurora restore options
-  - Restoring a RDS/ Aurora backup or a snapshot creates a new DB.
-  - Restoring MySQL RDS DB from S3
-      - create a backup of your on-premise database
-      - store it on amazon s3
-      - restore the backup file onto a new RDS instance running MySQL 
-  -  Restoring MySQL Aurora cluster from S3
-      - create a backup of your on-premises database using Percona XtraBackup
-      - store the backup file on amazon S3
-      - restore the backup file onto a new aurora cluster running MySQL
-   
-    ### Aurora DB cloning
-  - create a new copy of an Aurora database cluster very quickly—without copying all the data.
-  - faster than snapshot & restore.
-  - uses copy-on-write protocol.
+**RDS Proxy**
 
+- allows apps to reuse and share DB connections established with the DB.
+- Databases can struggle when there are too many connections. 
+ Instead of every app opening its own DB connection:
+    - RDS Proxy reuses connections reduces load on the database serverless, autoscaling. RDS proxy is never publicly accessible (must be accessed from VPC)
 
-  ### RDS & Aurora Security
-  
-
-- At rest encryption:
-    - DB master & replicas are encrypted using AWS KMS - must be defined at launch time.
-    - If the master is not encrypted, the read replicas cannot be encrypted.
-    - To encrypt and un-encrypted DB, go through a DB snapshot & restore as encrypted.
- 
-- In-flight encryption: Data is encrypted while traveling between your application and the database
-- uses SSL/TLS protocols
-- prevent man-in-the-middle attacks
-
-- IAM authentication: IAM roles connect to DB (instead of username/pass)
-
-  
-
-
-### RDS Proxy
-- allows apps to pool and share DB connections established with the DB.
-
-- Databases can struggle when there are too many connections.
-👉 Instead of every app opening its own DB connection:
-
-RDS Proxy reuses (pools) connections
-Reduces load on the database
-serverless, autoscaling
-RDS proxy is never publicly accessible (must be accessed from VPC)
-
-Example
-1000 users hit your app
-Without proxy → 1000 DB connections ❌
+**Example:** 1000 users hit your app Without proxy → 1000 DB connections ❌ 
 With proxy → maybe only 100 active connections ✅
 
+### **ElastiCache**
 
-### ElastiCache
 - service that gives you a very fast in-memory cache.
 - caches are in-memory databases with high performance, low latency.
 - helps reduce load/traffic
-- 
-
-
-    
