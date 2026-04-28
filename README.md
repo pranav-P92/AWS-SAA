@@ -2256,6 +2256,104 @@ With proxy → maybe only 100 active connections ✅
 
 ### **ElastiCache**
 
+-helps app run faster by storing frequently used data in memory (RAM) instead of fetching it from a database every time.
 - service that gives you a very fast in-memory cache.
 - caches are in-memory databases with high performance, low latency.
 - helps reduce load/traffic
+
+    ### **ElastiCache Solution Architecture - DB Cache**
+      - Applications queries ElastiCache, if not available, get it from RDS and store in ElastiCache.
+      - helps relieve load in RDS.
+      - Cache must have an invalidation strategy to make sure only the most current data is used in there.
+
+    ### **ElastiCache Solution Architecture - User Session Store**
+    - Instead of storing user session data (like login info, cart, preferences) in app server or DB, it stores in ElastiCache (usually Redis).
+   **How it works**
+        - User logs in
+        - Your app creates a session ID
+        - Session data is stored in ElastiCache
+        - Session ID is sent to the user (via cookie)
+        - On next request:
+            - App reads session ID
+            - Fetches session data from ElastiCache
+
+  Architecture: User → Load Balancer → App Servers → ElastiCache (Redis)
+
+    ### **ElastiCache Redis VS Memcached**
+  - Redis = powerful, feature-rich
+  - Memcached = simple, lightweight cache
+ | Feature           | Redis                            | Memcached                      |
+| ----------------- | -------------------------------- | ------------------------------ |
+| Data types        | Strings, lists, sets, hashes     | Only key-value (string)        |
+| Persistence       | ✅ Yes (can save to disk)         | ❌ No                           |
+| High availability | ✅ Replication + failover         | ❌ No native failover           |
+| Scaling           | ✅ Cluster mode (sharding)        | ✅ Easy horizontal scaling      |
+| Performance       | Very fast                        | Slightly faster for simple use |
+| Use case          | Sessions, queues, real-time apps | Simple caching                 |
+- failover: automatically switching to a backup system when the main system fails.
+- Cluster node sharding: means splitting your data across multiple nodes so you can store more data and handle more traffic.
+Use Redis if:
+You need session storage
+You want data persistence
+You need advanced features (pub/sub, counters, queues)
+You need high availability
+
+Use Memcached if:
+You only need simple caching
+No need to save data permanently
+You want a very lightweight setup
+
+- If your app is complex → Redis
+- If your need is basic caching → Memcached
+
+    ### **ElastiCache - Cache Security**
+- ElastiCache is usually placed inside a private network, so security is mainly about who can access it and how.
+- runs inside a VPC
+- acts like a firewall
+- redis supports AUTH token
+- data is encrypted while moving (TLS)
+- data is stored in memory snasphots is encrypted
+
+
+    ### **Patterns for ElastiCache**
+- Cache-Aside (Lazy Loading)
+    How it works:
+    - App checks cache
+    - If data is found → return it ✅
+    - If not → fetch from DB ❌
+    - Store in cache for next time
+ use when data is read frequently.
+
+- Write-Through: cache is updated along with database
+      How it works:
+      - App writes data
+      - data goes to DB + cache together
+  use when you want cache always up-to-date.
+
+ - Write-behind: cache updates DB later (async)
+       How it works:
+       - App writes to cache
+       - Cache updates DB after some time
+    use when high write performance is needed
+
+  - Session Store: store user sessions in cache
+      - use when multiple app servers and need fast session access
+
+   - Leaderboard/ Counter
+    - Redis uses a data structure called a sorted set (ZSET).
+    - each element has value-score.
+    - keeps elements unique and maintains them sorted by score.
+      
+      How it works:
+    - Add/update a user score
+    - Redis inserts or updates the value
+    - It automatically reorders ranking in real time
+ 
+    - uses: Gaming leaderboard, rankings
+ 
+- Cache-Aside → most common
+Write-Through → consistent but heavier
+Write-Behind → fast writes, some risk
+Read-Through → simpler app logic
+Session Store → user sessions
+Leaderboard → real-time ranking
