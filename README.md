@@ -2458,11 +2458,54 @@ Types
     -example: 80% -> server A, 20% -> server B 
 - Latency → send user to the faster server
     - example: India user-> India server, US user -> US server
-- Failover → Switch to Backup if main fails
+- Failover → Switch to Backup, if main fails.
 - Geolocation → routes based on user location
     -example: India user -> India server 
 - Multi-value → Returns multiple IPs
-    - client picks one.     
+    - client picks one.
+- Geoproximity -> ability to shift more traffic to resources based on the defined bias.
+- IP based routing -> routing is based on client's IP address.
+- Health check -> monitors endpoints.
+  **Latency VS Geolocation Policy**
+ -  latency: routes traffice to the AWS region that provides the lowest network latency.
+ - Geolocation: routes traffice based on the user's geographic location.
+
+**Route 53 - Hybrid DNS**
+- route 53 resolver automatically answers DNS queries for:
+    - local domain names for EC2 instances
+    - records in private hosted zones.
+    - records in public name servers
+
+- Hybrid DNS lets:
+  resolving DNS queries between VPC (Route 53 resolver) and your network (other DNS resolvers)
+    - On-prem systems resolve AWS private domains (like app.internal)
+    - AWS resources resolve on-prem domains (like corp.local)
+
+
+## ** section 11 important Recap of all concepts**
+
+### ** Stateless Web App**
+- does NOT store client session information on the server between requests.
+- Each request is treated as independent and complete on its own.
+example: REST APIs, microservices,
+
+### ** Stateful Web App**
+- A stateful app stores user session data on the server so it can “remember” previous interactions.
+  example: shopping cart, banking web
+
+  
+### ** Instantiating Applications Quickly**
+- EC2 instances:
+    - use a golden AMI : install applications, OS dependencies,.. beforehand and launch EC2 instance from the Golden AMI.
+    - boostrap using user data: dynamic configuration, use user data scripts.
+    - hybrid: Golden AMI + user data (Elastic Beanstalk)
+
+- RDS DBs:
+    - restore from a snapshot: the db will have schemas and data ready.
+- EBS volumes:
+    - restore from a snapshot: the disk will already be formatted and have data.
+      
+    - 
 
 
 
