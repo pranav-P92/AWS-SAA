@@ -2333,58 +2333,58 @@ Read-Through → simpler app logic
 Session Store → user sessions
 Leaderboard → real-time ranking
 
-### AWS ROUTE 53
+**AWS ROUTE 53**
 
-### **DNS**
+**DNS**
+
 - Domain Name system: translates the hostname into IP addresses.
-- www.google.com -> 172.216.13.45.14
-    **DNS Terminologies**
-      - Domain Registrar: where you can buy a domain
-      - DNS record: provide information about a domain
-           | Record Type | Purpose |
-            | --- | --- |
-            | A | Domain → IPv4 |
-            | AAAA | Domain → IPv6 |
-            | CNAME | Alias to another domain |
-            | Alias | URL to AWS resource |
-  
-  -  zone files: file that stores all DNS records of a domain
-  -  Name server: server that responds to DNS queries for a domain
-  -  Top level domain(TLD): last segment of a domain
-      -exammple: .com, .org, .net, .gov, .edu
-    - second level domain (SLD): the part direclty to the left of the TLD.
-        -example: in example.com -> example is SLD.
-     - sub domain: part of a larger domain.
-         -example: mail.google.com ->mail is sub domain
-    - FQDN (fully qualified domain name): complete domain name including all levels and ending with a dot.
-         - example: www.google.com
-        - Protocol: set of rules that defines how data is transmitted over a network                
+- [www.google.com](http://www.google.com/) -> 172.216.13.45.14
 
-**How DNS Works**
-Check Cache → Browser looks for saved IP, if not then:
-    Ask Resolver → If not found
-    Root → TLD → Name Server → Find correct server
-Get IP → Name server returns IP
-Load Website → Browser connects using IP
+**DNS Terminologies** :
+**- Domain Registrar:** where you can buy a domain 
+**- DNS record:** provide information about a domain
+
+| Record Type | Purpose |
+| --- | --- |
+| A | Domain → IPv4 address |
+| AAAA | Domain → IPv6 address |
+| CNAME | Alias to another domain |
+| Alias | Maps domain to AWS resource |
+- **zone files:** file that stores all DNS records of a domain
+- **Name server:** server that responds to DNS queries for a domain
+- **Top level domain(TLD):** last segment of a domain 
+example: .com, .org, .net, .gov, .edu
+- **second level domain (SLD):** the part directly to the left of the TLD. 
+example: in example.com -> example is SLD.
+- **sub domain:** part of a larger domain. 
+example: mail.google.com ->mail is sub domain
+- **FQDN (fully qualified domain name):** complete domain name including all levels and ending with a dot.
+    - example: [www.google.com](http://www.google.com/)
+- **Protocol**: set of rules that defines how data is transmitted over a network
+
+**How DNS Works** 
+Check Cache → Browser looks for saved IP, if not then: 
+Ask Resolver → If not found Root → TLD → Name Server → Find correct server Get IP → Name server returns IP Load Website → Browser connects using IP
+
 - DNS finds IP address step by step, then loads website.
-
-  
 - **It is a scalable DNS that translates domain names into IP addresses and routes users to the correct servers.**
-    - example: If a user types **`www.google.com`**, Route 53 finds the **IP address of the server** where the website is hosted and directs the user there.
-    - **Route 53:** routes traffic to correct destination. DNS uses port 53.
+    - example: If a user types **`www.google.com`**, Route 53 finds the **IP address of the server** where the website is hosted and directs the user there.
+    - **Route 53:** routes traffic to correct destination. DNS uses port 53.
 - DNS is a collection of rules and records which helps clients understand how to reach a server through URLs.
-  **Route 53 Record**
+
+**Route 53 Record**
+
 - DNS record stored in amazon route 53 that tells how your domain should behave.
 - In AWS, the most common records are:
-            | Record Type | Purpose |
-            | --- | --- |
-            | A | Domain → IPv4 |
-            | AAAA | Domain → IPv6 |
-            | CNAME | Alias to another domain |
-            | MX | Mail servers |
-            | Alias | URL to AWS resource |
     
-- example: web browser→dns request to Route 53 (A)→ sends back IP to web browser.
+    
+    | Record Type | Purpose |
+    | --- | --- |
+    | A | Domain → IPv4 address |
+    | AAAA | Domain → IPv6 address |
+    | CNAME | Alias to another domain |
+    | Alias | Maps domain to AWS resource |
+- example: web browser→ dns request to Route 53 (A)→ sends back IP to web browser.
 - Route 53 can use:
     - public domain names you own (or buy)
     - private domain names that can be resolved by your instance in you VPCs
@@ -2394,120 +2394,97 @@ Load Website → Browser connects using IP
     - Routing policy
 
 **Route 53 - Hosted Zone**
-- container of records that define how to route traffice to a domain and its subdomain
-- A hosted zone = DNS “folder” for one domain
-  Types of Hosted Zones
-- Public Hosted Zone
+
+- container of records that define how to route traffic to a domain and its subdomain.
+- A hosted zone = DNS “folder” for one domain Types of Hosted Zones
+- **Public Hosted Zone:**
     - Controls how your domain is accessed on the internet
-        Example: example.com website
-- Private Hosted Zone
+     Example: example.com website
+- **Private Hosted Zone:**
     - Used inside a private network (VPC)
     - Not accessible from the internet
-          Example: application.company.internal
-      
+     Example: application.company.internal
 - You pay $0.50 per month per hosted zone.
 
-
 **Route 53 TTL (Time To Live):**
-- It is the time a DNS record is stored in cache before it is refreshed.
-    example: www.example.com → 93.184.216.34 → TTL = 300 seconds
-  This means:
-   -  Save result for 5 minutes
-   -  After 5 minutes → ask DNS again
+
+- It is the time a DNS record is stored in cache before it is refreshed. example: [www.example.com](http://www.example.com/) → 93.184.216.34 → TTL = 300 seconds 
+This means:
+    - Save result for 5 minutes
+    - After 5 minutes → ask DNS again
 
 **Route 53 CNAME vs Alias :**
+
 - CNAM (Canonical Name):
-    - Points one domain to another domain name
-      example: www.example.com → example.com
+    - Points one domain to another domain name 
+    example: [www.example.com](http://www.example.com/) → example.com
     - Only for NON ROOT DOMAIN
-  - Alias:
-      - Points a domain directly to AWS resources
-        example:  example.com → AWS Load Balancer / S3 / CloudFront
-      - Works for both ROOT DOMAIN & NON ROOT DOMAIN
-
-- ROOT DOMAIN: main domain name without any prefix
+- Alias:
+    - Points a domain directly to AWS resources
+     example: example.com → AWS Load Balancer / S3 / CloudFront
+    - Works for both ROOT DOMAIN & NON ROOT DOMAIN
+- **ROOT DOMAIN:** main domain name without any prefix 
 example: example.com, google.com
+- **NON ROOT DOMAIN:** A child part of the main domain
+ example: [www.example.com](http://www.example.com/), mail.example.com
 
-- NON ROOT DOMAIN: A child part of the main domain
-  example: www.example.com, mail.example.com
-
-
-
-**Alias Record**
-It works like a CNAME, but more powerful
+**Alias Record** It works like a CNAME, but more powerful 
 Can point to:
+
 - AWS Load Balancer
 - S3 website
 - CloudFront distribution
 - Another domain
-
 - Alias record is always of type A/ AAAA for AWS resource( IPv4/IPv6)
 - you can't set the TTL
+    
+    **Alias Record Targets**
+    
+    - ELB
+    - CloudFront distributions
+    - API Gateway
+    - S3 websites
+    - VPC interface endpoints
 
-  **Alias Record Targets**
-   - ELB
-   - CloudFront distributions
-   - API Gateway
-   - S3 websites
-   - VPC inteface endpoints
+**Route 53 - Routing Policy** Types
 
-**Route 53 - Routing Policy**
-Types
-- Simple → Send traffic to one single resource(server) 
-- Weighted → Split traffic (% based)
-    -example: 80% -> server A, 20% -> server B 
+- Simple → Send traffic to one single resource(server)
+- Weighted → Split traffic (% based) -example: 80% -> server A, 20% -> server B
 - Latency → send user to the faster server
+routes traffic to the AWS region that provides the lowest network latency.
     - example: India user-> India server, US user -> US server
-- Failover → Switch to Backup, if main fails.
-- Geolocation → routes based on user location
-    -example: India user -> India server 
+- Failover → Switch to Backup if main fails
+- Geolocation → routes traffic based on user’s location 
+example: India user -> India server
 - Multi-value → Returns multiple IPs
     - client picks one.
-- Geoproximity -> ability to shift more traffic to resources based on the defined bias.
+- Geo-proximity -> ability to shift more traffic to resources based on the defined bias.
 - IP based routing -> routing is based on client's IP address.
 - Health check -> monitors endpoints.
-  **Latency VS Geolocation Policy**
- -  latency: routes traffice to the AWS region that provides the lowest network latency.
- - Geolocation: routes traffice based on the user's geographic location.
 
 **Route 53 - Hybrid DNS**
+
 - route 53 resolver automatically answers DNS queries for:
     - local domain names for EC2 instances
     - records in private hosted zones.
     - records in public name servers
-
-- Hybrid DNS lets:
-  resolving DNS queries between VPC (Route 53 resolver) and your network (other DNS resolvers)
+- Hybrid DNS lets: resolving DNS queries between VPC (Route 53 resolver) and your network (other DNS resolvers)
     - On-prem systems resolve AWS private domains (like app.internal)
     - AWS resources resolve on-prem domains (like corp.local)
+- *** section 11 important Recap of all concepts****
 
+- **Stateless Web App:** does NOT store client session information on the server between requests.
+    - Each request is treated as independent and complete on its own. 
+    example: REST APIs, microservices
+- **Stateful Web App:**  stores user session data on the server so it can “remember” previous interactions.
+ example: shopping cart, banking web
 
-## ** section 11 important Recap of all concepts**
-
-### ** Stateless Web App**
-- does NOT store client session information on the server between requests.
-- Each request is treated as independent and complete on its own.
-example: REST APIs, microservices,
-
-### ** Stateful Web App**
-- A stateful app stores user session data on the server so it can “remember” previous interactions.
-  example: shopping cart, banking web
-
-  
-### ** Instantiating Applications Quickly**
+- **Instantiating Applications Quickly**
 - EC2 instances:
-    - use a golden AMI : install applications, OS dependencies,.. beforehand and launch EC2 instance from the Golden AMI.
-    - boostrap using user data: dynamic configuration, use user data scripts.
-    - hybrid: Golden AMI + user data (Elastic Beanstalk)
-
-- RDS DBs:
+    - **use a golden AMI :** install applications, OS dependencies,.. beforehand and launch EC2 instance from the Golden AMI.
+    - **bootstrap** using user data: dynamic configuration, use user data scripts.
+    - **hybrid**: Golden AMI + user data (Elastic Beanstalk)
+- **RDS DBs:**
     - restore from a snapshot: the db will have schemas and data ready.
-- EBS volumes:
+- **EBS volumes:**
     - restore from a snapshot: the disk will already be formatted and have data.
-      
-    - 
-
-
-
-
-
