@@ -2479,12 +2479,536 @@ example: India user -> India server
 - **Stateful Web App:**  stores user session data on the server so it can “remember” previous interactions.
  example: shopping cart, banking web
 
-- **Instantiating Applications Quickly**
+### **Instantiating Applications Quickly**
+
 - EC2 instances:
     - **use a golden AMI :** install applications, OS dependencies,.. beforehand and launch EC2 instance from the Golden AMI.
-    - **bootstrap** using user data: dynamic configuration, use user data scripts.
+    - **bootstrap** using user data: dynamic configuration, use user data scripts. (initial setup)
     - **hybrid**: Golden AMI + user data (Elastic Beanstalk)
 - **RDS DBs:**
     - restore from a snapshot: the db will have schemas and data ready.
 - **EBS volumes:**
     - restore from a snapshot: the disk will already be formatted and have data.
+
+### Beanstalk
+
+- lets you **deploy, manage, and scale web applications automatically** without worrying about infrastructure.
+
+**Elastic Beanstalk** is a service where you:
+
+- Upload your application code
+- AWS automatically handles:
+    - Servers (EC2)/ Load balancing/ Auto scaling/ Monitoring
+
+👉 You just focus on **writing code**, not managing servers.
+
+| Feature | Beanstalk | EC2 |
+| --- | --- | --- |
+| Setup | Automatic | Manual |
+| Control | Medium | Full |
+| Scaling | Auto | Manual setup |
+| Use case | Quick deployment | Full customization |
+
+**Beanstalk Components:**
+
+- **Application**: collection of elastic beanstalk components (version, environments, configurations,…)
+- **Application version**: specific version of your code.
+- **Environment**: actual running instance of your application.
+    
+    Types:
+    
+    - **Web Server Environment** → handles HTTP requests
+    - **Worker Environment** → processes background jobs (via Amazon SQS)
+- can create multiple envs (dev, test, prod,…)
+
+**create application → upload version → launch environment → manage environment**
+
+- **Environment Tier**
+Defines the **type of environment**:
+    - **Web Tier**
+        - Handles web traffic (HTTP/HTTPS)
+    - **Worker Tier**
+        - Processes async/background tasks
+- **Environment Configuration**
+Settings that control environment behavior:
+    - Instance type (t2.micro, etc.)
+    - Scaling rules
+    - Environment variables
+    - Networking
+    
+    👉 You can modify config without redeploying code
+    
+- **Deployment Options**
+Controls how updates happen:
+    - **All at once** → fastest, but downtime
+    - **Rolling** → updates in batches
+    - **Rolling with additional batch** → safer
+    - **Immutable** → new instances created (most reliable)
+
+### Amazon S3
+
+- scalable object storage device
+- used to store and retrieve **any amount of data from anywhere on the web**.
+
+Think of S3 like a **cloud storage drive**:
+
+- You store files (images, videos, backups, logs)
+- AWS manages storage, durability, and scaling
+
+👉 Instead of folders, S3 uses **buckets + objects**
+
+**Structure**
+
+Bucket (like a folder)
+     └── Object (file)
+            ├── Data (actual content)
+            ├── Metadata
+           └── Key (unique name/path)
+
+**Features**
+
+- Scalable (unlimited storage)
+- Versioning support
+- Lifecycle management (auto move/delete data)
+- Event triggers (Lambda integration)
+
+**Use Cases**
+
+- Store website assets (images, CSS, JS)
+- Backup & restore data
+- Log storage
+- Static website hosting
+- software delivery
+
+**Amazon S3- Buckets**
+
+- It is the **top-level container** used to store data (objects/files).
+**Bucket** (like a folder)
+     └── Object (file)
+            ├── Data (actual content)
+            ├── Metadata
+           └── Key (unique name/path)
+- buckets are defined at region level
+- Each bucket has:
+    - Unique name (globally)
+    - Region
+    - Access permissions
+- Naming:
+    - Shared Global Namespace: have a globally unique name (across all regions all accounts)
+    - Account Regional Namespace: allows for ‘reuse’ of the same bucket name across regions.
+
+**Amazon S3- Objects**
+
+- it is **actual file/data** stored inside an S3 bucket.
+- Each object consists of:
+    - **Data** → actual content (image, video, file, etc.)
+    - **Key** → unique name (path)
+    Key is composed of prefix + object name
+    example: s3://my-bucket/**my_file.txt**
+                     s3://my-bucket/**my_folder/folder2/my_file.txt**
+    - **Metadata** → extra information about the object
+
+**Structure**:
+
+Object
+    ├── Key: images/profile.png
+    ├── Data: (image file)
+   └── Metadata:
+        ├── Size: 2MB
+        ├── Content-Type: image/png
+       └── Last-Modified: date
+
+**Features:**
+
+- **Object Size Limits**
+    - Minimum: **0 bytes**
+    - Maximum: **5 TB per object**
+    
+    👉 For large files → use **Multipart Upload**
+    
+- **Metadata types**
+    - **System metadata:** managed by AWS
+    example: size, last modified date
+    - **User metadata:** custom metadata you define
+    example: **x-amz-meta-userid: 123**
+
+**Key Features of S3 Objects**
+
+- Versioning:
+    - Multiple versions of same object, helps recover deleted/overwritten files
+- Encryption
+    - Data security options:
+        - SSE-S3
+        - SSE-KMS
+        - Client-side encryption
+- Lifecycle Management
+    - Automatically:
+        - Move objects to cheaper storage
+        - Delete old versions
+- Operations on Objects
+    - Upload (PUT)
+    - Download (GET)
+    - Delete
+    - Copy
+    - Move (copy + delete)
+
+ Example (Your Project)
+
+For your **Ampcharge app**:
+
+- Bucket: `ampcharge-data`
+- Objects:
+    - `users/101/profile.png`
+    - `stations/45/image.jpg`
+- S3 Object URL
+
+Each object can be accessed via URL:
+
+```
+https://bucket-name.s3.region.amazonaws.com/key
+```
+
+👉 Example:
+
+```
+https://ampcharge-data.s3.ap-south-1.amazonaws.com/users/101/profile.png
+```
+
+**Amazon S3 - Security**
+
+S3 security is about **protecting your data** by controlling:
+
+- **Who can access it**
+- **How it is accessed**
+- **How it is encrypted**
+
+**Access Control Mechanism**
+
+- User based (IAM Policies):
+    - Managed via AWS Identity and Access Management
+    - Attached to **users, groups, roles**
+    - Controls what actions they can perform
+    example: Allow user to upload files to S3
+- Resource based:
+    - Bucket Policies:
+        - Applied directly to a bucket
+        - Controls **who can access the bucket**
+         Used for: Public access/ Cross-account access
+- Encryption:
+    - Data at Rest:
+        - **SSE-S3** → AWS-managed keys
+        - **SSE-KMS** → Key management via AWS Key Management Service
+        - **Client-side encryption**
+    - Data in Transit
+        - Use **HTTPS (SSL/TLS)**
+        👉 Prevents data interception
+
+**S3 bucket Policies:
+JSON-based access control policy** attached directly to an S3 bucket to define **who can access what and how**.
+
+- Controls access to:
+    - Entire bucket
+    - Specific objects (using key paths)
+- Written in **JSON format**
+
+Structure: 
+
+```
+{
+  "Version":"2012-10-17",
+  "Statement": [
+    {
+      "Effect":"Allow / Deny",
+      "Principal":"* or specific user",
+      "Action":"s3:GetObject / s3:PutObject",
+      "Resource":"arn:aws:s3:::bucket-name/*"
+    }
+  ]
+}
+```
+
+- effect: grant access/ block access
+- principal: who gets access (specific IAM user)
+- actions: what actions allowed (read/ upload/ delete)
+- resource: which bucket/ object
+
+**Example 1: Public Read Access**
+
+```
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::my-bucket/*"
+    }
+  ]
+}
+```
+
+👉 Anyone can view files (used for static websites)
+note: principal is ‘*’ means accessible to everyone
+
+**Example 2: Allow Only Specific User**
+
+```
+{
+  "Effect":"Allow",
+  "Principal": {
+    "AWS":"arn:aws:iam::123456789012:user/Pranav"
+  },
+  "Action":"s3:*",
+  "Resource":"arn:aws:s3:::my-bucket/*"
+}
+```
+
+- principal is set to specific user.
+
+**Example 3: Restrict by IP Address**
+
+```
+{
+  "Effect":"Deny",
+  "Principal":"*",
+  "Action":"s3:*",
+  "Resource":"arn:aws:s3:::my-bucket/*",
+  "Condition": {
+    "IpAddress": {
+      "aws:SourceIp":"192.168.1.0/24"
+    }
+  }
+}
+```
+
+**Static Website Hosting**
+
+S3 can host **static websites** which has no backend/server logic 
+
+- You upload frontend files to an S3 bucket
+- S3 serves them over HTTP as a website
+
+**Working**
+
+User → Browser → S3 Bucket → Static Files (HTML/CSS/JS)
+
+- User requests a page
+- S3 returns the file directly
+
+**Steps to Host Website on S3**
+
+1. Create Bucket
+
+- Bucket name must match domain
+ Example: `my-website.com`
+
+2. Enable Static Website Hosting
+
+- Go to bucket → Properties
+- Enable:
+    - **Static website hosting**
+    - Set:
+        - Index document → `index.html`
+        - Error document → `error.html`
+
+3. Upload Files
+
+- Upload:
+    - `index.html`
+    - CSS, JS, images
+
+4. Set Bucket Policy (Public Access)
+
+```
+{
+  "Version":"2012-10-17",
+  "Statement": [
+    {
+      "Effect":"Allow",
+      "Principal":"*",
+      "Action":"s3:GetObject",
+      "Resource":"arn:aws:s3:::my-website.com/*"
+    }
+  ]
+}
+```
+
+Makes files publicly accessible (principal : *)
+
+5. Access Website
+
+You get a URL like:
+
+```
+http://my-website.s3-website-region.amazonaws.com
+```
+
+**short ans:** Create a bucket, enable static website hosting, upload files, and configure bucket policy for public read access.
+
+**Amazon S3- versioning**
+
+**S3 Versioning** allows you to **keep multiple versions of the same object** in a bucket.
+
+ It protects your data from:
+
+- Accidental deletion
+- Overwriting files
+
+When versioning is enabled:
+
+- Every time you upload/update a file → a **new version** is created
+- Old versions are **not deleted**
+
+**How It Works?**
+
+Each object gets a **Version ID**:
+
+file.txt
+    ├── VersionId: A1 (old)
+    ├── VersionId: B2 (old)
+   └── VersionId: C3 (latest)
+
+ By default, latest version is returned
+
+**Delete Behavior** 
+
+When you delete an object:
+
+It is **NOT permanently deleted**
+S3 adds a **Delete Marker**
+
+file.txt
+    ├── v1
+    ├── v2
+   └── Delete Marker (latest)
+
+File appears deleted, but old versions still exist
+
+**Amazon S3-  Replication (versioning + IAM role)**
+
+- automatically **copies objects from one bucket to another** (same or different region).
+- must enable versioning in source and destination buckets.
+- copying in asynchronous.
+- must give IAM permission to S3.
+- Used for: Backup, Disaster recovery, Low-latency accessTypes of Replication
+
+**Types of Replication**
+
+**1. Same-Region Replication (SRR)**
+
+- Copies data **within the same AWS region**
+
+👉 Use case:
+
+- Compliance: following rules set by organisation.
+- Log aggregation: collecting logs from multiple places and storing them in one central place.
+
+**2. Cross-Region Replication (CRR)**
+
+- Copies data **to a different region**
+
+👉 Use case:
+
+- Disaster recovery
+- Global users (faster access)
+
+**How It Works**
+
+```
+Source Bucket → Replication Rule → Destination Bucket
+```
+
+- You upload an object to source
+- S3 automatically copies it to destination
+
+**note:**
+
+- After you enable replication, only new objects are replicated.
+- you can replicate existing objects using S3 batch replication.
+
+For DELETE operations
+
+- can replicate delete markers from source to target
+- deletions with a version ID are not replicated.
+
+There is no ‘chaining’ of replication:
+
+- If bucket 1 has replication into bucket 2, which has replication into bucket 3.
+- then objects created in bucket 1 are not replicated to bucket 3.
+
+| Feature | Replication | Backup |
+| --- | --- | --- |
+| Timing | Automatic | Manual/Scheduled |
+| Regions | Same/Different | Usually same |
+| Use case | High availability | Long-term storage |
+
+**Amazone S3 - Storage Classes**
+
+- define **how your data is stored, accessed, and priced**.
+
+Storage Class
+
+- Frequently Access
+    - S3 Standard
+    - S3 express one zone
+- Infrequently Access
+    - S3 Standard IA
+    - S3 Express one zone IA
+- Automatically Optimise
+    - S3 Intelligent Tiering
+- Rarely Access
+    - Glacier instant retrieval
+    - Glacier deep archive
+    - Glacier flexible retrieval
+
+Types of Storage Class
+
+| Storage Class | Access | Cost | Retrieval Time | Use case |
+| --- | --- | --- | --- | --- |
+| Standard | Frequent | High | Milliseconds | website, apps |
+| Intelligent-Tiering | Variable | Medium | Milliseconds |  |
+| Standard-IA | Infrequent | Lower | Milliseconds | backups, disaster recovery |
+| One Zone-IA | Infrequent, stored in single AZ  | Cheaper | Milliseconds | re-creatable data   |
+| Glacier | Rare | Very Low | Minutes–Hours | long time archives |
+| Deep Archive | Very Rare | Lowest | Hours | old backups |
+
+![image.png](attachment:507f631a-a15c-469e-900f-a6dbf00419e1:image.png)
+
+Lifecycle Example 
+
+```
+Day 0 → Standard
+Day 30 → Standard-IA
+Day 90 → Glacier
+Day 365 → Deep Archive
+```
+
+Automatically reduces cost over time
+
+Example:
+
+- User images → **Standard**
+- Old logs → **Glacier**
+- Backups → **Standard-IA**
+
+**S3 Express one zone**
+
+- **high-performance storage class** designed for **ultra-low latency and very high request rates**—much faster than standard S3
+- stores data in single AZ
+- handles millions of request per second
+- upto 10x better performance than S3 standard
+- high durability (99.9999999%) and availability (99.5%)
+
+Architecture Difference
+
+**Normal S3**
+
+```
+Data → Multiple AZs (high durability)
+```
+
+**S3 Express One Zone**
+```
+Data → Single AZ (high speed)
+```
