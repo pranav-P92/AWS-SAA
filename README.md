@@ -3012,3 +3012,70 @@ Data → Multiple AZs (high durability)
 ```
 Data → Single AZ (high speed)
 ```
+
+
+| Feature | S3 Standard | S3 Express One Zone |
+| --- | --- | --- |
+| Latency | Milliseconds | Lower (faster) |
+| Storage | Multi-AZ | Single AZ |
+| Durability | Very high | Lower |
+| Use case | General storage | High-performance apps |
+
+**Amazon S3 - Lifecycle Rules**
+
+ **automatically manage objects over time**—moving them to cheaper storage or deleting them.
+
+**Goal**: Reduce cost + automate data management
+
+**Types of lifecycle actions**
+
+- **Transition Action**: Move objects to cheaper storage classes:
+    - Standard → IA
+    - IA → Glacier
+    - Glacier → Deep Archive
+
+![image.png](attachment:2ec3c7e3-6bd5-48d1-aebc-230c3b710542:image.png)
+
+- **Expiration Actions**
+    - Permanently delete objects after a time
+    Example: Delete logs after 1 year
+    can be used to delete older version of files (if versioning is enabled)
+
+Rules can be applied based on
+
+- Prefix (folder like):
+    - logs/
+    - images/
+- Tags:
+    - type=backup
+    - env=prod
+
+**Example Lifecycle Policy (JSON)**
+
+```
+{
+  "Rules": [
+    {
+      "ID":"MoveToGlacier",
+      "Filter": { "Prefix":"logs/" },
+      "Status":"Enabled",
+      "Transitions": [
+        {
+          "Days":30,
+          "StorageClass":"GLACIER"
+        }
+      ],
+      "Expiration": {
+        "Days":365
+      }
+    }
+  ]
+}
+```
+
+**Amazon S3 analytics -Storage class analysis**
+
+- helps you decide when to transition objects to right storage class.
+- recommendations for standard and standard IA
+- does not work for one zone IA or glacier
+- report is updated daily
