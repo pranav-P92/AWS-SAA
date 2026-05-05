@@ -3076,6 +3076,171 @@ Rules can be applied based on
 **Amazon S3 analytics -Storage class analysis**
 
 - helps you decide when to transition objects to right storage class.
+- determine the optimal timing for moving obejcts between storage tiers effectively.
 - recommendations for standard and standard IA
 - does not work for one zone IA or glacier
 - report is updated daily
+
+
+**Amazon S3 -Requestor Pays**
+
+Normally, the bucket owner pays for:
+
+- Data storage
+- Data transfer out
+- Requests (GET, PUT, etc.)
+
+With Requester Pays enabled:
+
+- The requester pays for data transfer and request costs
+- The bucket owner still pays for storage
+
+When it’s useful
+- Sharing large public datasets (e.g., research, logs, archives)
+- Preventing unexpected bills when many users download data
+- Open data platforms where users are expected to bear access costs
+
+
+**Amazon S3 - Event Notifications**
+- let you automatically react when something happens in an S3 bucket—like a file upload, deletion, or restore.
+- They trigger downstream services when specific events occur in a bucket.
+- Common event types:
+    - s3:ObjectCreated:* → file uploaded (PUT, POST, COPY)
+    - s3:ObjectRemoved:* → file deleted
+    - s3:ObjectRestore:* → object restored from Glacier
+    - s3:Replication:* → replication status changes
+ 
+- S3 can send events to:
+    - AWS lamda: run serverless code.
+    - Amazon SNS: push notifications.
+    - Amazon SQD: queue for asynchronous processing
+    - Amazon Event bridge: advanced event routing (advanced filterin options with JSON rules )
+ 
+- Example use cases
+Automatically resize images after upload (Lambda)
+Send alerts when files are deleted (SNS)
+Process logs asynchronously (SQS)
+Trigger workflows or pipelines (EventBridge)
+
+- How it works (simple flow)
+File is uploaded to S3
+S3 detects the event
+Notification is sent to the configured destination
+Destination service processes it
+
+- note: Event Notifications need IAM permissions.
+
+**Amazon S3- Baseline Performance**
+- default throughput and request scaling behavior you get from S3 without any special tuning.
+
+- Request rate performance
+
+- Per prefix (folder-like path), S3 supports at least:
+
+    - 3,500 PUT/COPY/POST/DELETE requests per second
+    - 5,500 GET/HEAD requests per second
+
+-  And you can have unlimited prefixes, so you can scale horizontally by spreading objects across prefixes.
+-  More parallel requests + more prefixes = more performance
+
+  **S3 Performance**
+  - Multi-part upload:
+      - recommend for files > 100mb, must use for files > 5GB.
+      - can help parallelize uploads
+    multi part upload: Instead of uploading one big file:
+        - Break it into pieces
+        - Upload pieces at the same time
+        - S3 joins them into one file
+- S3 Transfer acceleration:
+    - Instead of sending data directly to S3:
+        -  Your data goes to the nearest AWS edge location
+        - Then travels on AWS’s fast private network to S3
+     
+- S3 Byte-Range fetches:
+    - let you download only a specific part of a file instead of the whole object.
+ 
+**Amazon S3- Batch Operations**
+- perform bulk operations on existing S3 objects with a single request
+example:
+    - modify object metadata & properties.
+    - copy objects between S3 buckets.
+    - encrypt un-encrypted objects.
+    - restore objects from S3 glaciers.
+- use S3 inventory to get object list and use Athena to query and filter objects.
+
+
+**Amazon S3 - Storage Lens**
+helps you analyze and monitor how your S3 storage is being used.
+- It gives you a dashboard + metrics about your S3 usage
+- So you can optimize cost, security, and performance
+
+
+- Metrics:
+    - Summary Metrics:
+      - general insights about your S3 storage.
+      - use cases: identify the fastest growing buckets and prefixes.
+    - Cost optimization metrics:
+        - provide insights to manage and optimize your storage costs.
+        - uses cases: identify buckets with incomplete multipart uploaded older than 7 days.
+     
+      - Data protection metrics:
+          - provide insights for data protection features.
+          - use cases: identify the buckets that aren't following data protection best practices.
+       
+        - Access management metrics:
+            - provide insights for S3 object ownership
+         
+        - Event metrics:
+            - provide insights for S3 event notifications
+        - Performance metrics:
+            - provide insights for S3 transfer acceleration  
+        - Activity metrics:
+            - provide insights about your storage is requested 
+        - Detailed Status code metrics:
+            - provide insights for HTTP status codes. 
+
+### **Amazon S3 - Object Encryption**
+- protecting your data (files) by encrypting it when stored in S3.
+- object in S3 buckets can be encrypted using 1 of 4 methods
+
+- Server-Side Encryption:
+    -  encryption is handled by AWS.
+        - SSE - S3:
+            - AWS manages keys automatically
+            - encryption type is AES-256.
+            - object is encrypted server side.
+            - must set header "x-amz-server-side-encryption":"AES256"
+            - enabled by default for new buckets and new objects.
+        - SSE-KMS:
+            - more control over keys.
+            - managed by AWS KMS (Key management service).
+            - can track and manage access.
+            - object is encrypted server side.
+            - must set header "x-amz-server-side-encryption":"aws:kms"
+            - KMS limitation:
+                - when you upload, it calls the GenerateDataKey KMS API.
+                - when you download, it calls the Decrypt KMS API.
+                - count towards the KMS quota per second. (5k,10k,30k req/s based on region).
+                - you can request a quota increase using the service quotas console.
+
+
+        - SSE-C:
+            - provide your own encryption key.
+            - AWS does not store the key.
+            - encryption key is managed by customer outside the AWS.
+         
+    - Client Side encryption:
+        - You encrypt the file before uploading to S3
+        - You decrypt the file when retrieving from S3
+        - You manage everything (keys + encryption)
+
+    - Encryption in transit (SSL/TLS)
+        - encryption in flight is also called SSL/TLS
+        - amazone S3 exposes 2 endpints:
+            - HTTPS Endpoint: encryption in flight.
+            - HTTP Endpoint: non encrypted.
+        - HTTPS is mandatory for SSE-C
+     
+- Force encrytion in Transit aws:SecureTransport:
+    - Allow requests only if they use HTTPS
+    -  Block any unencrypted (HTTP) access
