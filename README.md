@@ -3244,3 +3244,73 @@ helps you analyze and monitor how your S3 storage is being used.
 - Force encrytion in Transit aws:SecureTransport:
     - Allow requests only if they use HTTPS
     -  Block any unencrypted (HTTP) access
+
+
+### S3 CORS
+
+- Cross origin resource sharing
+- origin= scheme(protocol)+host(domain)+port
+- if a client make a Cross origin request on our S3 bucket, we need to enable the correct CORS headers.
+
+  Quick model:
+- origin: who is calling (your frontend)
+- methods: what they can do (GET,PUT,DELETE,...)
+- headers: waht they can send
+- s3 cors: premission rules
+
+### S3 MFA Delete
+- MFA (Multi factor authentication): force uses to generate a code on a device before doing improtant operations on S3
+- MFA Will be required to:
+    - permanently delete an object version
+    - suspend versioning on the bucket
+- MFA won't be required to:
+    - enable versioning
+    - list deleted versions.
+- to use MFA delete, versioning must be enabled on the bucket.
+- only the bucket owner (root account) can enable/disable MFA delete.
+
+
+### S3 Access logs
+
+- They are records of every request made to your S3 bucket.
+- helpful in auditing, debug
+
+- How to enable S3 access logs:
+    - go to your bucket in AWS
+    - open properties
+    - scroll to server access logging
+    - enable it
+    - choose a target bucket (where logs will be stored)
+
+### Amazon S3- Pre signed URLS
+- its a temporary, secure link that lets someone access a private S3 object without AWS credentials.
+- expiry: you set a time limit (eg. 5min, 1hr, 7days max with SDKs)
+    after that link stops working
+- generate pre-signed URLs using S3 console, AWS CLI or SDK
+- users give a pre-signed URL inherit the permission of the user that generated the URL for GET/PUT
+
+
+### S3 Glacier Vault Lock
+- It's a feature that lets you lock a policy on a vault so it cannot be changed.
+- it ensures data cannot be deleted or modified before a certain time.
+- eg: financial regulations, healthcare data retention
+- adopt Write Once Read Many model
+
+- S3 Obejct Lock: versioning must be enabled
+    - adopt a WORM model
+    -  once saved, this file is locked- no one can change or delete it.
+    -  Retention modes:
+        - Governance mode:(user with permission can delete/modify)
+            - most users can't overwrite or delete an object version or alter its lock settings.
+            - some users have special permissions to change the retention or delete the object
+         - Compliance mode: (no one can delete/modify)
+             - object versions can't be overwritten or deleted by any user, including the root user.
+             - object retention modes can't be changed, and retention periods can't be shortend.
+        - Retention period: 
+            - protect the object for a fixed period; it can be extended.
+            until the defined period - no delete, no overwrite.
+         - Legal Hold: 
+             - protect the object indefinitely, independent from retention period.
+             - no expiry date.
+             - must be manually removed.
+     
