@@ -3962,3 +3962,107 @@ Instead of redesigning the application:
 - Move messaging to Amazon MQ
 
 Application continues working with minimal changes.
+
+
+### Docker
+- it is a software development platform to deploy apps
+- apps are packaged in containers that can be run on any OS.
+- app run the same, regardless of where they're run:
+    - any machine
+    - no compatibility issues
+    - easier to maintain and deploy
+    - works with any language, any OS, any technology.
+
+  **where are docker images stored?**
+  - docker images are stored in docker repositories
+  - docker hub:
+      - public repository
+      - find base images for many techonologies or OS
+   
+**Amazon ECR (Amazon Elastic Container Registry)**
+- fully managed container image registry service used to store, manage, and deploy Docker and OCI container images.
+- private repository
+
+-  What ECR does
+You can:
+- Push Docker images
+- Pull images into deployments
+- Store private or public container repositories
+- Scan images for vulnerabilities
+- Replicate images across AWS regions/accounts
+- Control access using IAM policies
+
+ECR supports:
+- Docker images
+- OCI images
+- OCI artifacts (Helm charts, signatures, et
+
+
+Typical workflow
+- Build a Docker image locally
+- Authenticate Docker to ECR
+- Push image to an ECR repository
+- Deploy image using:
+    - Amazon Elastic Kubernetes Service (EKS)
+    - Amazon Elastic Container Service (ECS)
+    - Kubernetes
+    - EC2 instances
+    - Lambda container images
+
+- docker vs VM
+    - docker is sort of virtualization technology, but not exactly
+    -  resources are shared with the host-> many containers on one server.
+
+
+
+### Amazon ECS 
+- fully managed container orchestration service from AWS
+ used to run and scale Docker containers in production.
+- It helps you deploy containers without managing your own Kubernetes control plane.
+
+- two ECS launch types:
+- EC2 launch type → You manage the servers
+Fargate → AWS manages the servers
+    - EC2 launch type:
+        - launch Docker containers on AWS = launch ECS tasks on ECS Clusters
+        - you must provision and maintain the infrastructure
+        - each EC2 instance must run the ECS agent to register in the ECS cluster.
+        - How it works
+Create EC2 instances
+Install ECS agent automatically
+Add EC2 instances to ECS cluster
+Deploy containers to those EC2 machines       
+    - Fargate (serverless containers):
+        -  Fargate Launch Type:
+            - launch docker containers on AWS.
+            - you do not provision the infrastructure
+            - you just create task definitions
+            - AWS just runs ECS tasks for you based on CPU/ RAM u need
+            - to scale, just increase the no of task.
+           | Feature           | ECS EC2 Launch Type       | Fargate                          |
+| ----------------- | ------------------------- | -------------------------------- |
+| Server management | You manage EC2 instances  | AWS manages infrastructure       |
+| Setup complexity  | More                      | Less                             |
+| Maintenance       | You patch/update servers  | AWS handles it                   |
+| Scaling           | You scale EC2 machines    | Automatic infrastructure scaling |
+| Control           | Full control over servers | Limited server access            |
+| Pricing           | Pay for EC2 instances     | Pay per container resources      |
+| Best for          | Large/custom workloads    | Simple microservices/apps        |
+| GPU support       | Yes                       | Limited                          |
+| OS access         | Yes (SSH possible)        | No SSH access                    |
+
+
+### Amazon ECS- IAM roles for ECS
+- EC2 instance profile (EC2 launch type only):
+    - used by ECS agent
+    - make API calls to ECS service
+    - send container logs to cloudWatch logs
+    - pull docker image from ECR
+    - reference sensitive data in secret manager or SSM parameter store.
+ 
+  - ECS task role:
+      - allows each task to have a specific role
+      - use different roles for the different ECS services you run
+      - task role is defined in task definition
+
+
