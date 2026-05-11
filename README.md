@@ -3373,4 +3373,592 @@ Amazon S3 Object Lambda lets you modify the data returned by S3 GET requests usi
 …but the file in S3 stays unchanged.
 
 
-**CloudFront**
+### AWS Snowball
+
+- it is a physical data transport device used to transfer large amounts of data into and out of AWS securely and quickly.
+- Instead of transferring terabytes or petabytes over the internet, AWS ships a secure device to your location.
+
+**Why Snowball is Used**
+
+- Internet transfer can be slow
+- Large data uploads may take weeks or months
+- Snowball provides:
+    - Faster transfer
+    - Secure encryption
+    - Offline migration
+    - Lower network cost
+
+**How It Works**
+
+1. Order Snowball device from AWS
+2. AWS ships the device to you
+3. Connect device to your system/network
+4. Copy data into the device(snowball device)
+5. Ship device back to AWS
+6. AWS uploads data to services like:
+    - Amazon S3
+    - Glacier
+    - EBS
+
+**Types of Snow Family**
+
+**1. Snowball Edge**
+
+- Storage + compute capabilities
+- Used for: Data migration, Edge computing, Local processing
+
+**2. Snowcone**
+
+- Small portable device
+- Good for remote locations
+- Lightweight
+
+**3. Snowmobile**
+
+- Massive truck-sized data transfer system
+- Transfers exabytes of data
+
+**Example :** A company wants to move **500 TB** of backup data to AWS.
+
+Uploading through internet may take months.
+
+Using Snowball:
+
+- AWS sends device
+- Company copies data locally
+- Ships it back
+- AWS uploads data quickly
+
+**Simple Comparison**
+
+| Service | Size |
+| --- | --- |
+| Snowcone | Small |
+| Snowball Edge | Medium/Large |
+| Snowmobile | Extremely Huge |
+
+### Amazon FSx
+
+- It is a fully managed file storage service in AWS that provides high-performance file systems for different workloads.
+    
+    AWS handles:
+    
+    - Setup
+    - Maintenance
+    - Scaling
+    - Backups
+    - Patching
+    
+    **Types of Amazon FSx**
+    
+    **1. FSx for Windows File Server:**
+    
+    - Native Windows file system
+        
+        Supports:
+        
+        - SMB protocol: file sharing
+        - Active Directory
+        - NTFS permissions: File/folder-level access control
+        
+        **Example:** A company has employees using Windows systems and wants a shared company folder.
+        
+        **Solution:**
+        Use Amazon FSx for Windows File Server
+        Employees connect using SMB
+        Access controlled through Active Directory
+        
+    
+    **2. FSx for Lustre**
+    
+    - Very high-speed file system: **Millions of IOPS and GB/s throughput**
+    - Lustre= Linux+cluster
+    - It is designed for workloads that need:
+        - Extremely fast storage
+        - Low latency
+        - Massive throughput
+    - Designed for:
+        - Machine Learning
+        - HPC (High Performance Computing)
+        - Big data analytics
+    
+    **Integration with S3**
+    
+    Amazon S3 integration is a major feature.
+    
+    You can:
+    
+    - Import data from S3 into FSx Lustre
+    - Process data at high speed
+    - Export results back to S3
+    
+    **Example:** A company trains AI models on petabytes of image data stored in S3.
+    
+    **Solution:**
+    
+    - Import data into Amazon FSx for Lustre
+    - Train models with high-speed access
+    - Store outputs back into S3
+
+**FSx file system deployment Options**
+
+- **Scratch file system:**
+    - Temporary storage
+    - data is not replicated
+    - high performance
+    - best for:
+        - Data processing jobs
+        - Video rendering
+        - Machine learning training
+    
+    **Example:** A company processes log files for 5 hours daily.
+    After processing, data is deleted.
+    
+- **Persistent file system:**
+    - Long term storage
+    - data is replicated within in same AZ.
+    - replace failed files within minutes
+    - Best For
+        - Production HPC systems (HPC-high performance computing)
+        - Continuous ML workloads
+    
+    **Example:** A research company stores scientific simulation data continuously for months.
+    
+    → Persistent file system is suitable.
+    
+    Choose:
+    
+    - **Scratch** when speed and low cost matter more than durability
+    - **Persistent** when reliability and long-term storage are important
+
+**FSx for NetApp ONTAP**
+
+- it is a data storage OS.
+- it provides enterprise-grade storage features for:
+    - Linux
+    - Windows
+    - macOS environments
+- file system compatible with NFS, SMB, iSCSI protocol.
+- Supports NetApp features:
+    - Snapshots
+    - Cloning
+    - Compression
+    - De-duplication
+- Works with:
+    - Linux , windows, mac, VMware cloud on AWS, Amazon EC2, ECS and EKS
+- Storage shrinks or grows automatically.
+
+**Amazon FSx for OpenZFS**
+
+- managed OpenZFS file system on AWS.
+- file system compatible with NFS(v3,v4,v4.1,v4.2)
+- snapshot, compression, low-cost.
+
+### Storage Gateway
+
+- it is a hybrid cloud storage service  that connects on-premises environments with AWS cloud storage.
+- bridge between on-premises data and cloud data.
+- use cases:
+    - disaster recovery
+    - backup & restore
+    - on-premise cache & low latency file access.
+
+**Why Storage Gateway is Used**
+
+Organizations may:
+
+- Have on-premises applications
+- Want cloud backups
+- Need hybrid storage
+- Require low-latency local access
+
+**Types of Storage Gateway:**
+
+- **S3 File Gateway:**
+    - Provides file-based access using:
+        - NFS
+        - SMB
+    - most recently used data is cached in file gateway.
+    - bucket access using IAM roles for each file gateway.
+    
+    Stores files in:
+    
+    - Amazon S3
+    
+    Used For
+    
+    - File sharing, Backups
+- **Volume Gateway:**
+    - Provides block storage using iSCSI.
+    - backed by EBS snapshots which can help restore on-premises volumes.
+    - two modes:
+        - Cached volumes: Main data in AWS, cached locally
+        - Stored volumes: Main data on-premises, backups in AWS
+    
+    Used For
+    
+    - Backup solutions
+    - Disaster recovery
+- **Tape Gateway:**
+    - Replaces physical tape backups with virtual tapes stored in AWS.
+    - Stores data in: S3, Glacier
+
+**File Gateway:** files in on-premise connected via NFS,SMB to file gateway
+
+**Volume Gateway:** Application servers in on-premise connected via iSCSI to volume gateway
+
+**Tape Gateway:** Backup applications in on-premise connected via iSCSI vTL to tape gateway.
+
+| Feature | Storage Gateway | Snowball |
+| --- | --- | --- |
+| Purpose | Continuous hybrid storage | Large offline data transfer |
+| Connectivity | Online | Offline shipping device |
+| Use Case | Daily backups & access | Massive data migration |
+
+### AWS Transfer Family
+
+- used for secure file transfers into and out of AWS storage services.
+- supported protocols:
+    
+    
+    | Protocol | Full Form |
+    | --- | --- |
+    | SFTP | SSH File Transfer Protocol |
+    | FTPS | File Transfer Protocol Secure |
+    | FTP | File Transfer Protocol |
+- pay per provisioned endpoint per hour + data transfers in GB.
+- Files transferred through AWS Transfer Family can be stored in:
+    - Amazon S3
+    - Amazon Elastic File System
+
+**Why Use AWS Transfer Family**
+
+Many organizations already use:
+
+- FTP servers
+- SFTP clients
+- Legacy file transfer systems
+
+AWS Transfer Family allows them to:
+
+- Continue using existing protocols
+- Move storage to AWS
+- Avoid managing file transfer servers
+
+**Example**: A company exchanges files daily with partners using SFTP.
+
+**Solution**:
+
+- Use AWS Transfer Family
+- Partners continue using SFTP
+- Files stored directly in S3
+
+![image.png](attachment:69bb1abb-682b-4689-b196-7c54c00aebc4:image.png)
+
+| Feature | AWS DataSync | AWS Transfer Family | AWS Snowball |
+| --- | --- | --- | --- |
+| Purpose | Automated data transfer & sync | Secure file transfer using FTP/SFTP | Large offline data migration |
+| Transfer Type | Online | Online | Offline |
+| Main Use | Sync/migrate storage data | Exchange files with users/partners | Bulk migration of huge datasets |
+| Protocols | NFS, SMB, HDFS | FTP, FTPS, SFTP | Physical device copy |
+| Internet Required | Yes | Yes | Not required for transfer |
+| Best For | Hybrid cloud sync | Secure file exchange | TB/PB-scale migration |
+| Data Movement | Automated synchronization | User-based file uploads/downloads | Physical shipment |
+| Recurring Transfers | Yes | Yes | No |
+| Scale | GBs to TBs | Files and business transfers | TBs to PBs |
+| Physical Device | No | No | Yes |
+| Common Destination | S3, EFS, FSx | S3, EFS | S3, Glacier |
+
+### AWS Integration & Messaging
+
+- two types:
+    - **Synchronous Communications (application to application):**
+        - method where one service/application sends a request and waits immediately for the response before continuing.
+    - **Asynchronous/ Event based Communications (application to queue to application):**
+        - method where a service sends a message/request and does **not wait immediately** for the response.
+        - Sender → Message Queue → Receiver
+
+| Service | Purpose |
+| --- | --- |
+| Amazon SQS | Queue-based messaging |
+| Amazon SNS | Pub/Sub notifications |
+| Amazon EventBridge | Event routing |
+| AWS Lambda | Event processing |
+| AWS Step Functions | Workflow automation |
+
+### **Amazon SQS (Simple Queue Service)**
+
+- It enables applications and services to communicate asynchronously by sending messages through queues.
+- SQS helps:
+    - Decouple applications
+    - Store messages temporarily
+    
+    **How SQS Works**
+    
+    ```
+    Producer → SQS Queue → Consumer
+    ```
+    
+    - Producer: who sends messages.
+    - Consumer: who reads and processes messages.
+    
+    **Steps**
+    
+    1. Producer sends message to queue
+        1. Producing messages: using SDK (SendMessage API)
+    2. Message stored safely in SQS
+    3. Consumer retrieves and processes message
+    4. Message deleted after processing
+    
+    **Amazon SQS-Standard Queue**
+    
+    - used to decouple applications
+    - unlimited throughput, unlimited no of messages in queue
+    - retention of messages in queue:
+        - default: 4days
+        - maximum: 14 days
+    - low latency
+    - can have duplicate messages
+    - At-least-once delivery: A message is never lost, but it may sometimes be delivered multiple times (duplicates can occur).
+    
+    **Amazon SQS- Security**
+    
+    - **Encryption**:
+        - In flight encryption using HTTPS API
+        - At-rest encryption using KMS keys
+        - client-side encryption if the client wants to perform encryption/decryption itself
+    - **Access controls :** IAM policies to regulate access to the SQS API
+    - **SQS access policies:**
+        - useful for cross-account access to SQS queues.
+
+**SQS- Message visibility Timeout**
+
+- after a message is polled by a consumer, it become invisible to other consumers.
+- by default, the ‘message visibility timeout’ is 30sec means that message has 30sec to be processed.
+- if a message is not processed within the visibility timeout, it will be processed twice.
+- a consumer could call the **ChangeMessageVisibility** API to get more time
+- if visibility timeout is high, and consumer crashes, re-processing will take time.
+- if visibility timeout is too low we may get duplicates.
+
+**SQS- Long polling**
+
+- the consumer waits for a period of time for messages to arrive instead of getting an immediate empty response.
+- the wait time can be between 1sec-20sec
+- long polling can be enabled at the queue level or at the API level using **WaitTimeSeconds**.
+
+**SQS- FIFO Queues**
+
+- Messages are processed in the exact order they are sent.
+- **First-In-First-Out ordering**
+- **Exactly-once message processing (** by removing duplicates using Deduplication ID **)**
+- FIFO queues use:
+    - Message Group IDs
+- Messages in the same group:
+    - Processed sequentially and in order
+- Different groups:
+    - Can process in parallel
+- no duplicates allowed.
+
+### **Amazon Simple Notification Service (SNS)**
+
+- It is fully managed **publish/subscribe (Pub/Sub)** messaging service
+- used to send messages or notifications to multiple subscribers simultaneously. (One message can be delivered to many receivers.)
+
+**How SNS Works**
+
+- Publisher sends message to an SNS topic
+- SNS distributes the message
+- All subscribers receive the notification
+
+| Component | Description |
+| --- | --- |
+| Publisher | Sends messages |
+| Topic | Communication channel |
+| Subscriber | Receives messages |
+
+SNS can send notifications to:
+
+| Subscriber Type | Example |
+| --- | --- |
+| Email | Email alerts |
+| SMS | Mobile notifications |
+| HTTP/HTTPS | Web applications |
+| Lambda | Serverless processing |
+| SQS | Queue processing |
+| Mobile Push | App notifications |
+- the **producer** does not send separate messages to every receiver.
+    - Instead:
+    
+    ```
+    Producer → SNS Topic
+    ```
+    
+    The producer sends the message only once to an SNS topic.
+    
+- Every subscriber connected to that topic receives a copy of the message.
+    - **Example**:
+    
+    ```
+    SNS Topic
+     ↓     ↓      ↓
+    Email  SQS   Lambda
+    ```
+    
+    If producer sends:
+    
+    ```
+    "Order #101 placed"
+    ```
+    
+    Then:
+    
+    - Email subscriber gets it
+    - SQS queue gets it
+    - Lambda function gets it
+- up to 12,500,000 subscriptions per topic.
+- 100,000 topics limit.
+
+**Amazon SNS- Security**
+
+- **Encryption**:
+    - In flight encryption using HTTPS API
+    - At-rest encryption using KMS keys
+    - client-side encryption if the client wants to perform encryption/decryption itself
+- **Access controls :** IAM policies to regulate access to the SNS API
+- **SQS access policies:**
+    - useful for cross-account access to SNS topics.
+
+**SNS and SQS Fan-Out Pattern**
+
+The **Fan-Out Pattern** in AWS is a messaging architecture where:
+
+- One message is sent to an SNS topic
+- SNS distributes copies of the message to multiple SQS queues
+
+This allows multiple services to process the same event independently.
+
+**How It Works**
+
+- Producer sends one message to SNS topic.
+- SNS creates copies of the message.
+- Each SQS queue receives its own copy.
+- Different services process messages independently.
+
+**Why Use Fan-Out Pattern?**
+
+**Without fan-out:** Producer must send separate messages to every service.
+
+**With fan-out:** Producer sends only once.
+
+SNS handles distribution automatically.
+
+### Amazon Kinesis Data Stream
+
+- it is a real-time data streaming service.
+- used to collect, process, and analyse streaming data continuously in real time.
+- Streaming data means data generated continuously, such as:
+    - Application logs
+    - Website clicks
+    - IoT sensor data
+    - Video streams
+    - Financial transactions
+
+| Component | Description |
+| --- | --- |
+| Producer | Sends streaming data |
+| Stream | Stores streaming records |
+| Consumer | Reads and processes data |
+- retention between up to 365 days.
+- ability to reprocess data by consumers
+- data can’t be deleted from kinesis (until it expires)
+- data ordering guarantee for data with the same ‘Partition ID’
+- Encryption:
+    - at rest- KMS
+    - in flight - HTTPS
+- **Kinesis Producer Library (KPL):**
+    - helps applications efficiently send data to Kinesis Data Streams.
+- **Kinesis Consumer Library (KCL):**
+    - helps applications consume and process data from Kinesis streams.
+
+**Kinesis Data Streams Capacity Modes**
+
+- **Provisioned Mode:**
+    - Manually manage shards
+    - Shard capacity:
+        - One shard supports approximately:
+            
+            
+            | Operation | Capacity |
+            | --- | --- |
+            | Write | 1 MB/sec or 1000 records/sec |
+            | Read | 2 MB/sec |
+    - Shard is the basic unit of storage, capacity, throughput.
+    - **How Scaling Works**
+        
+        If traffic increases: Add more shards manually
+        
+        If traffic decreases: Reduce shards manually
+        
+- **On-demand Mode:**
+    - AWS automatically scales the stream capacity based on traffic.
+    - No shard management required.
+
+### Amazon Data Firehose
+
+- used to capture, transform, and load streaming data into storage and analytics services.
+- **What Firehose Does**
+    - It:
+        - Collects streaming data
+        - Optionally transforms/compresses it
+        - Delivers it automatically
+
+No shard management required.
+
+- **near real-time** with buffering capability based on size/ time.
+- Firehose can deliver data to:
+
+| Destination | Purpose |
+| --- | --- |
+| Amazon S3 | Storage |
+| Amazon Redshift | Data warehousing |
+| Amazon OpenSearch Service | Log analytics |
+| Splunk | Monitoring/log analysis |
+| HTTP endpoints | Custom integrations |
+
+| Data Firehose | Kinesis Data Streams |
+| --- | --- |
+| Load streaming data into S3/ Redshift/ OpenSearch | Streaming Data collection |
+| Fully managed | Producer & Consumer code |
+| Near real time | Real-time |
+| Automatic Scaling | Provisioned/ On-demand mode |
+| No data storage | Data storage upto 365 days |
+| doesn’t support replay capability | replay capability |
+
+### Amazon MQ
+
+- it is a message broker service
+    - A message broker acts as a middle layer between applications.
+- used for reliable communication between applications using traditional messaging protocols.
+
+**Why Amazon MQ is Used**
+
+Many enterprise applications already use:
+
+- ActiveMQ
+- RabbitMQ
+- JMS
+- AMQP
+- MQTT
+
+Amazon MQ helps migrate these applications to AWS without changing existing messaging logic.
+
+**Example:** A company has an old Java application using:
+
+- JMS
+- ActiveMQ
+
+Instead of redesigning the application:
+
+- Move messaging to Amazon MQ
+
+Application continues working with minimal changes.
