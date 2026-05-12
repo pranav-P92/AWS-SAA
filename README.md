@@ -4066,3 +4066,55 @@ Deploy containers to those EC2 machines
       - task role is defined in task definition
 
 
+### Amazon ECR
+- ECR= Elastic Container Registry
+- store and manage docker images on AWS
+- private and public repository
+- fully integrated with ECS, backed by Amazon S3
+- access is controlled through IAM
+- example: let docker images are in ECR repsority, using the IAM roles those images are pulled to the ECS cluster.
+
+### Amazon EKS
+- Amazon Elastic Kubernetes service
+- Runs Kubernetes clusters on AWS infrastructure
+- kubernetes is an open-source system for automatic deployment, scaling, and management of containerized application
+- its an alternative to ECS
+- EKS supports EC2 if you want to deploy worker nodes or Fargate to deploy serverless containers.
+- Workeer nodes: machines that actually run your application containers(pods).
+
+  **Amazon EKS - Node types**
+  - Managed Node Groups:
+      - creates and manages nodes (EC2 instances) for you.
+      - nodes are part of an ASG managed by EKS
+      - supports on-demand or spot instances
+      - aws automatically manages: EC2 provisioning, updates, scaling, lifecycle management.
+   
+- Self-managed Nodes:
+    -  nodes created by you and registered to the EKS cluster and managed by an ASG
+    -  you can use prebuilt AMI- Amazon EKS Optimized AMI
+    -  supports on-demand or spot instances
+    -  you manage: EC2 instances, AMIs, scaling groups
+ 
+- AWS Fargate:
+    - no EC2 servers to manage
+    - pods runs serverlessly
+    - pay per pod resource
+ 
+  ### AWS App runner
+  - fully managed service that makes it easy to deploy web applications and APIs at scale.
+  - start with your source code or container image
+  - automatically builds and deploy the web app
+  - automatic scaling, highly available, load balancer, encryption
+  - VPC access support
+  - connect to database, cache, and message queue services
+ 
+  ### AWS App2Container (A2C)
+  - CLI tool for migrating and modernizing JAVA and .NET web apps into docker containers.
+  - Lift-and-shift your apps running in on-premises bare metal, virtual machines or in any cloud to AWS
+  - accelerate modernization, no code changes, migrate legacy apps
+  - generate cloudformation templates
+  - register generated docker containers to ECR
+  - deploy to ECS, EKS or app runner
+  - supports pre-built CI/CD pipelines
+ 
+    
