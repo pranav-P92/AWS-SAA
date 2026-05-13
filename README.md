@@ -1913,6 +1913,7 @@ Need static IP
 **AWS Lambda** is **a serverless, event-driven compute service that lets you run code without configuring or managing servers**. You simply upload your code (as a ZIP file or container image), and AWS handles all the underlying infrastructure management, including capacity provisioning, automatic scaling, and maintenance.
 
 - Run code without servers
+- scaling is automated
 - Run on demand
 - Pay per execution time (milliseconds)
 - free tier of 1,000,000 AWS Lambda requests and 400,000 GBs compute time.
@@ -4118,3 +4119,165 @@ Deploy containers to those EC2 machines
   - supports pre-built CI/CD pipelines
  
     
+### AWS Lambda integrations
+- API Gateway
+- Kinesis
+- DynamoDB
+- S3
+- CloudFront
+- CloudWatch Events EventBridge
+- Cloudwatch Logs
+- SNS
+- SQS
+- Cognito
+
+  ### Lambda Limits - per region
+  - Execution:
+      - Memory allocation: 128 MB- 10 GB (1 MB increment)
+      - Maximum execution time: 900 seconds (15minutes)
+      - Environment Variables : 4kb
+      - disk capacity in the 'function continaer' (/tmp): 512mb- 10gb
+      - concurrency executions: 1000
+  - Deployment:
+      - lambda function deployment size (compresse.zip): 50mb
+      - size of uncompressed deployment (code + dependencies): 250 mb
+      - can use the /tmp directory to load other files at the startup
+      - size of env variables: 4kb
+
+### Lambda Concurrency
+- number of instances your Lambda function running at the same time
+- Each concurrent request is runs in its own separate execution environment.
+- concurrency limit: upto 1000 concurrent executions
+- can set a 'reserved concurrency' at a function level (can set limit)
+- each invocation over the concurrency limit will trigger a 'Throttle'
+ **Throttling** happens when the number of incoming requests exceeds the available concurrency.
+  if a function is throttled, 
+  - if synchronous invocation: return ThrottleError-429
+  - if asynchronous invocation: retry automatically and then go to DLQ
+
+-Throttling occurs in these scenarios:
+    - The function exceeds reserved concurrency.
+    - The account exceeds regional concurrency limits.
+    - Burst of traffic exceeds available provisioned/unreserved concurrency.
+
+  example:
+  | Function | Reserved Concurrency | Incoming Requests | Result                                                                |
+| -------- | -------------------- | ----------------- | --------------------------------------------------------------------- |
+| MyFunc   | 10                   | 8                 | All 8 requests execute immediately.                                   |
+| MyFunc   | 10                   | 15                | 10 execute immediately, 5 throttled (for async triggers, they retry). |
+| MyFunc   | None (default)       | 1,200             | If account limit is 1,000, 1,000 execute, 200 throttled.              |
+
+
+When requests arrive:
+- Lambda checks available concurrency.
+    - If concurrency is available → function executes.
+    - If concurrency is exhausted → Lambda throttles additional requests.
+ 
+- Cold Start & Provisioned Concurrency
+    - Cold Start : happens when AWS Lambda has to create a new execution environment before running your function.
+    - includes:
+        - allocating compute resources
+        - starting the runtime
+        - loading your function code
+        - initializing the dependencies/ libraries
+- Why Cold Starts Happen
+Lambda scales automatically.
+
+If:
+
+no existing execution environment is available, or
+traffic suddenly increases,
+
+AWS creates a new container/environment.
+
+That new environment initialization = cold start.
+  - Example
+
+Suppose:
+
+Your Lambda normally handles 5 requests.
+Suddenly 100 requests arrive.
+
+AWS may:
+reuse 5 warm environments
+create 95 new environments
+
+Those 95 may experience cold starts  
+
+- Provisioned Concurrency
+    - keeps Lambda environments pre-initialized and ready.
+    - This minimizes or eliminates cold starts.
+
+AWS maintains a specified number of warm execution environments continuously.
+
+ 
+ ### Lambda SnapStart
+ -reduces cold start latency by restoring Lambda execution environments from a pre-initialized snapshot instead of initializing them from scratch every time.
+ - improve the lambda function performance upto 10X at no extra cost for JAVA, python & .NET
+ - when enabled, function is invoked from a pre-initialized state
+- when you publish a new version:
+    - lambda initializes your function
+    - takes a snapshot of memory and disk state of the initialized function
+    - snapshot is cached for low-latency access.
+          
+- How SnapStart Works
+Without SnapStart
+Request arrives
+    → Lambda creates environment
+    → Runtime initializes
+    → Code initializes
+    → Function executes
+
+- Cold start latency is high.
+
+- With SnapStart
+
+-When you publish a Lambda version:
+
+Lambda initializes function once
+→ Creates encrypted memory snapshot
+→ Stores snapshot
+
+Later during invocation:
+
+Request arrives
+→ Lambda restores snapshot
+→ Function resumes quickly
+→ Function executes
+
+Instead of rebuilding the environment, AWS restores it from the saved state.
+
+
+### Lambda 
+**add this in lambda in VPC**
+
+- by default, lambda function is launched outsdie the VPC, therefore it cannot access resources in VPC (RDS, elasticcache, ELB,....)
+- lambda in VPC: define the VPC ID, subnets and the security groups
+    - lambda will create an ENI in your subnets
+
+
+ ### RDS - event notifications
+ - RDS event notifications:
+     - let you get alerts when something happens inside your database service. 
+     - notifications that tells information about the DB instance itself
+     - you don't have any information about the data itself
+     - near real time events
+     - send notifications to SNS or subscribe to events using EventBridge
+  
+   
+### Amazon DynamoDB
+- it is a fast, scalable NoSQL database.
+- stores data in tables
+- scales to massive workloads, distributed database.
+- millions of requests per second
+- integrated with IAM for security, authorization and administration
+- low cost and auto scaling capabilities
+
+- dynamoDB is made of tables
+- each table has a primary key (must be decided at craetion time)
+- each table can have an infinite no of items (rows)
+- each item has attributes (can be added over time- can be null) (columns)
+- maximum size of an item is 400kb
+- dynamo db is better than RDS & Aurora
+
+- 
