@@ -4280,4 +4280,239 @@ Instead of rebuilding the environment, AWS restores it from the saved state.
 - maximum size of an item is 400kb
 - dynamo db is better than RDS & Aurora
 
-- 
+- DynamoDB Capacity Modes
+    -Provisioned Capacity Mode:
+      - manually specify:
+          - read capacity units (RCUs)
+          - write capacity units (WCUs)
+      How it works
+
+    - Example:
+    
+    - 100 RCUs
+    - 50 WCUs
+    
+    The table can handle:
+    
+    100 strongly consistent reads/sec (4 KB items)
+    50 writes/sec (1 KB items)
+    
+    If traffic exceeds provisioned capacity:
+    
+    requests may get throttled
+    you receive ProvisionedThroughputExceededException
+    - AutoScaling:
+        - dynamo can automatically increase/decrease RCUs, WCUs based on traffic utilization.
+    
+    
+    -  On demand capcity mode:
+      
+        - do not specify RCUS, wcuS
+        - DynamoDB automatically:
+            - scales up, scales down based on incoming traffic
+          - pay for what you use
+          - no capacity planning needed
+
+### DynamoDB Accelerator (DAX)
+- fully managed, in-memory cache for Amazon DynamoDB.
+- improves read performance from : milliseconds -> microseconds
+- 5 minutes TTL for cache (default)
+-  What is DAX?
+
+DAX sits between: your application & DynamoDB table
+
+- Architecture:
+
+Application
+     ↓
+    DAX
+     ↓
+ DynamoDB  
+ - DAX caches frequently accessed data in memory.
+ - Why Use DAX?
+
+- Without DAX: every read goes to DynamoDB
+- With DAX: repeated reads are served from cache
+
+- | Feature             | DAX                   | ElastiCache     |
+| ------------------- | --------------------- | --------------- |
+| Built for DynamoDB  | Yes                   | No              |
+| API compatible      | Yes                   | No              |
+| Managed cache logic | Automatic             | Manual          |
+| Setup complexity    | Simple                | Higher          |
+| Best for            | DynamoDB acceleration | General caching |
+
+### DynamoDB stream Processing
+- captures changes made to a DynamoDB table and allows you to process them in near real time.
+- Whenever an item in DynamoDB is:
+inserted
+updated
+deleted
+- a stream record is generated automatically.
+- Applications can consume these events for processing.
+- Stream Prcoessing flow:
+- DynamoDB Table
+      ↓
+ DynamoDB Stream
+      ↓
+ Lambda / Kinesis / App
+      ↓
+ Process Event
+- each stream record contains: event type, timestamp, keys, old image, new image
+
+- DynamoDB global tables:
+    - They replicate table data automatically across multiple AWS regions.
+    - active active writes
+    - application can READ and WRITE to the table in any region
+    - must enable DynamoDB streams as pre-requisite
+    - user access nearest AWS region
+    - if one region fails, other regions continues serving the traffic
+
+  -How Replication Works
+
+DynamoDB uses:
+
+DynamoDB Streams internally
+
+to replicate changes across regions.
+
+When item changes in one region:
+
+change captured
+replicated asynchronously
+applied to other regions
+
+
+### DynamoDB -TTL
+- automatically delete items after an expiry timestamp
+- workflow:
+- Application
+    ↓
+Write item with expiration timestamp
+    ↓
+DynamoDB TTL process
+    ↓
+Expired item automatically deleted
+
+
+
+### API Gateway
+- API Gateway receives client requests and routes them to backend services like:
+
+AWS Lambda
+EC2
+ECS
+DynamoDB
+HTTP services
+- Architecture:
+- Client
+   ↓
+API Gateway
+   ↓
+Backend Service
+(Lambda / EC2 / ECS / DynamoDB)
+
+- support WebSocket protocol
+- handle API versioning
+- hadnle different environments (dev,prod,test,..)
+- create API keys, handle request throttling
+- cache API responses
+- swagger/Open API import to quickly define APIs
+
+- Flow:
+
+Request hits API Gateway
+Authentication validated
+Routed to Lambda
+Lambda queries DynamoDB
+Response returned to user
+
+- Lamdba Function: easy way to expose REST API backed by AWS lambda
+- HTTP: expose HTTP endpoints in the backend
+    - why? add rate limiting, caching , user authentication, API keys
+- AWS service: expose any AWS API through API Gateway
+
+- API Gateway -End points:
+    - Edge- Optimized: for global clients
+        - requests are routed through the CloudFront Edge location
+        - the API gateway still lives in only one region
+    - Regional:
+        - for clients within the same region
+        - could manually combine with cloudfront
+    - Private:
+        - can only be accessed from VPC , using an interface VPC endpoint (ENI)
+     
+### Step Functions
+- serverless workflow orchestration service used to coordinate multiple AWS services into a sequence of steps.
+- -Step Functions allow you to define workflows as:
+
+states
+transitions
+
+using JSON-based Amazon States Language (ASL).
+- architecture:
+- Start
+  ↓
+Lambda Function
+  ↓
+Choice / Condition
+  ↓
+Another Service
+  ↓
+Success / Failure
+
+-Why Use It?
+
+Instead of writing complex code for:
+
+retries
+waiting
+sequencing
+error handling
+
+AWS manages it for you.
+
+### Amazon Cognito:
+- gives users an identity to interact with our web or mobile applications
+- Cognito = Login system for applications.
+-used for: user authentication, authorization, user management
+
+It helps users:
+
+sign up
+sign in
+access applications securely
+
+- What Cognito Does
+
+It manages:
+
+usernames/passwords
+social logins
+OTP verification
+JWT tokens
+user sessions
+
+- Example
+
+Mobile app login flow:
+
+User Login
+    ↓
+Amazon Cognito
+    ↓
+Verify User
+    ↓
+Return Token
+    ↓
+Access App APIs
+
+- User Pool: handles sign up, sign in, authentication
+  - acts like a user database.
+  - example: email/password login
+- Identity Pool:
+    -  get identities for 'users' to obtain temporary AWS credentials
+    - used when app need access to S3, dynamoDB, other AWS services
+
+
+## section 20 important
