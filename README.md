@@ -4516,3 +4516,42 @@ Access App APIs
 
 
 ## section 20 important
+
+
+
+### Amazon Neptune
+- fully managed graph database
+- a popular graph dataset would be a social network
+    - users have friends
+    - posts have comments
+    - comments have likes from users
+    - users share and like posts
+- highly available across 3AZ, with upto 15 read replicas
+- build and run applications working with highly connected datasets
+- can store up to billions of relations and query the graph with milliseconds latency
+- highly available with replications across multiple AZs
+
+### Amazon Neptune - Streams
+- real time ordered sequence of every chagne to your graph data
+- changes are available immediately after writing
+- no duplicates, strict order
+- streams data is accessible in an HTTP REST API
+
+
+### Anazon Keyspaces ( for Apache Cassandra)
+- open source NoSQL distributed database
+- it is a serverless, scalable, highly available, fully managed by AWS
+- automatically scale tables up/down based on the application's traffic
+- tables are replicated 3 times across multiple AZ
+- using the CQL(cassandra query language)
+- single digit millisecond latency at any scale, 1000s of requests per second
+
+
+ ### Amazon Timestream
+ - fully managed, fast, scalable, sreverless time series database
+ - automatically scales up/down to adjust capacity
+ - store and analayze trillions of events per day
+ - 1000s times faster and 1/10th the cost of relational databases (cheaper)
+ - scheduled queries, multi-measure records
+ - encryption in transit and at rest
+   
