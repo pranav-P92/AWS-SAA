@@ -4555,3 +4555,375 @@ Access App APIs
  - scheduled queries, multi-measure records
  - encryption in transit and at rest
    
+### Amazon Athena
+
+- **serverless query service** in AWS that allows you to analyze data directly in Amazon S3 using standard SQL.
+- you do **not** need to:
+    - manage servers
+    - create databases manually
+    - load data into another system
+
+Athena works directly on files stored in S3.
+
+supports CSV, JSON, ORC, Parquet, Avro.
+
+**How Athena Works**
+
+```
+Data → Stored in S3
+        ↓
+Athena reads files
+        ↓
+Uses SQL to query data
+        ↓
+Returns results
+```
+
+### **Amazon QuickSight**
+
+- AWS tool for dashboards and data visualisation
+- It converts raw data into:
+    - graphs
+    - charts
+    - reports
+    - interactive dashboards
+
+| Feature | QuickSight | Athena |
+| --- | --- | --- |
+| Purpose | Visualization | Querying |
+| Output | Dashboards | SQL results |
+| Uses SQL? | Indirectly | Yes |
+| Main Use | BI analytics | Data querying |
+
+**Integrations:**
+
+| Service | Purpose |
+| --- | --- |
+| Amazon S3 | Analyze files/data lake |
+| Amazon Athena | Query S3 data and visualize |
+| Amazon Redshift | Data warehouse analytics |
+| Amazon RDS | Database reporting |
+| AWS Glue | Metadata/catalog integration |
+| Amazon OpenSearch Service | Log analytics dashboards |
+| Amazon CloudWatch | Monitoring dashboards |
+| AWS Lambda | Automation/workflows |
+| AWS Identity and Access Management IAM | Access control/security |
+
+Data Source
+↓
+Athena / Redshift / RDS
+↓
+QuickSight
+↓
+Dashboards & Reports
+
+### Redshift
+
+- AWS data warehouse for analysing huge amounts of data
+- based on PostgreSQL
+- 10x better performance than other ware houses
+- Redshift stores data by columns instead of rows.
+    - **Traditional row storage:**
+    
+    ```
+    1, Ram, 500
+    2, Sam, 700
+    ```
+    
+    - **Columnar storage:**
+    
+    ```
+    IDs: 1,2
+    Names: Ram,Sam
+    Amounts: 500,700
+    ```
+    
+- It stores and analyses:
+    - TBs to PBs of structured data
+    - using SQL queries
+
+**Architecture:**
+
+Client SQL Query
+↓
+Leader Node
+↓
+Compute Nodes
+↓
+Parallel Processing
+
+| Component | Purpose |
+| --- | --- |
+| Leader Node | Receives SQL queries and coordinates execution |
+| Compute Nodes | Store data and execute queries, send results to Leader node. |
+| Node Slices | Parallel processing units inside nodes |
+
+**How Redshift Works**
+
+1. Data loaded into Redshift
+2. Leader node receives query
+3. Query distributed to compute nodes
+4. Nodes process data in parallel
+5. Results returned quickly
+
+**Example**
+
+```
+Company Sales Data
+        ↓
+   Amazon Redshift
+        ↓
+ Complex Analytics Queries
+        ↓
+ Dashboards / Reports
+```
+
+Example:
+
+- analyse years of sales data
+- generate business reports
+- perform trend analysis
+
+| Feature | Redshift | RDS |
+| --- | --- | --- |
+| Purpose | Analytics | Transactions |
+| Query Type | Complex analytical queries | OLTP queries |
+| Storage | Columnar | Row-based |
+| Scale | Petabytes | Smaller workloads |
+| Best For | BI & reporting | Web applications |
+
+**Deployment Types**
+
+| Type | Description |
+| --- | --- |
+| Provisioned Cluster | Traditional node-based cluster |
+| Serverless | No cluster management |
+
+### Redshift Spectrum
+
+Amazon Redshift Spectrum allows **Redshift** to query data directly from:
+
+- Amazon S3
+
+without loading data into Redshift.
+
+```jsx
+      Query
+        ↓
+Amazon Redshift Cluster (leader node, compute node)
+        ↓
+Redshift Specturm
+        ↓
+			 S3
+```
+
+### Amazon Open Search Service
+
+- OpenSearch is an open-source search and analytics engine.
+- in dynamoDB, queries only exist by primary key or indexes
+- with open search, you can search any field.
+- doesn’t natively support SQL
+- AWS provides it as a managed service:
+    - automatic scaling
+    - backups
+    - monitoring
+    - security
+    - cluster management
+
+**OpenSearch Deployment Modes**
+
+| Mode | Description |
+| --- | --- |
+| Managed Cluster | Traditional cluster deployment |
+| Serverless | Auto-managed OpenSearch |
+
+**OpenSearch Serverless**
+
+Amazon OpenSearch Serverless:
+
+- removes cluster management
+- automatically scales
+- charges based on usage
+
+### Amazon EMR (Elastic MapReduce)
+
+- It is used to process and analyze **huge amounts of data** using big data frameworks.
+
+| Component | Purpose |
+| --- | --- |
+| Cluster | Group of EC2 instances |
+| Master Node | Controls cluster |
+| Core Nodes | Store/process data |
+| Task Nodes | Extra processing only |
+
+EMR creates a cluster of EC2 instances to process big data in parallel.
+
+Large Dataset
+↓
+Split Across Multiple Machines
+↓
+Parallel Processing
+↓
+Fast Results
+
+**Why EMR is Needed**
+
+Traditional systems struggle with:
+
+- TBs/PBs of data
+- distributed computation
+- large-scale analytics
+
+EMR solves this using:
+
+- distributed clusters
+- parallel processing
+
+### AWS Glue
+
+- Serverless ETL (Extract, Transform, Load) service
+- Used to:
+    - discover data
+    - transform data
+    - move data between sources
+    - prepare data for analytics
+- example: Extract data from Amazon S3 / Amazon RDS, transform the data using AWS Glue, and load the transformed data into Amazon Redshift.
+
+| Component | Purpose |
+| --- | --- |
+| Glue Crawler | Scans data and creates schema/metadata |
+| Data Catalog | Stores table metadata |
+| Glue ETL Jobs | Transform/process data |
+| Glue Studio | Visual ETL builder |
+| Glue DataBrew | No-code data preparation |
+| Glue Job bookmarks | prevent re-processing old data |
+| Glud dataBrew | clean and normalize data using pre-built transformation |
+
+### AWS Lake
+
+- data lake: central place to have all data for analytic purpose
+- discover, cleanse, transform, ingest data into your data lake.
+- it automates many complex manual steps(collecting, cleansing, moving,..) and de-duplications (ML transfoms)
+- combine structured and unstructured data in the data lake.
+- built on top of AWS Glue.
+
+ **Architecture Flow**
+
+```
+Data Sources
+(S3, RDS, Databases, Logs)
+        ↓
+AWS Glue Crawlers
+        ↓
+Data Catalog
+        ↓
+AWS Lake Formation
+(Security + Permissions)
+        ↓
+Analytics Services
+(Athena, Redshift Spectrum, EMR, QuickSight)
+```
+
+### **Amazon MSK**
+
+- **Amazon MSK (Managed Streaming for Apache Kafka)** is a **fully managed Apache Kafka service** provided by AWS.
+    
+    It helps you:
+    
+    - Build real-time streaming applications
+    - Process large amounts of streaming data
+    - Avoid managing Kafka infrastructure manually
+
+**Why Amazon MSK?**
+
+Normally, managing Kafka requires:
+
+- Server setup
+- Broker management
+- Scaling
+- Patching
+- Monitoring
+- Replication handling
+
+Amazon MSK handles all these automatically.
+
+ **Architecture**
+
+```
+Producers
+(Apps, Logs, IoT)
+      ↓
+Amazon MSK Cluster
+(Kafka Brokers + Topics)
+      ↓
+Consumers
+(Analytics, Applications, ML)
+```
+
+| Component | Purpose |
+| --- | --- |
+| Kafka Brokers | Store and manage messages |
+| Topics | Categories for messages |
+| Producers | Send messages |
+| Consumers | Read messages |
+| ZooKeeper / KRaft | Cluster coordination |
+
+![image.png](attachment:725f111f-a03a-4c37-b76f-ae636e1b2a04:image.png)
+
+### Big Data Ingestion Pipeline
+
+- **A Big Data Ingestion Pipeline** is the process of:
+    - Collecting large volumes of data
+    - Moving the data into storage or analytics systems
+    - Processing it for analysis
+
+Data can come from:
+
+- Applications
+- IoT devices
+- Logs
+- Databases
+- Streaming platforms
+
+**General Flow**
+
+```
+Data Sources
+(Apps, IoT, Logs, DBs)
+        ↓
+Ingestion Layer : Used to collect streaming or batch data.
+(Kafka / Kinesis / MSK)
+        ↓
+Processing Layer : Transforms and cleans the data.
+(Glue / Spark / EMR)
+        ↓
+Storage Layer : Stores raw and processed data.
+(S3 / Data Lake / Redshift)
+        ↓
+Analytics Layer : Used for querying and visualization.
+(Athena / QuickSight / ML)
+```
+
+**Real-Time Streaming Pipeline Example**
+
+```
+Application Logs
+        ↓
+Amazon MSK / Kinesis
+        ↓
+AWS Glue Streaming / Lambda
+        ↓
+Amazon S3
+        ↓
+Athena / Redshift
+        ↓
+QuickSight Dashboard
+```
+
+- IOT core allows you to harvest data from IoT devices
+- kinesis : real time data collection
+- Firehose: helps with data delivery to S3 in near real-time
+- Lambda: help firehose with data transformation
+- Amazon S3: trigger notifications to SQS
+- Lambda can subscribe to SQS
+- Athena: serverless SQL service and results are stored in S3
