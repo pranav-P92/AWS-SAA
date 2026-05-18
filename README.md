@@ -5241,3 +5241,183 @@ Extracted Text + Tables + Forms
         ↓
 Structured JSON Output
 
+
+
+
+### Amazon Cloud watch metrics
+- monitor the performance and health of AWS resources, applications, and services.
+| Service | Example Metrics                        |
+| ------- | -------------------------------------- |
+| EC2     | CPUUtilization, NetworkIn, DiskReadOps |
+| Lambda  | Invocations, Errors, Duration          |
+| RDS     | CPUUtilization, FreeStorageSpace       |
+| ELB     | RequestCount, TargetResponseTime       |
+| S3      | BucketSizeBytes, NumberOfObjects       |
+
+
+
+### Amazon Cloud watch logs
+- centralized logging service in AWS used to collect, store, monitor, and analyze log files from AWS resources, applications, and on-premises servers.
+- Main Components
+- Log Groups: A container for log streams, usually organized by application or service.
+Examples:
+/aws/lambda/my-function
+/ec2/app-server
+- Log Streams: Sequences of log events from a single source.
+Examples:
+One EC2 instance
+One Lambda execution environment
+- Log Events: Individual log records containing:
+Timestamp
+Message
+
+- can define log expiration period (never expire, 1 day-10 years)
+- logs are encrypted by default
+- can setup KMS based encryption with your own keys.
+
+- log sources:
+  | Source        | Example                       |
+| ------------- | ----------------------------- |
+| EC2           | Application logs, system logs |
+| Lambda        | Function execution logs       |
+| ECS/EKS       | Container logs                |
+| API Gateway   | Access logs                   |
+| CloudTrail    | AWS API activity              |
+| VPC Flow Logs | Network traffic logs          |
+
+- Cloud watch logs -S3 export
+- for long-term storage, analytics, backup, or compliance.
+- log data can take up to 12hrs to become available for export.
+
+How CloudWatch Logs Export Works
+
+CloudWatch Logs:
+
+Reads log data from a log group.
+Creates export tasks.
+Writes compressed .gz log files into an S3 bucket
+
+- Typical flow: CloudWatch Logs → Export Task → S3 Bucket
+
+- Cloud watch log subscription: let you stream log events in near real time from CloudWatch Logs to other AWS services.
+- architecture:
+  Application
+   ↓
+CloudWatch Logs
+   ↓
+Subscription Filter
+   ↓
+Lambda / Firehose / Kinesis
+
+- A subscription filter in Amazon CloudWatch Logs is a rule that continuously matches log events and forwards them to another AWS service in near real time.
+It acts like a pipeline between CloudWatch Logs and a destination service.
+- The filter:
+	- Watches incoming logs
+	- Matches logs using a pattern
+	- Sends matching logs to the configured destination
+
+
+ ### Cloud watch logs for EC2
+ - by default, no logs from your EC2 instance will go to CloudWatch
+ - you need to run a cloudwatch agent on EC2 to push the log files you want
+ - make sure IAM permission are correct
+ - the cloudwatch agent can be on-premises too.
+
+### CloudWatch Logs Agent (Old Agent)
+- Purpose:
+Send log files to CloudWatch Logs
+
+Typical logs:
+
+/var/log/messages
+/var/log/nginx/access.log
+Application logs
+
+- Architecture:
+
+Server Log Files
+      ↓
+CloudWatch Logs Agent
+      ↓
+CloudWatch Logs
+
+### Unified CloudWatch Agent (Recommended)
+
+Purpose:
+Collect logs + metrics together
+
+Can collect:
+CPU
+Memory
+Disk
+Network
+Processes
+Application logs
+
+- Architecture:
+
+Metrics + Logs
+       ↓
+Unified CloudWatch Agent
+       ↓
+CloudWatch Metrics + Logs
+
+
+### Cloudwatch alarm
+- alarms are used to trigger notification for any metrics
+- Alarm States:
+	- OK
+ 	- ALARM
+  	- INSUFFICIENT_DATA
+ 
+- Cloudwatch alarm targets:
+	- Stop, Terminate, Reboot or Recover an instance
+ 	- Trigger auto scaling action
+  	- Send notification to SNS
+ 
+  ### Cloudwatch network synethetic monitor
+  - monitor and detects network issue between your apps hosted on AWS and your on premises data center
+  - identify any network performance degradation
+  - no agents required to be installed
+ 
+  ## Amazon Event Bridge (276 watch again)
+
+
+  ### Amazon Container insights
+  - used to collect, visualize, and analyze metrics and logs from containerized environments.
+| Platform                  | Supported |
+| ------------------------- | --------- |
+| Amazon EKS                | Yes       |
+| Amazon ECS                | Yes       |
+| Kubernetes (self-managed) | Yes       |
+| Docker                    | Yes       |
+
+- Architecture
+
+Typical EKS setup:
+
+Pods / Containers
+        ↓
+CloudWatch Agent + Fluent Bit
+        ↓
+CloudWatch Metrics + Logs
+        ↓
+Dashboards / Alarms / Insights
+
+- Components Used
+- CloudWatch Agent
+Collects:
+Metrics
+Performance data
+
+- Fluent Bit
+Collects:
+Container logs
+Kubernetes logs
+- CloudWatch Logs Insights
+Used for querying logs.
+
+### Cloudwatch Lambda insights
+- monitoring and troubleshooting solution for serverless applications running on AWS lambda
+- collects, aggregates and summarizes system level metrics including CPU time, memory, disk, network
+- collects, aggregates adn summarizes diagnostic information such as cold starts and lambda worker shutdowns
