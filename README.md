@@ -4927,3 +4927,173 @@ QuickSight Dashboard
 - Amazon S3: trigger notifications to SQS
 - Lambda can subscribe to SQS
 - Athena: serverless SQL service and results are stored in S3
+
+
+
+### Amazom Rekognition
+- cloud-based AI service from AWS that lets developers add image and video analysis capabilities to applications without building machine learning models from scratch.
+- What Amazon Rekognition Can Do
+	- Image Analysis
+		- Detect objects (cars, people, pets, etc.)
+    	- Identify scenes and activities
+		- Extract text from images
+		- Recognize celebrities
+	- Facial analysis (age range, emotions, smile, beard, etc.)
+		- Face Features
+		- Face detection
+		- Face comparison
+		- Face verification for authentication systems
+	- Video Analysis
+		- Track people and objects in videos
+		- Detect activities and events
+		- Analyze stored videos using Amazon S3
+
+- Basic Architecture
+Typical workflow:
+- Upload image/video to Amazon S3
+- Application sends request to Rekognition API
+- Rekognition returns labels, faces, text, or analysis results
+- Store/process results in your app
+
+- Amazon Rekognition : Content moderation
+	- detect content that is inappropriate, unwanted, sensitive or offensive (images,videos)
+ 	- set a minimum confidence threshold for items that will be flagged
+  	- flag sensitive content for manual review in Amazon Augmented AI (A2I)
+
+- Architecture:
+- User Uploads Image
+        ↓
+Amazon S3
+        ↓
+AWS Lambda Trigger
+        ↓
+Amazon Rekognition Moderation API
+        ↓
+Accept / Reject / Send for Human Review
+
+### Amazon Transcribe
+- it is an automatic speech recognition (ASR) service from AWS that converts audio and video speech into text.
+- automatically remove the personal identifiable information (PII) using Redaction.
+	- removes the sensitive information like financial, personal information.
+ - supports automatic language identification for multi-lingual audio 
+- It is commonly used for:
+	 - Subtitles and captions
+	 - Voice assistants
+	 - Call center analytics
+	 - Meeting transcription
+	 - Medical dictation
+ 
+### Amazon Polly
+- Text-to-Speech (TTS) service that converts written text into natural-sounding speech using AI and deep learning.
+- supports both Lexicons and SSML (Speech Synthesis Markup Language) to improve pronunciation and make speech sound more natural.
+- Lexicon:
+	- A Lexicon is a custom pronunciation dictionary.
+ 	- It helps Polly pronounce:Brand names, Technical terms, Names, Regional words, Acronyms correctly.
+  - example: AWS, Polly may pronounce it differently than desired. With a lexicon, you can force pronunciation like: "A W S"
+- SSML (Speech Synthesis Markup Language)
+	- for dynamic speech formatting 
+	- It is XML-based markup used to control:Pauses, Pitch
+Volume
+Speaking rate
+Emphasis
+Pronunciation
+Breathing sounds
+
+
+### Amazon Translate
+- Neural Machine Translation (NMT) service that automatically translates text between multiple languages.
+	- Uses AI-based neural networks for:
+		- Better grammar
+		- Natural sentence structure
+		- Context-aware translation 
+- nature and accurate language translation.
+- allows you to localize content such as websites, applications to intermational users, easily translate large volumes of text efficiently.
+
+
+### Amazon Lex & Connect
+- Amazon Lex and Amazon Connect are commonly used together to build AI-powered customer support systems, chatbots, and voice assistants.
+
+- Amazon Lex → understands user speech/text and manages conversations.
+- Amazon Connect → cloud-based contact center for phone calls and customer support.
+- Together, they create intelligent IVR (Interactive Voice Response) systems.
+
+- Amazon Lex:
+	- Amazon Lex is used to build:
+ 	- Chatbots, Voice bots, Conversational interfaces
+- It uses: Automatic Speech Recognition (ASR), Natural Language Understanding (NLU)
+The same technology powers Amazon Alexa.
+
+- workflow: User → Lex Bot → Lambda → Response
+
+- Amazon Connect:
+	- Amazon Connect is a cloud-based customer service platform.
+ 	- Features: Incoming/outgoing calls, IVR systems, Call routing, Agent management, Real-time analytics, Contact recording
+  - workflow:
+  - Customer Call
+      ↓
+Amazon Connect
+      ↓
+Lex Bot
+      ↓
+Lambda/CRM
+      ↓
+Agent or Automated Response
+
+
+ - Lex + Connect Integration
+
+When a customer calls:
+
+Amazon Connect receives the call
+Lex bot interacts with customer
+Bot understands request
+Lambda fetches backend data
+Bot responds or transfers to agent
+
+
+
+### Amazon Comprehend
+- is a Natural Language Processing (NLP) service from Amazon Web Services (AWS) that uses machine learning to analyze and understand text.
+- It can identify:
+
+Sentiment
+Entities
+Key phrases
+Language
+Topics
+Personally identifiable information (PII)
+
+without needing to build ML models manually.
+
+-features:
+| Feature                   | Purpose                               |
+| ------------------------- | ------------------------------------- |
+| Sentiment Analysis        | Detect positive/negative emotions     |
+| Entity Recognition        | Identify names, places, organizations |
+| Key Phrase Extraction     | Extract important words/phrases       |
+| Language Detection        | Detect text language                  |
+| Topic Modeling            | Find topics in documents              |
+| PII Detection             | Detect sensitive information          |
+| Custom Classification     | Categorize text                       |
+| Custom Entity Recognition | Detect domain-specific entities       |
+
+- workflow:
+  Input Text
+    ↓
+Amazon Comprehend
+    ↓
+Sentiment / Entities / Insights
+
+
+
+
+
+| Service            | Purpose                | Main Use Cases                                       |
+| ------------------ | ---------------------- | ---------------------------------------------------- |
+| Amazon Rekognition | Image & video analysis | Face detection, object detection, content moderation |
+| Amazon Transcribe  | Speech → Text          | Call transcription, subtitles, meeting notes         |
+| Amazon Polly       | Text → Speech          | Voice assistants, IVR, accessibility                 |
+| Amazon Translate   | Language translation   | Multilingual apps, subtitle translation              |
+| Amazon Lex         | Chatbots & voice bots  | Conversational AI, IVR systems                       |
+| Amazon Connect     | Cloud contact center   | Customer support call centers                        |
+| Amazon Comprehend  | NLP text analysis      | Sentiment analysis, entity detection                 |
