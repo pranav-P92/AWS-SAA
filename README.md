@@ -5097,3 +5097,147 @@ Sentiment / Entities / Insights
 | Amazon Lex         | Chatbots & voice bots  | Conversational AI, IVR systems                       |
 | Amazon Connect     | Cloud contact center   | Customer support call centers                        |
 | Amazon Comprehend  | NLP text analysis      | Sentiment analysis, entity detection                 |
+
+
+### Amazon Comprehend medical
+- it is a specialized natural language processing (NLP) service for healthcare and life sciences.
+- It extracts medical information from unstructured clinical text like doctor notes, prescriptions, and health records.
+- workflow:
+- Doctor Notes / Clinical Text
+        ↓
+Amazon Comprehend Medical
+        ↓
+Structured Medical Data (Entities, PHI, Codes)
+- use cases:
+- | Industry     | Use Case                          |
+| ------------ | --------------------------------- |
+| Hospitals    | Extract info from patient records |
+| Insurance    | Claims processing                 |
+| Pharma       | Drug research analysis            |
+| EHR systems  | Digital health records            |
+| Telemedicine | Automated report generation       |
+
+
+### SageMaker AI
+- a fully managed machine learning (ML) and AI platform from Amazon Web Services (AWS) that helps developers and data scientists build, train, and deploy ML models at scale.
+- What It Does
+- Amazon SageMaker provides an end-to-end workflow for AI:
+
+1. Data Preparation
+Clean and prepare datasets
+Use tools like notebooks and data labeling
+2. Model Building
+Use built-in algorithms or custom code (Python, TensorFlow, PyTorch)
+Run experiments in Jupyter notebooks
+3. Model Training
+Train models using scalable cloud infrastructure
+Supports GPU/CPU instances
+4. Model Tuning
+Automatically optimize hyperparameters (AutoML features)
+5. Model Deployment
+Deploy models as real-time APIs
+Or batch inference for large datasets
+
+- workflow: Data → SageMaker → Train Model → Deploy API → Predictions
+- Example Use Cases
+Fraud detection (banking)
+Product recommendations (e-commerce)
+Image classification
+Chatbot intelligence
+
+
+### Amazon Kendra
+- it is an AI-powered enterprise search service from AWS that helps users find answers from documents, databases, and internal knowledge sources using natural language queries.
+- What It Does
+- Amazon Kendra lets you search across multiple data sources like:
+PDFs and Word documents
+Websites
+Databases
+Knowledge bases
+Internal company portals (SharePoint, S3, etc.)
+
+- Instead of keyword search, it uses AI-based semantic search (understands meaning, not just words).
+- workflow
+- User Question
+      ↓
+Amazon Kendra
+      ↓
+Search Across Data Sources
+      ↓
+AI Ranking + Extraction
+      ↓
+Precise Answer
+
+- Features
+1. Natural Language Search
+You can ask questions like:
+"What is the leave policy for new employees?"
+and get a direct answer from documents.
+
+2. Semantic Search (AI-based)
+Understands meaning, not just keywords:
+“sick leave rules” ≈ “medical leave policy”
+3. Answer Extraction
+Instead of showing only links, it:
+Extracts exact answers
+Highlights relevant document sections
+4. Multiple Data Sources
+Supports:
+Amazon S3
+SharePoint
+Databases (SQL, NoSQL)
+Web content
+Internal file systems
+5. Machine Learning Ranking
+Results are ranked based on:
+Relevance
+Context
+User intent
+
+
+### Amazon Personalize
+- is a machine learning–based recommendation service from AWS that helps you deliver personalized product, content, or item recommendations to users in real time.
+- It works like the recommendation systems used by Amazon retail, Netflix, or YouTube.
+-  Amazon Personalize analyzes user behavior and generates recommendations based on:
+Click history
+Purchase history
+Browsing activity
+Ratings and interactions
+
+- workflow
+  User Data + Item Data + Interaction Data
+              ↓
+        Amazon Personalize
+              ↓
+     ML Recommendation Model
+              ↓
+     Personalized Suggestions
+
+- use case
+| Industry   | Use Case                 |
+| ---------- | ------------------------ |
+| E-commerce | Product recommendations  |
+| Streaming  | Movie/music suggestions  |
+| News apps  | Article recommendations  |
+| Travel     | Hotel/flight suggestions |
+| Education  | Course recommendations   |
+
+- Input:
+User viewed: Mobile phones, headphones
+Output:
+Best smartphone deals
+Recommended accessories
+Similar gadgets
+
+
+### Amazon Textract
+- it is a machine learning service from AWS that automatically extracts text, forms, and tables from scanned documents, PDFs, and images.
+- workflow
+  Document / Image / PDF
+        ↓
+Amazon Textract
+        ↓
+Extracted Text + Tables + Forms
+        ↓
+Structured JSON Output
+
