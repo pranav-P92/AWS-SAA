@@ -5484,3 +5484,69 @@ Used for querying logs.
 | CloudWatch | Monitoring & alerts | Metrics, logs, performance     |
 | CloudTrail | API auditing        | Who did what in AWS            |
 | AWS Config | Resource compliance | Resource configuration changes |
+
+
+### AWS Organisation
+service used to centrally manage and govern multiple AWS accounts in one place.
+
+- What AWS Organizations Does
+
+It helps you:
+- Create and manage multiple AWS accounts
+- Apply central policies across accounts
+- Group accounts into Organizational Units (OUs)
+- Enable consolidated billing
+
+| Component                | Meaning                             |
+| ------------------------ | ----------------------------------- |
+| Root                     | Top-level container of all accounts |
+| Organization             | Collection of AWS accounts          |
+| OU (Organizational Unit) | Group of accounts (like folders)    |
+| Member Account           | Individual AWS account              |
+| Management Account       | Main account that controls others   |
+
+
+### IAM policy evaluation logic
+- it is the process AWS uses to decide whether an API request is allowed or denied.
+- So final decision is based on:
+	- Explicit Deny → BLOCK
+	- Otherwise Allow → if permitted
+	- Default → Deny
+ - evaluation Flow:
+   Request
+  ↓
+Is there an Explicit DENY?
+  → YES → DENY (STOP)
+  ↓ NO
+Is there an Explicit ALLOW?
+  → YES → ALLOW
+  ↓ NO
+Implicit DENY → DENY
+
+- What IAM Checks During Evaluation
+
+When you make a request (e.g., S3 access), AWS checks:
+
+- IAM User policies
+- IAM Group policies
+- IAM Role policies
+- Resource-based policies (like S3 bucket policy)
+- SCPs (if using Organizations)
+- Permission boundaries (if set)
+- Session policies (temporary role restrictions)
+
+### AWS control tower
+  - service that helps you set up and govern a secure multi-account AWS environment using best practices automatically.
+    - What AWS Control Tower Does
+		- Automatically sets up a multi-account structure
+		- Creates an AWS Organizations setup
+		- Applies guardrails (governance rules)
+		- Provides a central dashboard for governance
+- governance: the rules, controls, and monitoring systems used to manage AWS accounts securely and consistently at scale.
+- Types:
+1. Preventive Guardrails
+- Block actions before they happen
+Example: “Do not delete CloudTrail”
+2. Detective Guardrails
+- Detect violations after they happen
+Example: “S3 buckets must be encrypted”
