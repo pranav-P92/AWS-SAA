@@ -5421,3 +5421,66 @@ Used for querying logs.
 - monitoring and troubleshooting solution for serverless applications running on AWS lambda
 - collects, aggregates and summarizes system level metrics including CPU time, memory, disk, network
 - collects, aggregates adn summarizes diagnostic information such as cold starts and lambda worker shutdowns
+
+
+
+### CloudTrail (track API activity)
+- service that helps you monitor and log activity in your AWS account.
+-  Gets an history of API calls and events for your AWS resources, which is essential for security, auditing, and compliance
+-  these API calls / events made by Console, CDK, CLI, AWS Services
+-  Detect unauthorized or suspicious activity.
+-  Troubleshoot operational issues.
+
+-  How CloudTrail Works: 
+-	You enable CloudTrail in your AWS account.
+- AWS begins logging API calls and events automatically.
+- Logs are delivered to your S3 bucket (optionally encrypted with KMS).
+- You can analyze logs directly or use Athena/CloudWatch/third-party tools.
+
+### CloudTrail Event Types
+- Management events: Create, modify, or delete AWS resources (e.g., launching an EC2 instance, deleting an S3 bucket).
+	- can separate READ events from WRITE events. 
+- Data events:
+	- data events are not logged because of high volume operations.
+ 	- Amazon S3 object level activity (ex: GetObject, PutObject, DeleteObject) can separate READ and WRITE events.
+  	- AWS Lambda function execution activity. 
+- Insight events: Optional; helps detect unusual activity in your account.
+	- analyze the normal management events to create a baseline and then continously analyze WRITE events to detect unusual patterns.
+  	- detected unusual patterns will appear on CloudTrail console.
+ 
+### CloudTrail Event Retention
+- events are stored for 90 days in cloudTrail.
+- to keep events beyond this period, log them to S3(long-term retention) and use Athena.
+
+
+### AWS Config
+- service that tracks and checks the configuration of AWS resources.
+
+- AWS Config continuously records:
+	- What resources exist (EC2, S3, IAM, VPCs, etc.)
+	- How they are configured
+	- How configurations change over time
+ - Config Rules- remediation :automatically fixes resources that violate compliance rules.
+ - How It Works
+	-	AWS Config Rule detects non-compliant resources
+ 		-note : NON_COMPLIANT means a resource violates a rule or policy defined in an AWS Config Rule.		
+	- Remediation triggers an automatic fix
+	- Usually uses:
+		- Amazon Web Services SSM Automation
+		- Lambda
+		- Custom scripts
+  - Config Rule Notifications: alerts generated when a resource’s compliance status changes.
+  - workflow:
+  - AWS Config Rule
+      ↓
+- Compliance Change Detected
+      ↓
+- EventBridge / SNS Trigger
+      ↓
+- Email / Lambda / Slack / Ticket
+
+| Service    | Purpose             | Tracks                         |
+| ---------- | ------------------- | ------------------------------ |
+| CloudWatch | Monitoring & alerts | Metrics, logs, performance     |
+| CloudTrail | API auditing        | Who did what in AWS            |
+| AWS Config | Resource compliance | Resource configuration changes |
