@@ -5575,4 +5575,10 @@ Example: “S3 buckets must be encrypted”
    		- public key : encrypt
      	- private key : decrypt
     
-      - 
+### KMS Multi- region keys 
+- KMS keys that can be replicated across AWS Regions while sharing the same key material and key ID.
+- lets you encrypt data in one Region and decrypt it in another without re-encrypting the data.
+- multi region key has:
+	 - one primary key
+  	- one or more replica keys
+  	- each replica keys is an independent KMS key with  its own IAM policy, tags, alias.
