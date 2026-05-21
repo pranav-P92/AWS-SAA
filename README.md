@@ -5550,3 +5550,29 @@ Example: “Do not delete CloudTrail”
 2. Detective Guardrails
 - Detect violations after they happen
 Example: “S3 buckets must be encrypted”
+
+
+### Encryption
+- In flight encryption: Data is encrypted before sending to server and data is decrypted after recieving to server.
+			- encryption key : sender
+			- decryption key: reciever   
+			- no man in middle attacks
+- Server side encryption: Data is encrypted after being recieved by the server. Data is decrypted before being sent to client.
+			- encryption key : server
+			- decryption key: server 
+- Client side encryption: Data is encrypted before sending to server. Data will be decrypted by the recieving client.
+			- encryption key : client
+			- decryption key: client
+
+
+### KMS 
+- Key management via AWS Key Management Service
+- Types:
+- 	- Symmetric Keys:(AES-256):
+   		- single encryption key used for both encrypt and decrypt.
+     	- AWS services integrated with KMS uses Symmetric CMKs (customer master key).  
+  	- Asymmetric Keys: (RSA & ECC key pairs):
+   		- public key : encrypt
+     	- private key : decrypt
+    
+      - 
