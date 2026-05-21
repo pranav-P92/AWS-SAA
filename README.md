@@ -5582,3 +5582,16 @@ Example: “S3 buckets must be encrypted”
 	 - one primary key
   	- one or more replica keys
   	- each replica keys is an independent KMS key with  its own IAM policy, tags, alias.
+
+### SSM parameter Store
+- lets you securely store, retrieve, and manage configuration data and secrets.
+- Store application configuration (e.g., DB host, API URLs)
+- Store secrets (e.g., passwords, API keys, tokens)
+
+### AWS Certificate manager
+- easily provision, manage, and deploy TLS certificates.
+- provide in-flight encryption for website (HTTPs)
+- support both public & private TLS certificates.
+- free of charge for public TLS certificates.
+- automatic TLS certificate renewal
+- 
