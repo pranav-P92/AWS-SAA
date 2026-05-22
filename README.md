@@ -5830,4 +5830,105 @@ EC2 Instance
  - allow EC2 instances in private subnets to connect to the internet.
  - NAT instance must be launched in public subnet and Elastic IP should be attached to it.
  - route tables must be configured to route traffic from private subnets to the NAT instance.
- - 
+
+
+### NAT Gateway
+- allows instances in a private subnet to access the internet while preventing inbound internet traffic from directly reaching those instances.
+- Why NAT Gateway is needed
+- In AWS VPC:
+	- Public subnet → has direct internet access (through Internet Gateway)
+	- Private subnet → no direct internet access
+
+- But private instances often need outbound access for:
+	- Downloading updates (e.g., yum, apt)
+	- Accessing external APIs
+	- Connecting to AWS services (if not using VPC endpoints)
+
+👉 NAT Gateway solves this by allowing outbound traffic only.
+
+- How NAT Gateway works
+	- NAT Gateway is created in a public subnet
+	- It is associated with an Elastic IP (EIP)
+	- Private subnet route table sends internet-bound traffic to NAT Gateway
+	- NAT Gateway forwards traffic to:
+		- Internet Gateway (IGW) → Internet
+  	- Responses:
+		- Come back to NAT Gateway
+		- Routed back to the private instance
+ 
+ ### RNAT (Regional NAT)
+ -  created in a specific Availability Zone
+ -  Covers the entire region
+ -  Ensures high availability across AZs
+
+### Security Groups & NACL
+- NACL : Network Access Control List
+- NACL are like a firewall, which controls traffic from and to subnets.
+- newly created NACLs will deny everything by default.
+- block a specific IP address at the subnet level.
+
+- Ephemeral Ports:
+	- these are temporary ports used by a system when it initiates an outbound connection. 	
+	- for any two endpoints to establish a connection, they must use ports.
+ 	- client connect to a defined port, and expect a response on a ephemeral port.
+
+
+  - Security group:
+  	- operates at the instance level
+   - supports allow rules only
+   - stateful: return traffic is automatically allowed, regardless of any rules.
+   - all rules are evaluated before deciding whether to allow traffic.
+   - applies to an EC2 instance when specified by someone
+ 
+- NACL:
+	- operates at subnet level
+ - support allow rules and deny rules.
+ - stateless: return traffic must be explicitly allowed by rules
+ - rules are evaluated in order when deciding whether to allow traffic, first match wins
+ - automatically applies to all EC2 instances in the subnet that it's assosicated with.
+
+
+### VPC peering
+- allow 2 VPCs to communicate with each other privately.
+- works within same region or across region
+- must not have overlapping CIDRs
+- example: consider there are 3 VPC: VPC-A, VPC-B, VPC-C
+	- VPC-A -> VPC-B -> VPC-C  
+	- VPC peering connection is established between A & B
+ 	- VPC peering connection is established between B & C
+  	- since A,B and B,C connected; This does't mean that VPC peering connection is established between A & C
+  	- for the VPC-A & VPC-C to communicate, VPC peering connected should be established.
+  
+ 
+### VPC Endpoints
+-  allow you to privately connect your VPC to AWS services without using the public internet, NAT Gateway, or Internet Gateway.
+-  Without VPC Endpoint:
+		- Private EC2 → NAT Gateway → Internet → AWS Service
+- With VPC Endpoint:
+		- Private EC2 → VPC Endpoint → AWS Service
+
+- types of endpoints:
+	- Interface Endpoint:
+ 		- Uses ENI with private IP
+   		- requires security groups
+     	- charged per hour + data
+      	- used for most of AWS services 
+      	- EC2 → Interface Endpoint (ENI) → AWS Service
+
+	- Gateway Endpoint:
+ 		- works via route tables
+   		- no ENI
+     	- used for only Amazon S3, DynamoDB
+      	- free
+      	- EC2 → Route Table → Gateway Endpoint → S3/DynamoDB
+
+### VPC Flow Logs
+- capture information about IP traffic going into your interfaces:
+	- VPC flow logs
+ 	- subnet flow logs
+  	- ENI flow logs   
+- helps to monitor & troubleshoot connectivity issues.
+- flow logs data stores in S3, Cloudwatch logs, Kinesis data firehose.
+- 
+  
+      
