@@ -5825,3 +5825,9 @@ EC2 Instance
  -  Protect internal servers from direct exposure
  -  bastion is in public subnet which is then connected to all the private subnets.
     
+### NAT Instance
+ - special type of EC2 instance that enables instances in a private subnet to access the internet without exposing them to inbound internet traffic.
+ - allow EC2 instances in private subnets to connect to the internet.
+ - NAT instance must be launched in public subnet and Elastic IP should be attached to it.
+ - route tables must be configured to route traffic from private subnets to the NAT instance.
+ - 
