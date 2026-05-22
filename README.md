@@ -5758,3 +5758,70 @@ FeatureAmazon InspectorAmazon GuardDuty🔍 PurposeVulnerability scanningThreat 
 	-Publicly accessible data 🌐
 	- Unencrypted sensitive files 🔓
 - Generates alerts (findings) 🚨
+
+
+
+## Networking VPC
+### CIDR- IPv4
+- Classless Inter Domain Routing: method for allocating IP address
+- used in security group rules.
+- help to define Ip address range.
+- CIDR notation: IP Address / Prefix Length (eg: 192.168.1.0/24)
+- 2 components:
+	- Base IP: represent an IP contained in the range (XX.XX.XX.XX) 
+		- example: 10.0.1.31,....
+ 	- Subnet Mask:  defines how many bits can change in the IP.
+ 
+### VPC in AWS -IPv4
+- multiple VPCs can be in a single region (max. 5 -soft limit)
+- max CIDR per VPC =5, for each CIDR:
+	- min size : /28 (6IP addresses)
+ 	- max size : /16  (65536IP addresses)
+- because VPC in private, only the private IPv4 ranges are allowed:
+	- 10.0.0.0- 10.255.255.255 (10.0.0.0/8)
+ 	- 172.16.0.0 - 172.31.255.255 (172.16.0.0/12)
+  	- 192.168.0.0 - 192.168.255.255 (192.168.0.0/16)
+  - **note:** check ipaddressguide.com/cidr
+
+### VPC Subnet -IPv4
+- AWS reserves 5 IP address (1st 4 & last 1) in each subnet.
+- these 5 are not available to any users and can't be assign to any EC2 instance.
+- example: if the CIDR block 10.0.0.0/24 which has 256 hosts, then reserved IP address are:
+	- 10.0.0.0 : network address
+ 	- 10.0.0.1 : reserved by AWS for VPC router.
+ 	- 10.0.0.2 : reserved by AWS for mapping to amazon-provide DNS.  
+ 	- 10.0.0.3 : reserved by AWS for future use.  
+ 	- 10.0.0.255 : network broadcast address.
+ 
+### Internet Gatway
+- allow resources (ec2 instances, lambda functions,..) in a VPC connect to the internet.
+- internet gateway:  Entry and exit point between your VPC and the internet
+- User (Internet)
+      ↓
+Public IP / Elastic IP
+      ↓
+Internet Gateway (IGW)
+      ↓
+	VPC
+      ↓
+Route Table
+      ↓
+Subnet (Public)
+      ↓
+Security Group (Firewall check)
+      ↓
+EC2 Instance
+- routing table:  it is a data table stored in a router that decides where to send network packets.
+-simple analogy:
+	- Internet = Outside world 🌍
+	- IGW = Main gate 🚪
+	- Route table = Directions 🗺️
+	- Security group = Security guard 👮
+	- EC2 = Person inside the house 👤
+
+
+ ### Bastion Host
+ -  special server used to securely access a private network from outside.
+ -  Protect internal servers from direct exposure
+ -  bastion is in public subnet which is then connected to all the private subnets.
+    
