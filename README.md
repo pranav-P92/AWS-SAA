@@ -5736,6 +5736,11 @@ Application
  - after assessment the inspector reports to AWS Security Hub and send findings to Event Bridge.
 
 
+
+FeatureAmazon InspectorAmazon GuardDuty🔍 PurposeVulnerability scanningThreat detection🎯 FocusSystem weaknessesSuspicious behavior🔐 TypePreventive securityDetective security📊 Data sourceSoftware, packages, configsLogs (CloudTrail, VPC, DNS)🚨 OutputVulnerability findingsThreat findings🧠 TechnologyCVE database scanningML + threat intelligence
+
+
+
 ### Amazon Macie (protect sensitive data)
 -  data security and data privacy service that uses ML to discover, classify, and protect sensitive data in AWS (especially in S3 buckets).
 -  helps you identify and protect sensitive data like: Credit card numbers, Personally Identifiable Information (PII), Health records, Confidential business data
