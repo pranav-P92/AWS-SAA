@@ -5932,3 +5932,101 @@ EC2 Instance
 - 
   
       
+### AWS Site to Site VPN
+- secure connection between: Your office/local network and Your AWS cloud network (VPC)
+- It works like a private tunnel over the internet.
+
+- You use it to:
+	- Access AWS servers privately
+	- Connect office to cloud
+	- Transfer data securely
+
+ - Virtual Private Gateway (VGW):
+	- AWS side of the VPN
+	- Attached to your VPC
+	- Receives VPN connection from your office/router
+
+- Simple idea:: AWS Cloud Router = Virtual Private Gateway
+
+- Customer Gateway (CGW):
+	- Your side of the VPN
+	- Represents your office router/firewall
+	- Uses your public IP address
+
+- Simple idea: Office Router = Customer Gateway
+
+### AWS Direct Connect (DX)
+- dedicated private network connection between: Your office/data center and AWS
+- Unlike VPN, it does not use the public internet.
+-  Instead of using the public internet, your traffic goes through a private fiber link.
+-  need to setup Virtual Private Gateway on your VPC.
+
+- Connection Types:
+	- Dedicated Connections: from 1Gbps to 400Gbps
+	 	- physical ethernet port dedicated to the customer.
+	  	- request made to AWS first, then completed by AWS Direct Connect partners.
+ 
+  	- Host Connections: 50Mbps to 25Gbps
+  		- capacity can be added or removed on demand.
+  	 	- connection request are made via AWS Direct Connect Partners.
+  	 
+  ### Transit Gateway
+  - central network hub in AWS.
+  - It connects:Multiple VPCs, VPNs, Direct Connect, On-premises networks
+
+- Simple idea:
+        VPC1
+          \
+VPC2 --- Transit Gateway --- VPN/Office
+          /
+       VPC3
+
+  - Without Transit Gateway: Every VPC needs separate connections
+  - With Transit Gateway: One central connection manages everything
+
+### VPC - Traffic mirroring
+- allows you to capture and inspect the network traffic in VPC
+- capture the traffic:
+	- From (source): ENIs
+ 	- To (target): ENIs or NLB
+- Capture all the packets or the packets of your interest
+- source and target can be in same VPC or different VPC.
+
+### Egress - only internet Gateway
+- used for IPv6 outbound internet access only from a VPC.
+- It allows:Instances → Internet ✅
+- But blocks: Internet → Instances ❌
+
+## Summary
+- CIDR : IP range
+- VPC: define a list of IPv4 & IPv6 CIDR
+- Subnets: tied to an AZ, we define a CIDR
+- Internet Gateway: at the VPC level, provide IPv4 & IPv6 internet access.
+- Route Tables: add routes from the subnets to the IGW, VPC Peering connections,...
+- Bastion Host: secure server used to access private EC2 instances.
+- NAT instances: give internet access to EC2 instance which are in private subnets.
+- NAT Gateway: provide scalable internet access to private EC2 instance, when the target is an IPv4 address.
+- NACL: stateless, subnet rules for inbound and outbound
+- security groups: stateful, operate at EC2 instance level.
+- VPC peering: connect two VPCs with non overlapping CIDR, non transitive.
+- VPC Endpoints: provide private access to AWS Services within an VPC.
+- VPC Flow logs: can be setup at the VPC/ Subnet/ ENI level, for ACCEPT and REJECT traffic- helps identifies the attacks, analyse using Athena or Cloudwatch logs insights.
+- Site-to-Site VPN: setup a customer gateway on DC, Virtual Private Gatway on VPC, and site-to-site VPC over public internet.
+- Direct Connect: setup a VPG on VPC, and establish a private connection to an AWS direct connection location.
+- Direct Connect Gateway: setup direct connect to many VPCs in different AWS region.
+- Transit Gateway: transitive peering connections for VPC, VPN & DX
+- Traffic Mirroring: copy netwrok traffic from ENIs for further analysis.
+- Egress-only internet gateway: like a NAT gateway, but for IPv6.
+
+
+### AWS Network Firewall
+- protect entire Amazon VPC
+- from layer3 to layer7 protection
+- inspect the VPC in any directions:
+	- VPC to VPC traffic
+ 	- Outbound to internet
+  	- Inbound from internet
+  	- to/from DX & site-to-site VPN
+- internally AWS Network firewall uses AWS Gateway Load Balancer.
+-    
+- 
