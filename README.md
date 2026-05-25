@@ -6035,5 +6035,104 @@ VPC2 --- Transit Gateway --- VPN/Office
   	- Inbound from internet
   	- to/from DX & site-to-site VPN
 - internally AWS Network firewall uses AWS Gateway Load Balancer.
--    
+
+
+## Disaster Recovery
+-flow: -----RPO-----DISASTER--------RTO-----
+
+- RPO : Recovery Point Objective
+- The maximum acceptable amount of data loss measured in time.
+- Example: If backups occur every 30 minutes:
+		- In a disaster, you may lose up to 30 minutes of data.
+		- RPO = 30 minutes
+  - AWS Methods Affecting RPO
+| RPO Requirement | Typical AWS Solution     |
+| --------------- | ------------------------ |
+| 24 hours        | Daily backups            |
+| 1 hour          | Frequent snapshots       |
+| Minutes         | Cross-region replication |
+| Near zero       | Continuous replication   |
+
+- RTO : Recovery Time Objective
+- The maximum acceptable time your application can be down after a disaster.
+- Example: If your business says:
+			- “Our application must be restored within 2 hours.”
+			- then: RTO = 2 hours
+- AWS Strategies by RTO
+| RTO Requirement    | AWS DR Strategy            |
+| ------------------ | -------------------------- |
+| Hours to days      | Backup & Restore           |
+| Minutes to hours   | Pilot Light                |
+| Minutes            | Warm Standby               |
+| Seconds to minutes | Multi-site / Active-Active |
+
+
+### AWS Elastic Disaster Recovery (DRS)
+- helps you quickly recover on-premises or cloud-based servers into AWS during outages or disasters.
+- It continuously replicates your servers to AWS with low RPO and fast RTO.
+	- low RPO : Data loss can be seconds/minutes
+ 	- fast RTO: Recovery in minutes
+
+### AWS Data Migration Service (DMS)
+- used to migrate databases to AWS quickly and securely, with minimal downtime.
+- used for database migration and replication, not full disaster recovery like AWS DRS.
+- AWS DMS helps you:
+	- Migrate on-prem databases → AWS databases
+	- Migrate AWS → AWS databases
+	- Keep source and target databases in sync (ongoing replication)
+ - AWS Schema Conversion Tool (AWS SCT): used to convert database schemas from one engine to another when migrating databases to AWS.
+ - Different databases have different SQL dialects.
+	- Example:
+		- Oracle uses PL/SQL
+ 		- PostgreSQL uses PL/pgSQL
+	- So you cannot directly move schema without conversion.
+	- SCT bridges that gap.
+ 	- if both the engines of same types/schema then no need to use SCT tool.
+
+
+### AWS Backup
+- fully managed backup service from AWS that lets you centrally manage and automate backups across AWS services and on-premises workloads.
+- supports cross-region backups
+- supports cross-account backups
+- tag based backup policies
+- create backup policies knowns as Backup plan
+
+### AWS Backup Vault Lock
+- enforce a WORM (write once read many) state for all the backups that you store in AWS Backup vault.
+- additional layer of defense to protect backup against:
+	- inadvertent or malicious delete operations
+ 	- updates the retention period.
+- even the root user cannot delete backups when enabled.
+
+
+### AWS Application Discovery Service
+- helps you identify, collect, and analyze information about on-premises applications before migrating them to AWS.
+- used in the planning phase of cloud migration.
+- Two Discovery Methods
+1. Agent-Based Discovery
+	- Install an agent on each server
+	- Collects:CPU usage/ Memory usage/ Network activity/ Process details
+2. Agentless Discovery (VMware only)
+	- Uses a collector appliance
+	- No need to install agents on every machine
+-  Easier setup for VMware environments
+
+-  resulting data will be viewed within AWS Migration Hub.
+
+### AWS Application Migration Service
+- helps you lift-and-shift migrate physical, virtual, or cloud servers to AWS with minimal downtime. or
+- converts your physical, virtual, cloud based servers to run natively on AWS.
+
+- work flow
+Source Server (On-prem / VMware / Cloud)
+        ↓
+MGN Replication Agent
+        ↓
+Continuous Block-Level Replication
+        ↓
+Staging Area in AWS (low-cost EC2 + EBS)
+        ↓
+Launch EC2 in AWS (Cutover)
+
+- 
 - 
