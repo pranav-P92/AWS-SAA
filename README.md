@@ -7,7 +7,10 @@
     https://www.udemy.com/course/practice-test-aws-certified-solutions-architect-associate/
     
     Mock test: https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqbTQ0b1ctczM3Q0E0NFBmMkJFSmh4eTk3NTlwQXxBQ3Jtc0tsYmhYcW41Wk5wNlRXYXJReF85dDJXRG1RRzByYnVXbUp5V0owOFlpWXR1TmVxYTU0cjRxMk9HejNOYVNwaEVidWJ1aFFNeWcwclM0OGxoUVA1QXYyMHJEcnhFUmlfNGxxaDVSU0xUZWliUzRPSGdjaw&q=https%3A%2F%2Fportal.tutorialsdojo.com%2Fproduct%2Faws-certified-solutions-architect-associate-practice-exams%2F&v=Rnr5hp4njq0
-    
+
+
+
+	
 - Weightage
     
     Domain 1: Design Secure Architecture (20 Q’s)
@@ -6231,3 +6234,19 @@ Launch EC2 in AWS (Cutover)
 	- This reduces AWS costs.
  - benefits: saves money, automation, no manual start/stop needed.
 
+
+
+
+# practice test:
+1. aws-exams.matthewntsiful.com : https://www.bing.com/ck/a?!&&p=b3c133c617e7eb2d6a717e21a4db934679eef360e2d643bfa7639165a787de89JmltdHM9MTc3OTY2NzIwMA&ptn=3&ver=2&hsh=4&fclid=1b870b20-d9fb-65ef-170b-1d26d84964b2&psq=aws+exam+matthewntsif&u=a1aHR0cHM6Ly9hd3MtZXhhbXMubWF0dGhld250c2lmdWwuY29tLw
+2. https://www.tutorialslogic.com/certification-practice/aws-solutions-architect
+
+# resources
+1. https://open-exam-prep.com/study-guides/aws-solutions-architect
+2.https://open-exam-prep.com/cheat-sheet/aws-solutions-architect
+3. https://aws.amazon.com/vpn/faqs/
+4. https://aws.amazon.com/architecture/
+5. https://aws.amazon.com/solutions/
+6. https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html
+7. https://docs.aws.amazon.com/pdfs/wellarchitected/latest/framework/wellarchitected-framework.pdf
+8. https://aws.amazon.com/architecture/well-architected/
