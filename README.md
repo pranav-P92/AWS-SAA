@@ -5783,6 +5783,9 @@ FeatureAmazon InspectorAmazon GuardDuty🔍 PurposeVulnerability scanningThreat 
   	- 192.168.0.0 - 192.168.255.255 (192.168.0.0/16)
   - **note:** check ipaddressguide.com/cidr
 
+-example: What does this CIDR 10.0.4.0/28 corresponds?
+		- 2^(32-28)=> 2^4=>16 hosts
+		
 ### VPC Subnet -IPv4
 - AWS reserves 5 IP address (1st 4 & last 1) in each subnet.
 - these 5 are not available to any users and can't be assign to any EC2 instance.
@@ -5954,7 +5957,11 @@ EC2 Instance
 	- Uses your public IP address
 
 - Simple idea: Office Router = Customer Gateway
-
+  
+### AWS VPN Cloud Hub
+- allows to securely communicate with multiple sites using AWS VPN.
+- it operates on simple hub-and-spoke model that can use with or without VPC.
+  
 ### AWS Direct Connect (DX)
 - dedicated private network connection between: Your office/data center and AWS
 - Unlike VPN, it does not use the public internet.
