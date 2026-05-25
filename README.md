@@ -6134,5 +6134,100 @@ Staging Area in AWS (low-cost EC2 + EBS)
         ↓
 Launch EC2 in AWS (Cutover)
 
-- 
-- 
+## Other services
+### Cloud Formation
+- lets you define and provision infrastructure as code (IaC).
+- Instead of manually creating resources like EC2 instances or databases, you write a template (JSON or YAML), and CloudFormation builds and manages everything for you.
+- CloudFormation helps deploy the infrastructure required for applications automatically.
+- IAM roles can be added to cloudFormation to manage and handle the resources.
+- How It Works (High-Level Flow)
+	- Write a template
+	- Upload to CloudFormation
+	- Create a stack
+	- CloudFormation provisions resources in the correct order
+	-Monitor progress via events
+
+
+### Amazon SES (Simple Email Service)
+- helps you send emails from your applications or websites globally.
+- allow inbound/ outbound mails.
+- provide statistics such as email deliveries: bounced, sent, open, failed.
+- use case: When a user clicks “Forgot Password” on a website:
+		- The application generates a reset link
+		- The app sends the link to Amazon SES
+		- SES delivers the email to the user
+
+### Amazon Pinpoint
+- customer communication service helps businesses send messages to users.
+- used to send emails, SMS messages, notifications to customers.
+- in SNS & SES, you manage each message's audience, content and delivery schedule.
+- in pinpoint, you create message templates, delivery schedules.
+- Pinpoint is the advanced feature compared to SNS & SES.
+- use case: An online shopping app sends:
+	- SMS: “Your order is shipped”
+	- Email: “Big sale starts today”
+	- Push notification: “50% discount available”
+	- using Amazon Pinpoint.
+
+### System Manager -SSM Session manager
+- allow you to start a secure shell in EC2 and on-premise servers.
+- no SSH access, bastion hosts, or SSH keys needed.
+- no port 22 needed.
+- supports Linux, MacOS, windows
+- send session logs to S3 or cloudwatch logs
+
+### AWS Outposts
+- service that brings AWS infrastructure and its services to your own data center or office.
+- Normally, AWS services run in AWS cloud data centers.
+- With AWS Outposts: AWS installs AWS hardware in your location, and you can use AWS services locally.
+- Why it is used: Some companies need:
+	- Very low latency
+	- Local data processing
+	- Hybrid cloud setup
+
+### AWS batch
+- used to run large numbers of batch computing jobs automatically.
+- It helps you run tasks that:
+	- take time,
+	- run in the background,
+	- and do not need instant response.
+- batch jobs are defined as docker images and run on EKS, ECS, Fargate.
+- batch will dynamically launch EC2 instance or spot instances.
+
+### Amazon Appflow
+- helps transfer data between applications automatically.
+- source: salesforce, SAP, Zendesk, Slack, ServiceNow
+- destination: AWS services like Amazon S3, Amazon Redshift or non AWS services like SnowFlake, Saleforce.
+- example: A company wants customer data from Salesforce to be automatically stored in Amazon S3 every day.
+		- Amazon AppFlow does this automatically.
+- don't spend time on writing the integrations, uses APIs immediately.
+
+### AWS Amplify
+- AWS Amplify helps developers quickly build and deploy web and mobile applications.
+- What it provides:
+	- Frontend hosting
+	- Authentication (login/signup)
+	- Database connection
+	- APIs
+	- Storage
+	- CI/CD deployment
+
+ - example: A developer creates a React website and uses AWS Amplify to: host the website, add user login, connect to a database, and deploy automatically.
+	- Amplify may use:
+	- Amazon Cognito → authentication
+	- AWS AppSync / API Gateway → APIs
+	- DynamoDB → database
+	- S3 → storage
+
+
+### Instance Scheduler on aws
+- used to automatically start and stop AWS resources at specific times.
+- commonly used for EC2 instances & RDS databases
+- schedules are managed in DynamoDB table.
+- example: A company uses development servers only during office hours.
+	- Instance Scheduler:
+ 		- Starts servers at 9 AM
+		- Stops servers at 7 PM
+	- This reduces AWS costs.
+ - benefits: saves money, automation, no manual start/stop needed.
+
