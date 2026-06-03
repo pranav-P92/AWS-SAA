@@ -401,7 +401,10 @@ They decide **which traffic is allowed IN and OUT** of your instance.
 | Windows<10 |  |            ✅ |                  ✅ |
 | Windows≥10 |             ✅ |            ✅ |                  ✅ |
 
-**EC2 Instance Connect (EIC): connect to a Linux EC2 instance using SSH without managing permanent key pairs** in advance.
+**EC2 Instance Connect (EIC): connect to a EC2 instance using SSH without using PUTTY or permanent key pairs**.
+- PuTTY is a software tool (SSH client) used to connect to remote servers.
+- SSH is a protocol (communication method) used to securely connect to remote systems.
+- EC2 Instance Connect is an AWS service that lets you connect to your instance directly from the browser.
 
 | **Method** | **Used On** | **How it Works** | **Best For** | **Key Needed** |
 | --- | --- | --- | --- | --- |
