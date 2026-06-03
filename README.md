@@ -557,7 +557,15 @@ Types:
 ### **Elastic Network Interface (ENI)**
 
 **It is virtual network card** that is attached to an EC2 instance in **Amazon EC2**.
+- provides network connectivity for instances within an VPC.
+- Without ENI, an EC2 instance cannot communicate.
+	- ENI gives:IP address, Network identity, Ability to send/receive data
 
+ -  Simple Analogy
+	- ENI is like a SIM card in a phone
+ 		- Without SIM → no calls/internet
+		- Without ENI → no network access
+    
 An ENI comes with:
 
 - **Primary private IPv4**
