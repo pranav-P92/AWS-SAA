@@ -710,48 +710,53 @@ An **EC2 Instance Store** is a **temporary (ephemeral) block storage** that is p
 EBS Volume types 
 - 6 types
 ### SSD backed volumes ( for performance sensitive workloads)
-    - gp3 (General Purpose SSD – latest)
-      Best default choice for most workloads
-      Balanced price + performance
-      Baseline performance with ability to provision:
-- IOPS (up to 16,000)
-- Throughput (up to 1,000 MB/s)
+- gp3 (General Purpose SSD) – Recommended
+	- Best default choice for most workloads
+	- Balanced cost and performance
+	- Independent configuration of:
+	- IOPS (up to 16,000)
+	- Throughput (up to 1,000 MB/s)
+	- 	Use for:
+		- Web servers
+		- Small/medi-um databases
+		- Dev/Test environments
 
-Ideal for:
-Web servers
-Small/medium databases
-Dev/test environments
-
-
-gp2 : previous generation of gp3
-performance tied to volume size
-used gp3 instead unless you have legacy setups
-
+- gp2 : previous generation of gp3
+	- performance tied to volume size
+	- used gp3 instead unless you have legacy setups
 
 
 - io2 (Provisioned IOPS SSD)
-High-performance, mission-critical workloads
-Very high durability (99.999%)
-Up to 256,000 IOPS (with Block Express)
+	- High-performance, mission-critical workloads
+	- Very high durability (99.999%)
+	- Up to 256,000 IOPS (with Block Express)
+	- Use for:
+		- Large databases
+		- Critical applications
+
+- io1 (Provisioned IOPS SSD)
+	- Older version of io2
+	- Less durable and less flexible
+	- Mostly replaced by io2
 
 
-- io1
-older version of io2
-less durable and flexible
+### HDD backed volumes ( for through put focused workloads)
 
+- st1 (Throughput Optimized HDD)
+	- Low cost, high throughput
+	- For frequently accessed data
+	- Best for large sequential workloads
+	- Use for:
+		- Big data
+		- Log processing
+		- Data warehouses
 
-HDD backed volumes ( for through put focused workloads)
-
-st1
-Low cost, high throughput - intensive workloads
-(throughput : amount of data successfully transferred with a specific time rate)
-designed for frequently accessed.
-Good for large, sequential workloads
-
-
-sc1 (Cold HDD)
-Lowest cost option
-Designed for infrequently accessed data
+- sc1 (Cold HDD)
+	- Lowest-cost EBS volume
+	- For infrequently accessed data
+		- Use for:
+		- Backups
+		- Archives
 
 NOTE:
 gp3 → Default choice for most use cases
