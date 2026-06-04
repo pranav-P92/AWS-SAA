@@ -1,18 +1,12 @@
-updates on 3rd june 2026
+updates on 4th june 2026
 
 - changes made: 
-    - ssh connection table
-    - ENI
-    -
+    - EC2 volume types
 
 
 - modification needed:
-    - spot fleets allocation strategies
-    - add about spot pool
-    - add  AMI :Template of the server (what components it has)
-    - add EC2 User Data = Startup script that runs on the server
+    -
 
 
-
-- revised till : AMI 
-- what to revise next: EC2 instance store.
+- revised till : load balancer 
+- what to revise next: -
