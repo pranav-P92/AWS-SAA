@@ -1172,7 +1172,26 @@ With SSL/TLS:
 ### Load Balancer - SSL Certificates
 
 - load balancer uses an X.509 certificate (SSL/TLS server certificate)
-- manage certificates using ACM (AWS certificate manager)
+- SSL Certificate is a file that encrypts the data between the user & server.
+- HTTPS traffic is encrypted from user to load balancer.
+- Load balancer uses an SSL certificate (via ACM)
+- It decrypts and forwards traffic to backend servers
+- SSL Certificate are managed by ACM (AWS certificate manager)
+- flow:
+	- user opens: https://yourdomain.com
+	- The request hits the Load Balancer
+	- Load Balancer:
+		- Uses SSL certificate (from ACM)
+		- Decrypts HTTPS traffic (this is called SSL termination)
+	- It then forwards request to EC2 instances:
+		- Either as HTTP (unencrypted inside VPC)
+		- Or HTTPS (re-encrypted if needed)
+ 
+| Mode            | Description                                    |
+| --------------- | ---------------------------------------------- |
+| SSL termination | Decrypt at load balancer, send HTTP to backend |
+| End-to-end SSL  | Encrypt again between LB and servers           |
+
 
 ### SSL- SNI (Server Name Indication)
 
