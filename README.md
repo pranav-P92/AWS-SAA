@@ -1233,21 +1233,6 @@ SNI allows one load balancer to host multiple SSL certificates for different dom
     
     **Step 4️⃣ Secure Connection Established**
     
-
-### Elastic Load Balancer - SSL Certificates
-
-Configuring HTTPS on an AWS load balancer using an SSL/TLS certificate.
-
-| Feature | CLB | ALB | NLB |
-| --- | --- | --- | --- |
-| Layer | 4 & 7 | 7 | 4 |
-| HTTPS Support | ✅ Yes | ✅ Yes | ❌ (Uses TLS listener) |
-| TLS Listener | ✅ Yes | ❌ (Uses HTTPS) | ✅ Yes |
-| TLS Termination | ✅ Yes | ✅ Yes | ✅ Yes |
-| SNI Support | Limited | ✅ Yes | ✅ Yes |
-| Certificate Source | ACM / IAM | ACM | ACM |
-| Best For | Legacy apps | Modern web apps | High performance TCP apps |
-
 ### Connection Draining
 
 When a target (EC2 instance) is being removed or stopped, the load balancer waits for existing requests to finish before fully removing it.
@@ -1617,7 +1602,7 @@ Now AWS automatically:
 ### Amazon CloudFront
 
 **Amazon CloudFront** is a **Content Delivery Network (CDN)** service provided by AWS.
-
+- delivers content to users with low latency and high speed by caching it at locations closer to users.
 It helps you **deliver content (websites, APIs, videos, images, apps)** to users with:
 
 - 🚀 **Low latency (fast loading)**
@@ -1690,6 +1675,62 @@ If you host a static website in S3:
 - Use **Origin Access Control (OAC)**
 
 👉 This increases security.
+- **OAC:** allows **Amazon CloudFront** to securely access content stored in an **Amazon S3 bucket**.
+	- Users can access content only through CloudFront.
+	- Direct access to the S3 bucket can be blocked.
+
+### Cloud Front Functions
+
+**CloudFront Functions** is a lightweight serverless feature of **Amazon CloudFront**
+
+It allows you to run **small pieces of JavaScript code at AWS edge locations**.
+
+👉 It runs **before the request reaches your origin server**
+👉 Used for **simple request/response modifications**
+👉 Extremely fast and low cost
+
+**Where Does It Run?**
+
+It runs at **CloudFront Edge Locations** during:
+
+✅ Viewer Request
+
+✅ Viewer Response
+
+⚠ It does NOT run at origin request/response stage.
+
+**Why Do We Use It?**
+
+To modify:
+
+URL, Headers, Cookies, Redirects, Basic authentication, A/B testing
+
+Without touching:
+
+EC2,ALB, Backend server
+
+**How It Works (Simple Flow)**
+
+User sends request
+
+CloudFront receives it
+
+CloudFront Function executes
+
+Request is modified (if needed)
+
+Forwarded to origin (or served from cache)
+
+| Feature | CloudFront Functions |
+| --- | --- |
+| Language | JavaScript only |
+| Speed | Microseconds |
+| Cost | Very low |
+| Network calls | ❌ Not allowed |
+| AWS service access | ❌ Not allowed |
+| Execution time | Very short |
+
+👉 **CloudFront Functions = Lightweight & Ultra Fast**
 
 ### CloudFront Geo Restriction
 
@@ -1699,10 +1740,10 @@ If you host a static website in S3:
 
 **Why Do We Use It?**
 
-- 🌎 Licensing restrictions (e.g., movies allowed only in India)
-- ⚖ Legal compliance
-- 🔐 Security reasons
-- 🎯 Region-specific content delivery
+- Licensing restrictions (e.g., movies allowed only in India)
+- Region-specific content delivery
+- Legal compliance
+- Security reasons
 
 **How It Works (Simple Flow)**
 
@@ -1759,30 +1800,7 @@ If you host a static website in S3:
         - Europe
         - India
         
-        **What is Price Class in CloudFront?**
-        
-        **Price Class** lets you control:
-        
-        👉 **Which edge locations CloudFront can use**
-        
-        👉 To reduce cost by limiting expensive regions
-        
-        More edge locations = Better global performance
-        
-        Fewer edge locations = Lower cost
-        
-        CloudFront provides 3 options:
-        
-        | Price Class | Edge Locations Used | Cost | Performance |
-        | --- | --- | --- | --- |
-        | **Price Class All** | All global edge locations | Highest | Best worldwide |
-        | **Price Class 200** | Most regions (excludes most expensive) | Medium | Good |
-        | **Price Class 100** | US, Canada, Europe only | Lowest | Limited global |
-
 ### Cache Invalidations
-
-**Cache Invalidation** means:
-
 👉 Removing cached files from CloudFront edge locations
 
 👉 Before their TTL (Time To Live) expires
@@ -1968,59 +1986,6 @@ Need static IP
 ### **Lambda container image**
 
 It is a package format that allows developers to deploy their AWS Lambda function code and dependencies using standard container tooling like [Docker](https://www.docker.com/), in addition to the traditional ZIP archive method.
-
-### Cloud Front Functions
-
-**CloudFront Functions** is a lightweight serverless feature of **Amazon CloudFront**
-
-It allows you to run **small pieces of JavaScript code at AWS edge locations**.
-
-👉 It runs **before the request reaches your origin server**
-👉 Used for **simple request/response modifications**
-👉 Extremely fast and low cost
-
-**Where Does It Run?**
-
-It runs at **CloudFront Edge Locations** during:
-
-✅ Viewer Request
-
-✅ Viewer Response
-
-⚠ It does NOT run at origin request/response stage.
-
-**Why Do We Use It?**
-
-To modify:
-
-URL, Headers, Cookies, Redirects, Basic authentication, A/B testing
-
-Without touching:
-
-EC2,ALB, Backend server
-
-**How It Works (Simple Flow)**
-
-User sends request
-
-CloudFront receives it
-
-CloudFront Function executes
-
-Request is modified (if needed)
-
-Forwarded to origin (or served from cache)
-
-| Feature | CloudFront Functions |
-| --- | --- |
-| Language | JavaScript only |
-| Speed | Microseconds |
-| Cost | Very low |
-| Network calls | ❌ Not allowed |
-| AWS service access | ❌ Not allowed |
-| Execution time | Very short |
-
-👉 **CloudFront Functions = Lightweight & Ultra Fast**
 
 👉 **Lambda@Edge = Powerful but heavier (deal with origin request & response)**
 
