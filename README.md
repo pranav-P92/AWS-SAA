@@ -2258,12 +2258,36 @@ With proxy → maybe only 100 active connections ✅
     - Instead of storing user session data (like login info, cart, preferences) in app server or DB, it stores in ElastiCache (usually Redis).
    **How it works**
         - User logs in
-        - Your app creates a session ID
-        - Session data is stored in ElastiCache
-        - Session ID is sent to the user (via cookie)
+        - Your app creates a session ID. example- sessionId: abc123xyz.
+        - Session data is stored in ElastiCache (redis)
+        	- session data:
+         		- key: sessionId: abc123xyz
+           		- value: {
+							  userId: 101,
+							  name: "John",
+							  role: "admin"
+							}   
+        - Redis server send cookie (sessionId) to browser. example: set-cookie: sessionId=abc123xyz.
+        - browses stores the cookie.
         - On next request:
-            - App reads session ID
-            - Fetches session data from ElastiCache
+            - App reads cookie -> get session Id
+            - uses session Id to fetch result from ElastiCache (Redis) (server RAM)
+            - Fetches session data from ElastiCache(redis)
+         
+        - REDIS: software
+        - ElastiCache: AWS managed service that runs REDIS/ MEMCACHED
+- work flow:
+- Browser (Cookie)
+     |
+     | sessionId=abc123xyz
+     v
+Application Server
+     |
+     v
+Redis (RAM)
+     |
+     v
+User session data
 
   Architecture: User → Load Balancer → App Servers → ElastiCache (Redis)
 
