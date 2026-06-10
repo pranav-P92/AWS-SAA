@@ -2383,9 +2383,9 @@ Leaderboard → real-time ranking
 
 | Record Type | Purpose |
 | --- | --- |
-| A | Domain → IPv4 address |
-| AAAA | Domain → IPv6 address |
-| CNAME | Alias to another domain |
+| A | Maps Domain name → IPv4 address |
+| AAAA | Maps Domain name → IPv6 address |
+| CNAME | creates alias to another domain (points to other domain) |
 | Alias | Maps domain to AWS resource |
 - **zone files:** file that stores all DNS records of a domain
 - **Name server:** server that responds to DNS queries for a domain
@@ -2402,6 +2402,7 @@ example: mail.google.com ->mail is sub domain
 **How DNS Works** 
 Check Cache → Browser looks for saved IP, if not then: 
 Ask Resolver → If not found Root → TLD → Name Server → Find correct server Get IP → Name server returns IP Load Website → Browser connects using IP
+- Route 53 Resolver = DNS server that looks up records and forwards queries when necessary.
 
 - DNS finds IP address step by step, then loads website.
 - **It is a scalable DNS that translates domain names into IP addresses and routes users to the correct servers.**
@@ -2412,15 +2413,6 @@ Ask Resolver → If not found Root → TLD → Name Server → Find correct serv
 **Route 53 Record**
 
 - DNS record stored in amazon route 53 that tells how your domain should behave.
-- In AWS, the most common records are:
-    
-    
-    | Record Type | Purpose |
-    | --- | --- |
-    | A | Domain → IPv4 address |
-    | AAAA | Domain → IPv6 address |
-    | CNAME | Alias to another domain |
-    | Alias | Maps domain to AWS resource |
 - example: web browser→ dns request to Route 53 (A)→ sends back IP to web browser.
 - Route 53 can use:
     - public domain names you own (or buy)
@@ -2500,14 +2492,23 @@ example: India user -> India server
 - Health check -> monitors endpoints.
 
 **Route 53 - Hybrid DNS**
+- allows  bidirectional DNS resolution between AWS VPCs and on-premises networks using Route 53 resolver inbound and outbound endpoints.
+- 2 DNS systems talk to each other: AWS DNS <----> On-Prem DNS
 
-- route 53 resolver automatically answers DNS queries for:
-    - local domain names for EC2 instances
-    - records in private hosted zones.
-    - records in public name servers
 - Hybrid DNS lets: resolving DNS queries between VPC (Route 53 resolver) and your network (other DNS resolvers)
     - On-prem systems resolve AWS private domains (like app.internal)
     - AWS resources resolve on-prem domains (like corp.local)
+
+- If asked "How do you implement Route 53 Hybrid DNS?":
+	- Create a Private Hosted Zone for AWS private domains.
+	- Create a Resolver Inbound Endpoint for on-prem → AWS resolution.
+	- Create a Resolver Outbound Endpoint for AWS → on-prem resolution.
+	- Create Resolver Rules to forward on-prem domains.
+	- Connect networks using VPN or Direct Connect.
+	- Configure on-prem DNS conditional forwarders to send AWS domain queries to the inbound endpoint.
+
+ - Inbound Endpoint: receives DNS queries coming into AWS (On-prem->AWS)
+ - Outbound Endpoint: send DNS queries out of AWS (AWS->On-prem)
 - *** section 11 important Recap of all concepts****
 
 - **Stateless Web App:** does NOT store client session information on the server between requests.
@@ -2539,12 +2540,17 @@ example: India user -> India server
 
 👉 You just focus on **writing code**, not managing servers.
 
-| Feature | Beanstalk | EC2 |
-| --- | --- | --- |
-| Setup | Automatic | Manual |
-| Control | Medium | Full |
-| Scaling | Auto | Manual setup |
-| Use case | Quick deployment | Full customization |
+- elastic beanstalk VS AWS lambda
+| Aspect                    | **Elastic Beanstalk**                                   | **AWS Lambda**                                |
+| ------------------------- | ------------------------------------------------------- | --------------------------------------------- |
+| **Service Type**          | Platform as a Service (PaaS)                            | Function as a Service (FaaS) / Serverless     |
+| **Deployment Unit**       | Entire application                                      | Individual function                           |
+| **Infrastructure**        | Runs on EC2 instances managed by AWS                    | No servers visible or managed by you          |
+| **Execution**             | Application runs continuously                           | Function runs only when triggered             |
+| **Scaling**               | Scales EC2 instances using Auto Scaling                 | Automatically scales per invocation           |
+| **Execution Duration**    | Suitable for long-running processes                     | Limited execution time per invocation         |
+| **Use Cases**             | Web apps, APIs, enterprise applications                 | Event processing, automation, serverless APIs |
+
 
 **Beanstalk Components:**
 
@@ -2561,13 +2567,13 @@ example: India user -> India server
 **create application → upload version → launch environment → manage environment**
 
 - **Environment Tier**
-Defines the **type of environment**:
+- Defines the **type of environment**:
     - **Web Tier**
         - Handles web traffic (HTTP/HTTPS)
     - **Worker Tier**
         - Processes async/background tasks
 - **Environment Configuration**
-Settings that control environment behavior:
+- Settings that control environment behavior:
     - Instance type (t2.micro, etc.)
     - Scaling rules
     - Environment variables
@@ -2576,13 +2582,13 @@ Settings that control environment behavior:
     👉 You can modify config without redeploying code
     
 - **Deployment Options**
-Controls how updates happen:
+- Controls how updates happen:
     - **All at once** → fastest, but downtime
     - **Rolling** → updates in batches
     - **Rolling with additional batch** → safer
     - **Immutable** → new instances created (most reliable)
 
-### Amazon S3
+### Amazon S3 (Simple Storage Service)
 
 - scalable object storage device
 - used to store and retrieve **any amount of data from anywhere on the web**.
@@ -2595,8 +2601,8 @@ Think of S3 like a **cloud storage drive**:
 👉 Instead of folders, S3 uses **buckets + objects**
 
 **Structure**
-
-Bucket (like a folder)
+- Data is stored in buckets, and inside buckets you store objects (files + metadata).
+- Bucket (like a folder)
      └── Object (file)
             ├── Data (actual content)
             ├── Metadata
@@ -2615,8 +2621,7 @@ Bucket (like a folder)
 - Backup & restore data
 - Log storage
 - Static website hosting
-- software delivery
-
+  
 **Amazon S3- Buckets**
 
 - It is the **top-level container** used to store data (objects/files).
@@ -3035,7 +3040,6 @@ Example:
 - stores data in single AZ
 - handles millions of request per second
 - upto 10x better performance than S3 standard
-- high durability (99.9999999%) and availability (99.5%)
 
 Architecture Difference
 
