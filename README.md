@@ -2,7 +2,7 @@
 - https://github.com/nityaboyapati99/AWS-Handbook/blob/main/AWS_SAA_Handbook.md
 - Resources
     
-    https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqbUYzNUZPdVZuUVE0X3J1aEQzanE4OVI4WmJzZ3xBQ3Jtc0tuYXhGa3VxMUZpTFFncTBEZzRBZ2ZobWNBTlRldW8xdmxVUWZvdHZUZDlkMWppVEluU3BaMzQ1eGkzYTFmTERIMUprWGhfd0VZQWdYc1ZKRlE1Zlo2alluWjVwbGJBT3ZUSGZoOUFqendldzczWmFzaw&q=https%3A%2F%2Fwww.udemy.com%2Fcourse%2Faws-certified-solutions-architect-associate-saa-c03%2F%3Fdeal_code%3DUDEAFNULP0324%26utm_term%3DHomepage%26utm_content%3DTextlink%26utm_campaign%3DNewUserLP0324%26utm_source%3Daff-campaign%26utm_medium%3Dudemyads%26LSNPUBID%3Dznpz0s2okgU%26ranMID%3D47901%26ranEAID%3Dznpz0s2okgU%26ranSiteID%3Dznpz0s2okgU-hXF7jTQhcT8LsgomWJDo7g%26gad_source%3D1&v=Rnr5hp4njq0
+    https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqbUYzNUZPdVZuUVE0X3J1aEQzanE4OVI4WmJzZ3xBQ3Jtc0tuYXhGa3VxMUZpTFFncTBEZzRBZ2ZobWNBTlRldW8xdmxVUWZvdHZUZDlkMWppVEluU3BaMzQ1eGkzYTFmTERIMUprWGhfd0VZQWdYc1ZKRlE1Zlo2alluWjVwbGJBT3ZUSGZoOUFqendldzczWmFzaw&q=https%3A%2F%2Fwww.udemy.com%2Fcourse%2Faws-certified-solutions-architect-associate-saa-c03%2F%3Fdeal_code%3DUDEAFNULP0324%26utm_term%3DHomepage%26utm_content%3DTextlink%26utm_campaign%3DNewUserLP0324%26utm_source%3Daff-campaign%26utm_medium%3Dudemyads%26LSNPUBID%3Dznpz0s2okgU%26ranMID%3D47901%26ranEAID%3Dznpz0s2okgU%26ranSiteID%3Dznpz0s2okgU-hXF7jTQhcT8LsgomWJDo7g%26gad_source%3D1&v=Rnr5hp4njq0sn
     
     https://www.udemy.com/course/practice-test-aws-certified-solutions-architect-associate/
     
@@ -4815,19 +4815,18 @@ EMR solves this using:
 | Component | Purpose |
 | --- | --- |
 | Glue Crawler | Scans data and creates schema/metadata |
-| Data Catalog | Stores table metadata |
+| Data Catalog | Stores information about datasets/ schemas/ tables |
 | Glue ETL Jobs | Transform/process data |
 | Glue Studio | Visual ETL builder |
-| Glue DataBrew | No-code data preparation |
 | Glue Job bookmarks | prevent re-processing old data |
 | Glue dataBrew | clean and normalize data using pre-built transformation |
 
 ### AWS Lake
 
 - data lake: central place to have all data for analytic purpose
+- stores large amounts of raw data in its native format (structured, semi-structured, and unstructured) until it is needed for analysis.
 - discover, cleanse, transform, ingest data into your data lake.
 - it automates many complex manual steps(collecting, cleansing, moving,..) and de-duplications (ML transfoms)
-- combine structured and unstructured data in the data lake.
 - built on top of AWS Glue.
 
  **Architecture Flow**
@@ -4944,60 +4943,62 @@ QuickSight Dashboard
 ```
 
 - IOT core allows you to harvest data from IoT devices
-- kinesis : real time data collection
-- Firehose: helps with data delivery to S3 in near real-time
-- Lambda: help firehose with data transformation
-- Amazon S3: trigger notifications to SQS
+- **kinesis** : real time data collection
+- **Firehose**: helps with data delivery to S3 in near real-time
+- **Lambda**: help firehose with data transformation
+- **Amazon S3**: trigger notifications to SQS
 - Lambda can subscribe to SQS
-- Athena: serverless SQL service and results are stored in S3
+- **Athena**: serverless SQL service and results are stored in S3
 
 
 
-### Amazom Rekognition
+### Amazon Rekognition
 - cloud-based AI service from AWS that lets developers add image and video analysis capabilities to applications without building machine learning models from scratch.
 - What Amazon Rekognition Can Do
-	- Image Analysis
+	-** Image Analysis**
 		- Detect objects (cars, people, pets, etc.)
     	- Identify scenes and activities
 		- Extract text from images
 		- Recognize celebrities
-	- Facial analysis (age range, emotions, smile, beard, etc.)
+	-** Facial analysis** (age range, emotions, smile, beard, etc.)
 		- Face Features
 		- Face detection
 		- Face comparison
 		- Face verification for authentication systems
-	- Video Analysis
+	- **Video Analysis**
 		- Track people and objects in videos
 		- Detect activities and events
 		- Analyze stored videos using Amazon S3
 
 - Basic Architecture
-Typical workflow:
-- Upload image/video to Amazon S3
-- Application sends request to Rekognition API
-- Rekognition returns labels, faces, text, or analysis results
-- Store/process results in your app
-
+  ```
+	- Typical workflow:
+		- Upload image/video to Amazon S3
+		- Application sends request to Rekognition API
+		- Rekognition returns labels, faces, text, or analysis results
+		- Store/process results in your app
+	```
 - Amazon Rekognition : Content moderation
 	- detect content that is inappropriate, unwanted, sensitive or offensive (images,videos)
  	- set a minimum confidence threshold for items that will be flagged
   	- flag sensitive content for manual review in Amazon Augmented AI (A2I)
 
 - Architecture:
-- User Uploads Image
+```
+User Uploads Image
         ↓
-Amazon S3
+   Amazon S3
         ↓
 AWS Lambda Trigger
         ↓
 Amazon Rekognition Moderation API
         ↓
 Accept / Reject / Send for Human Review
-
-### Amazon Transcribe
+```
+### Amazon Transcribe (speech -> text)
 - it is an automatic speech recognition (ASR) service from AWS that converts audio and video speech into text.
-- automatically remove the personal identifiable information (PII) using Redaction.
-	- removes the sensitive information like financial, personal information.
+- automatically remove the **personal identifiable information (PII)** using **Redaction**.
+	- removes the sensitive information like financial, personal information....
  - supports automatic language identification for multi-lingual audio 
 - It is commonly used for:
 	 - Subtitles and captions
@@ -5006,21 +5007,16 @@ Accept / Reject / Send for Human Review
 	 - Meeting transcription
 	 - Medical dictation
  
-### Amazon Polly
+### Amazon Polly (text -> speech)
 - Text-to-Speech (TTS) service that converts written text into natural-sounding speech using AI and deep learning.
 - supports both Lexicons and SSML (Speech Synthesis Markup Language) to improve pronunciation and make speech sound more natural.
-- Lexicon:
+- **Lexicon**:
 	- A Lexicon is a custom pronunciation dictionary.
- 	- It helps Polly pronounce:Brand names, Technical terms, Names, Regional words, Acronyms correctly.
+ 	- It helps Polly pronounce: Brand names, Technical terms, Names, Regional words, Acronyms correctly.
   - example: AWS, Polly may pronounce it differently than desired. With a lexicon, you can force pronunciation like: "A W S"
-- SSML (Speech Synthesis Markup Language)
-	- for dynamic speech formatting 
-	- It is XML-based markup used to control:Pauses, Pitch
-Volume
-Speaking rate
-Emphasis
-Pronunciation
-Breathing sounds
+- **SSML (Speech Synthesis Markup Language)**:
+	- for dynamic speech formatting. 
+	- It is XML-based markup used to control:Pauses, Pitch, Volume, Speaking rate, Emphasis, Pronunciation, Breathing sounds.
 
 
 ### Amazon Translate
@@ -5036,59 +5032,54 @@ Breathing sounds
 ### Amazon Lex & Connect
 - Amazon Lex and Amazon Connect are commonly used together to build AI-powered customer support systems, chatbots, and voice assistants.
 
-- Amazon Lex → understands user speech/text and manages conversations.
-- Amazon Connect → cloud-based contact center for phone calls and customer support.
+- **Amazon Lex ** → understands user speech/text and manages conversations.
+-** Amazon Connect** → cloud-based contact center for phone calls and customer support.
 - Together, they create intelligent IVR (Interactive Voice Response) systems.
 
-- Amazon Lex:
-	- Amazon Lex is used to build:
- 	- Chatbots, Voice bots, Conversational interfaces
+- **Amazon Lex:**
+	- Amazon Lex is used to build: Chatbots, Voice bots, Conversational interfaces
 - It uses: Automatic Speech Recognition (ASR), Natural Language Understanding (NLU)
 The same technology powers Amazon Alexa.
 
 - workflow: User → Lex Bot → Lambda → Response
 
-- Amazon Connect:
+-** Amazon Connect:**
 	- Amazon Connect is a cloud-based customer service platform.
  	- Features: Incoming/outgoing calls, IVR systems, Call routing, Agent management, Real-time analytics, Contact recording
   - workflow:
-  - Customer Call
+  ```
+ Customer Call
       ↓
 Amazon Connect
       ↓
-Lex Bot
+   Lex Bot
       ↓
-Lambda/CRM
+  Lambda/CRM
       ↓
 Agent or Automated Response
+```
 
-
- - Lex + Connect Integration
-
-When a customer calls:
-
-Amazon Connect receives the call
-Lex bot interacts with customer
-Bot understands request
-Lambda fetches backend data
-Bot responds or transfers to agent
+ - **Lex + Connect Integration**
+	- When a customer calls:
+		- Amazon Connect receives the call
+	  	- Lex bot interacts with customer
+		- Bot understands request
+		- Lambda fetches backend data
+		- Bot responds or transfers to agent
 
 
 
-### Amazon Comprehend
-- is a Natural Language Processing (NLP) service from Amazon Web Services (AWS) that uses machine learning to analyze and understand text.
+### Amazon Comprehend (NLP)
+- is a Natural Language Processing (NLP) service from AWS that uses machine learning to analyze and understand text.
 - It can identify:
-
-Sentiment
-Entities
-Key phrases
-Language
-Topics
-Personally identifiable information (PII)
-
-without needing to build ML models manually.
-
--features:
+	- Sentiment
+   	- Personally identifiable information (PII)
+	- Entities (name,place,org,...)
+	- Key phrases
+	- Language
+	- Topics
+- without needing to build ML models manually.
+  
 | Feature                   | Purpose                               |
 | ------------------------- | ------------------------------------- |
 | Sentiment Analysis        | Detect positive/negative emotions     |
@@ -5101,15 +5092,13 @@ without needing to build ML models manually.
 | Custom Entity Recognition | Detect domain-specific entities       |
 
 - workflow:
+```
   Input Text
     ↓
 Amazon Comprehend
     ↓
 Sentiment / Entities / Insights
-
-
-
-
+```
 
 | Service            | Purpose                | Main Use Cases                                       |
 | ------------------ | ---------------------- | ---------------------------------------------------- |
@@ -5123,16 +5112,10 @@ Sentiment / Entities / Insights
 
 
 ### Amazon Comprehend medical
-- it is a specialized natural language processing (NLP) service for healthcare and life sciences.
+- it is a specialized NLP service for healthcare and life sciences.
 - It extracts medical information from unstructured clinical text like doctor notes, prescriptions, and health records.
-- workflow:
-- Doctor Notes / Clinical Text
-        ↓
-Amazon Comprehend Medical
-        ↓
-Structured Medical Data (Entities, PHI, Codes)
-- use cases:
-- | Industry     | Use Case                          |
+
+| Industry     | Use Case                          |
 | ------------ | --------------------------------- |
 | Hospitals    | Extract info from patient records |
 | Insurance    | Claims processing                 |
@@ -5141,93 +5124,78 @@ Structured Medical Data (Entities, PHI, Codes)
 | Telemedicine | Automated report generation       |
 
 
-### SageMaker AI
-- a fully managed machine learning (ML) and AI platform from Amazon Web Services (AWS) that helps developers and data scientists build, train, and deploy ML models at scale.
-- What It Does
-- Amazon SageMaker provides an end-to-end workflow for AI:
+### SageMaker AI (build, train, and deploy ML models)
+- a ML and AI platform from AWS that helps developers and data scientists **build, train, and deploy ML models** at scale.
+- **What It Does?**
+	- Amazon SageMaker provides an end-to-end workflow for AI:
 
-1. Data Preparation
-Clean and prepare datasets
-Use tools like notebooks and data labeling
-2. Model Building
-Use built-in algorithms or custom code (Python, TensorFlow, PyTorch)
-Run experiments in Jupyter notebooks
-3. Model Training
-Train models using scalable cloud infrastructure
-Supports GPU/CPU instances
-4. Model Tuning
-Automatically optimize hyperparameters (AutoML features)
-5. Model Deployment
-Deploy models as real-time APIs
-Or batch inference for large datasets
+1. Data Preparation: Clean and prepare datasets
+- Use tools like notebooks and data labeling
+2. Model Building: Use built-in algorithms or custom code (Python, TensorFlow, PyTorch)
+- Run experiments in Jupyter notebooks
+3. Model Training: Train models using scalable cloud infrastructure
+- Supports GPU/CPU instances
+4. Model Tuning: Automatically optimize hyperparameters (AutoML features)
+5. Model Deployment: Deploy models as real-time APIs
 
 - workflow: Data → SageMaker → Train Model → Deploy API → Predictions
-- Example Use Cases
-Fraud detection (banking)
-Product recommendations (e-commerce)
-Image classification
-Chatbot intelligence
+- Example Use Cases:
+	- Fraud detection (banking)
+	- Product recommendations (e-commerce)
+	- Image classification
+	- Chatbot intelligence
 
 
-### Amazon Kendra
+### Amazon Kendra (search service find answers in data using queries)
 - it is an AI-powered enterprise search service from AWS that helps users find answers from documents, databases, and internal knowledge sources using natural language queries.
-- What It Does
-- Amazon Kendra lets you search across multiple data sources like:
-PDFs and Word documents
-Websites
-Databases
-Knowledge bases
-Internal company portals (SharePoint, S3, etc.)
-
-- Instead of keyword search, it uses AI-based semantic search (understands meaning, not just words).
-- workflow
-- User Question
-      ↓
-Amazon Kendra
-      ↓
-Search Across Data Sources
-      ↓
-AI Ranking + Extraction
-      ↓
-Precise Answer
-
+- **What It Does?**
+  	- Instead of keyword search, it uses AI-based semantic search (understands meaning, not just words).
+ 	- Amazon Kendra lets you search across multiple data sources like:
+		- PDFs and Word documents
+		- Websites
+		- Databases
+		- Knowledge bases
+		- Internal company portals (SharePoint, S3, etc.)
+	- workflow
+	```
+	User Question
+	      ↓
+	Amazon Kendra
+	      ↓
+	Search Across Data Sources
+	      ↓
+	AI Ranking + Extraction
+	      ↓
+	Precise Answer
+	```
 - Features
-1. Natural Language Search
-You can ask questions like:
-"What is the leave policy for new employees?"
-and get a direct answer from documents.
+1. Natural Language Search:
+- You can ask questions like:
+	- "What is the leave policy for new employees?"
+	- and get a direct answer from documents.
 
-2. Semantic Search (AI-based)
-Understands meaning, not just keywords:
-“sick leave rules” ≈ “medical leave policy”
-3. Answer Extraction
-Instead of showing only links, it:
-Extracts exact answers
-Highlights relevant document sections
-4. Multiple Data Sources
-Supports:
-Amazon S3
-SharePoint
-Databases (SQL, NoSQL)
-Web content
-Internal file systems
-5. Machine Learning Ranking
-Results are ranked based on:
-Relevance
-Context
-User intent
+2. Semantic Search (AI-based): 
+	- Understands meaning, not just keywords:
+		- “sick leave rules” ≈ “medical leave policy”
+3. Answer Extraction:
+	- Instead of showing only links, it:
+		- Extracts exact answers
+		- Highlights relevant document sections
+4. Multiple Data Sources:
+	- Supports:
+		- Amazon S3/ SharePoint/ Databases (SQL, NoSQL)/ Web content/ Internal file systems
+5. Machine Learning Ranking:
+	- Results are ranked based on:
+		- Relevance/ Context/ User intent
 
 
-### Amazon Personalize
-- is a machine learning–based recommendation service from AWS that helps you deliver personalized product, content, or item recommendations to users in real time.
+### Amazon Personalize (item recommendations to users)
+- helps you deliver personalized product, content, or item recommendations to users in real time.
 - It works like the recommendation systems used by Amazon retail, Netflix, or YouTube.
 -  Amazon Personalize analyzes user behavior and generates recommendations based on:
-Click history
-Purchase history
-Browsing activity
-Ratings and interactions
-
+	- Click history/ Purchase history/ Browsing activity/ Ratings and interactions
 - workflow
+  ```
   User Data + Item Data + Interaction Data
               ↓
         Amazon Personalize
@@ -5235,8 +5203,7 @@ Ratings and interactions
      ML Recommendation Model
               ↓
      Personalized Suggestions
-
-- use case
+	```
 | Industry   | Use Case                 |
 | ---------- | ------------------------ |
 | E-commerce | Product recommendations  |
@@ -5246,26 +5213,25 @@ Ratings and interactions
 | Education  | Course recommendations   |
 
 - Input:
-User viewed: Mobile phones, headphones
-Output:
-Best smartphone deals
-Recommended accessories
-Similar gadgets
+	- User viewed: Mobile phones, headphones
+- Output:
+	- Best smartphone deals
+	- Recommended accessories
+	- Similar gadgets
 
 
 ### Amazon Textract
-- it is a machine learning service from AWS that automatically extracts text, forms, and tables from scanned documents, PDFs, and images.
+- ML service from AWS: extracts text, forms, and tables from scanned documents, PDFs, and images.
 - workflow
-  Document / Image / PDF
+```
+Document / Image / PDF
         ↓
 Amazon Textract
         ↓
 Extracted Text + Tables + Forms
         ↓
 Structured JSON Output
-
-
-
+```
 
 ### Amazon Cloud watch metrics
 - monitor the performance and health of AWS resources, applications, and services.
@@ -5280,26 +5246,24 @@ Structured JSON Output
 
 
 ### Amazon Cloud watch logs
-- centralized logging service in AWS used to collect, store, monitor, and analyze log files from AWS resources, applications, and on-premises servers.
-- Main Components
-- Log Groups: A container for log streams, usually organized by application or service.
-Examples:
-/aws/lambda/my-function
-/ec2/app-server
-- Log Streams: Sequences of log events from a single source.
-Examples:
-One EC2 instance
-One Lambda execution environment
-- Log Events: Individual log records containing:
-Timestamp
-Message
+- centralized logging service in AWS: used to collect, store, monitor, and analyze log files from AWS resources, applications, and on-premises servers.
+- Main Components:
+	- Log Groups: A container for log streams, usually organized by application or service.
+	- Examples:
+		- /aws/lambda/my-function
+		- /ec2/app-server
+	- Log Streams: Sequences of log events from a single source.
+	- Examples:
+		- One EC2 instance
+		- One Lambda execution environment
+	- Log Events: Individual log records containing: Timestamp, Message
 
 - can define log expiration period (never expire, 1 day-10 years)
 - logs are encrypted by default
 - can setup KMS based encryption with your own keys.
 
 - log sources:
-  | Source        | Example                       |
+| Source        | Example                       |
 | ------------- | ----------------------------- |
 | EC2           | Application logs, system logs |
 | Lambda        | Function execution logs       |
@@ -5312,27 +5276,27 @@ Message
 - for long-term storage, analytics, backup, or compliance.
 - log data can take up to 12hrs to become available for export.
 
-How CloudWatch Logs Export Works
+**How CloudWatch Logs Export Works**
 
-CloudWatch Logs:
-
-Reads log data from a log group.
-Creates export tasks.
-Writes compressed .gz log files into an S3 bucket
+- CloudWatch Logs:
+	- Reads log data from a log group.
+	- Creates export tasks.
+	- Writes compressed .gz log files into an S3 bucket
 
 - Typical flow: CloudWatch Logs → Export Task → S3 Bucket
 
-- Cloud watch log subscription: let you stream log events in near real time from CloudWatch Logs to other AWS services.
+- **Cloud watch log subscription:** let you stream log events in near real time from CloudWatch Logs to other AWS services.
 - architecture:
-  Application
+```
+Application
    ↓
 CloudWatch Logs
    ↓
 Subscription Filter
    ↓
 Lambda / Firehose / Kinesis
-
-- A subscription filter in Amazon CloudWatch Logs is a rule that continuously matches log events and forwards them to another AWS service in near real time.
+```
+- **Subscription filter** in Amazon CloudWatch Logs is a rule that continuously matches log events and forwards them to another AWS service in near real time.
 It acts like a pipeline between CloudWatch Logs and a destination service.
 - The filter:
 	- Watches incoming logs
@@ -5341,50 +5305,39 @@ It acts like a pipeline between CloudWatch Logs and a destination service.
 
 
  ### Cloud watch logs for EC2
- - by default, no logs from your EC2 instance will go to CloudWatch
- - you need to run a cloudwatch agent on EC2 to push the log files you want
- - make sure IAM permission are correct
+ - by default, no logs from your EC2 instance will go to CloudWatch.
+ - you need to run a cloudwatch agent on EC2 to push the log files you want.
+ - make sure IAM permission are correct.
  - the cloudwatch agent can be on-premises too.
 
 ### CloudWatch Logs Agent (Old Agent)
-- Purpose:
-Send log files to CloudWatch Logs
-
-Typical logs:
-
-/var/log/messages
-/var/log/nginx/access.log
-Application logs
+- Purpose: Send log files to CloudWatch Logs
+- Typical logs:
+	- /var/log/messages
+	- /var/log/nginx/access.log
+	- Application logs
 
 - Architecture:
-
+```
 Server Log Files
       ↓
 CloudWatch Logs Agent
       ↓
 CloudWatch Logs
-
+```
 ### Unified CloudWatch Agent (Recommended)
-
-Purpose:
-Collect logs + metrics together
-
-Can collect:
-CPU
-Memory
-Disk
-Network
-Processes
-Application logs
+- Purpose: Collect logs + metrics together
+- Can collect:
+	- CPU, Memory, Disk, Network, Processes, Application logs
 
 - Architecture:
-
+```
 Metrics + Logs
        ↓
 Unified CloudWatch Agent
        ↓
 CloudWatch Metrics + Logs
-
+```
 
 ### Cloudwatch alarm
 - alarms are used to trigger notification for any metrics
