@@ -4552,34 +4552,33 @@ Access App APIs
 
 ### Amazon Neptune
 - fully managed graph database
-- a popular graph dataset would be a social network
+- can store up to billions of relations and query the graph with milliseconds latency
+- example: a popular graph dataset would be a social network
     - users have friends
     - posts have comments
     - comments have likes from users
     - users share and like posts
 - highly available across 3AZ, with upto 15 read replicas
 - build and run applications working with highly connected datasets
-- can store up to billions of relations and query the graph with milliseconds latency
 - highly available with replications across multiple AZs
 
 ### Amazon Neptune - Streams
-- real time ordered sequence of every chagne to your graph data
+- real time ordered sequence of every change to your graph data
 - changes are available immediately after writing
 - no duplicates, strict order
 - streams data is accessible in an HTTP REST API
 
 
-### Anazon Keyspaces ( for Apache Cassandra)
+### Amazon Keyspaces ( for Apache Cassandra)
 - open source NoSQL distributed database
-- it is a serverless, scalable, highly available, fully managed by AWS
 - automatically scale tables up/down based on the application's traffic
 - tables are replicated 3 times across multiple AZ
 - using the CQL(cassandra query language)
-- single digit millisecond latency at any scale, 1000s of requests per second
+- single digit millisecond latency at any scale, handle 1000s of requests per second
 
 
  ### Amazon Timestream
- - fully managed, fast, scalable, sreverless time series database
+ - serverless timeseries db.
  - automatically scales up/down to adjust capacity
  - store and analayze trillions of events per day
  - 1000s times faster and 1/10th the cost of relational databases (cheaper)
@@ -4614,10 +4613,7 @@ Returns results
 
 - AWS tool for dashboards and data visualisation
 - It converts raw data into:
-    - graphs
-    - charts
-    - reports
-    - interactive dashboards
+    - graphs/ charts/ reports/ interactive dashboards
 
 | Feature | QuickSight | Athena |
 | --- | --- | --- |
@@ -4639,7 +4635,7 @@ Returns results
 | Amazon CloudWatch | Monitoring dashboards |
 | AWS Lambda | Automation/workflows |
 | AWS Identity and Access Management IAM | Access control/security |
-
+```
 Data Source
 ↓
 Athena / Redshift / RDS
@@ -4647,7 +4643,7 @@ Athena / Redshift / RDS
 QuickSight
 ↓
 Dashboards & Reports
-
+```
 ### Redshift
 
 - AWS data warehouse for analysing huge amounts of data
@@ -4674,7 +4670,7 @@ Dashboards & Reports
     - using SQL queries
 
 **Architecture:**
-
+```
 Client SQL Query
 ↓
 Leader Node
@@ -4682,7 +4678,7 @@ Leader Node
 Compute Nodes
 ↓
 Parallel Processing
-
+```
 | Component | Purpose |
 | --- | --- |
 | Leader Node | Receives SQL queries and coordinates execution |
@@ -4732,20 +4728,16 @@ Example:
 
 ### Redshift Spectrum
 
-Amazon Redshift Spectrum allows **Redshift** to query data directly from:
+Amazon Redshift Spectrum allows **Redshift** to query data directly from Amazon S3 without loading data into Redshift.
 
-- Amazon S3
-
-without loading data into Redshift.
-
-```jsx
+```
       Query
         ↓
 Amazon Redshift Cluster (leader node, compute node)
         ↓
 Redshift Specturm
         ↓
-			 S3
+	   S3
 ```
 
 ### Amazon Open Search Service
@@ -4778,7 +4770,7 @@ Amazon OpenSearch Serverless:
 
 ### Amazon EMR (Elastic MapReduce)
 
-- It is used to process and analyze **huge amounts of data** using big data frameworks.
+- used to process and analyze **huge amounts of data** using big data frameworks.
 
 | Component | Purpose |
 | --- | --- |
@@ -4788,7 +4780,7 @@ Amazon OpenSearch Serverless:
 | Task Nodes | Extra processing only |
 
 EMR creates a cluster of EC2 instances to process big data in parallel.
-
+```
 Large Dataset
 ↓
 Split Across Multiple Machines
@@ -4796,7 +4788,7 @@ Split Across Multiple Machines
 Parallel Processing
 ↓
 Fast Results
-
+```
 **Why EMR is Needed**
 
 Traditional systems struggle with:
@@ -4828,7 +4820,7 @@ EMR solves this using:
 | Glue Studio | Visual ETL builder |
 | Glue DataBrew | No-code data preparation |
 | Glue Job bookmarks | prevent re-processing old data |
-| Glud dataBrew | clean and normalize data using pre-built transformation |
+| Glue dataBrew | clean and normalize data using pre-built transformation |
 
 ### AWS Lake
 
