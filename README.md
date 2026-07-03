@@ -1290,7 +1290,7 @@ Feature naming:
     
     Upload completes → instance removed safely ✅
     
-
+---
 ### Auto Scaling Group
 
 automatically manages a group of EC2 instances to ensure:
@@ -1334,30 +1334,18 @@ Now AWS automatically:
     
     A Launch Template can include:
     
-    1. **AMI (Amazon Machine Image)**
+    1. **AMI (Amazon Machine Image)**  → OS like Amazon Linux, Ubuntu
         
-        → OS like Amazon Linux, Ubuntu
+    2. **Instance Type** → t2.micro, t3.medium, etc.
         
-    2. **Instance Type**
+    3. **Key Pair** → For SSH login
         
-        → t2.micro, t3.medium, etc.
-        
-    3. **Key Pair**
-        
-        → For SSH login
-        
-    4. **Security Groups**
-        
-        → Firewall rules
+    4. **Security Groups** → Firewall rules
         
     5. **IAM Role**
-    6. **User Data Script**
+    6. **User Data Script** → Commands that run when instance starts
         
-        → Commands that run when instance starts
-        
-    7. **Storage configuration**
-        
-        → EBS volume size
+    7. **Storage configuration** → EBS volume size
         
     8. **Network settings**
         
@@ -1404,7 +1392,7 @@ Now AWS automatically:
         Now whenever traffic increases:
         
         👉 Auto Scaling Group launches new identical servers using this template.
-        
+  
         ### **CloudWatch Alarm**
         
         A **CloudWatch Alarm** monitors a specific metric and takes action when it crosses a threshold.
@@ -1539,14 +1527,10 @@ Now AWS automatically:
         > 
         
         **Step-by-step Flow:**
-        
-        CloudWatch collects historical metrics (CPU, load, request count).
-        
-        AWS analyzes patterns (daily, weekly traffic trends).
-        
-        AWS creates a traffic forecast.
-        
-        ASG launches required instances in advance.
+       -  CloudWatch collects historical metrics (CPU, load, request count).
+       -  AWS analyzes patterns (daily, weekly traffic trends).
+       -  AWS creates a traffic forecast.
+       -  ASG launches required instances in advance.
         
         **Example** 
         
@@ -1566,7 +1550,7 @@ Now AWS automatically:
         
         It is a **waiting period** after a scaling activity completes, during which the ASG temporarily **pauses additional scaling actions**.
         
-                                                                   **default period :** 300 seconds.
+        **default period :** 300 seconds.
         
         **Why Do We Need Cooldown?**
         
@@ -1678,41 +1662,32 @@ If you host a static website in S3:
 
 It allows you to run **small pieces of JavaScript code at AWS edge locations**.
 
-👉 It runs **before the request reaches your origin server**
-👉 Used for **simple request/response modifications**
-👉 Extremely fast and low cost
+- 👉 It runs **before the request reaches your origin server**
+- 👉 Used for **simple request/response modifications**
+- 👉 Extremely fast and low cost
 
 **Where Does It Run?**
 
 It runs at **CloudFront Edge Locations** during:
 
 ✅ Viewer Request
-
 ✅ Viewer Response
 
 ⚠ It does NOT run at origin request/response stage.
 
 **Why Do We Use It?**
 
-To modify:
+To modify: URL, Headers, Cookies, Redirects, Basic authentication, A/B testing
 
-URL, Headers, Cookies, Redirects, Basic authentication, A/B testing
-
-Without touching:
-
-EC2,ALB, Backend server
+Without touching: EC2,ALB, Backend server
 
 **How It Works (Simple Flow)**
 
-User sends request
-
-CloudFront receives it
-
-CloudFront Function executes
-
-Request is modified (if needed)
-
-Forwarded to origin (or served from cache)
+- User sends request
+- CloudFront receives it
+- CloudFront Function executes
+- Request is modified (if needed)
+- Forwarded to origin (or served from cache)
 
 | Feature | CloudFront Functions |
 | --- | --- |
@@ -1845,9 +1820,8 @@ It is the **normal IP communication** used on the internet.
 
 **How It Works?**
 
-A client sends request to a **specific server IP**
-
-That request always goes to **that exact server**
+- A client sends request to a **specific server IP**
+- That request always goes to **that exact server**
 
 Example:
 
@@ -1864,7 +1838,7 @@ All requests go to that single machine
 Multiple servers share **the same IP address**.
 
 Routing automatically sends user to the **closest location**.
-Anycast IP sends the traffice directly to Edge location.
+Anycast IP sends the traffic directly to Edge location.
 ### **AWS Global Accelerator (GA)**
 
 It is a networking service that:
@@ -1984,12 +1958,12 @@ It is a package format that allows developers to deploy their AWS Lambda functi
 
 ### **Lambda@Edge**
 
-It is an extension of AWS Lambda that allows you to run code at **CloudFront edge locations**.
-It lets you execute logic **closer to users**, before or after content is served.
-It works together with Amazon CloudFront.
+- It is an extension of AWS Lambda that allows you to run code at **CloudFront edge locations**.
+- It lets you execute logic **closer to users**, before or after content is served.
+- It works together with Amazon CloudFront.
 
 **Where Can It Run?**
-Lambda@Edge can execute at 4 different stages:
+- Lambda@Edge can execute at 4 different stages:
 
 | **Stage** | **What It Means** |
 | --- | --- |
