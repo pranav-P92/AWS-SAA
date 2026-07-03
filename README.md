@@ -308,8 +308,8 @@ An **IAM policy** is a **JSON document** that defines **permissions**
 
 It is a feature of **Amazon EC2** that lets you **run a script automatically when an EC2 instance starts for the first time**. 
 
-(startup instructions for the server ~bootstrap script)
-
+**(startup instructions for the server ~bootstrap script)
+**
 - It runs on first launch.
 - executes as root user.
 - used to install software(Apache, Docker, Node.js,….), update OS packages, start services etc
@@ -368,9 +368,8 @@ ex: m5.2xlarge (API name)
 
 ### Security Groups
 
-In **Amazon EC2**, **Security Groups** act as a **virtual firewall** that controls **who can access your EC2 instances**.
-
-They decide **which traffic is allowed IN and OUT** of your instance.
+- act as a **virtual firewall** that controls **who can access your EC2 instances**.
+- They decide **which traffic is allowed IN and OUT** of your instance.
 
 ### What Security Groups do
 
@@ -401,10 +400,10 @@ They decide **which traffic is allowed IN and OUT** of your instance.
 | Windows<10 |  |            ✅ |                  ✅ |
 | Windows≥10 |             ✅ |            ✅ |                  ✅ |
 
-**EC2 Instance Connect (EIC): connect to a EC2 instance using SSH without using PUTTY or permanent key pairs**.
-- PuTTY is a software tool (SSH client) used to connect to remote servers.
-- SSH is a protocol (communication method) used to securely connect to remote systems.
-- EC2 Instance Connect is an AWS service that lets you connect to your instance directly from the browser.
+**EC2 Instance Connect (EIC)**: connect to a EC2 instance using SSH without using PUTTY or permanent key pairs.
+- **PuTTY** is a software tool (SSH client) used to connect to remote servers.
+- **SSH** is a protocol (communication method) used to securely connect to remote systems.
+- **EC2 Instance Connect** is an AWS service that lets you connect to your instance directly from the browser.
 
 | **Method** | **Used On** | **How it Works** | **Best For** | **Key Needed** |
 | --- | --- | --- | --- | --- |
@@ -413,47 +412,45 @@ They decide **which traffic is allowed IN and OUT** of your instance.
 | **EC2 Instance Connect** | Any OS (browser) | AWS Console → temporary SSH key | Quick, secure access | ❌ No permanent key |
 
 ### EC2 Instance Purchasing Options
-
+	- Cheaper to Costliest
+	- Order: Spot Instance < Saving Plan < Reserved Instance < On-Demand < Capacity Reservation < Dedicated Instance < Dedicated Host
 1. **On-Demand Instance**
-    - Pay for what you use
+    - **Pay for what you use**
     - Linux/ Windows : after the first minute billing starts per seconds.
     - no long-term commitment
     - recommend for short term and uninterrupted workloads
     
 2. **EC2 Reserved Instance**
     - up to 72% discount compared to On-Demand
-    - reserve a specific attributes like Instance type, region, tenancy, OS etc
+    - **reserve for a specific period/attributes** like Instance type, region, tenancy, OS etc
     - more reservation period gets more discount.
-    - reserved instance scope: region or zonal.
     - buy & sell in the reserved instance marketplace.
     - Convertible reserved instance
         - can change the Instance type, region, tenancy, OS
         - upto 66% discount
     - recommend for steady usage application
 
-1. **EC2 Savings Plan**
-    - get discount based on long-term usage. (upto 72%)
+3. **EC2 Savings Plan**
+    -** get more discount based on long-term usage**. (upto 72%)
     - commit to a certain type of usage ($10/hr for 1 or 3 yrs)
     - usage beyond EC2 Savings plan is billed at the on-demand price
-    - fixed to specific instance type or AWS region
 
-1. **EC2 Spot Instances**
+4. **EC2 Spot Instances**
     - can get a discount upto 90% compared to on-demand.
-    - instance that you can lose at any point of time if your max price < current spot price.
+    - **instance that you can lose at any point of time** if your max price < current spot price.
     
-2. **EC2 Dedicated Host**
-    - gives you a **physical server fully dedicated to your use** in **Amazon EC2**.
+5. **EC2 Dedicated Host**
+    - gives you a **physical server is dedicated only to your use** in **Amazon EC2**. No other AWS customers share that server.
     - Purchasing options:
         - reserved: 1-3year
     - used for the software that has complicated licensing model
 
-1. **EC2 Dedicated Instance**
+6. **EC2 Dedicated Instance**
     - instances run on hardware that’s dedicated to you.
     - may share the hardware with other instances in same account.
 
-1. **EC2 Capacity Reservations**
-    - reserve on-demand instances capacity in specific AZ for any duration.
-    - always have the access to EC2 capacity when you need it.
+7. **EC2 Capacity Reservations**
+    - **reserve EC2 capacity in a specific AZ so that instances are available whenever you need them.**
     - no time commitment (create/ cancel anytime), no billing discounts.
     - suitable for short term, uninterrupted workload that need to be in a specific AZ.
 
@@ -503,8 +500,8 @@ Networking has 2 sorts of IPs:
 
 ### Public IP
 
-- Used to access the instance from the internet.
-- Assigned by AWS
+- **Used to access the instance from the internet.**
+- Assigned by AW
 - Changes when instance is stopped or started
 - Only works if:
     - Instance is in a **public subnet**
@@ -522,7 +519,8 @@ Networking has 2 sorts of IPs:
 
 ### Elastic IP (EIP)
 
-- A **static public IP** that **does not change**
+- A **static public IP** that **does not change** when you stop and start the instance.
+- Elastic IP can be remapped from one EC2 instance to another EC2 instance, allowing quick recovery during instance failure.
 - fixed public access
 - free when attached, charged when unused.
 - account can have only 5 elastic IPs (ask AWS to increase)
@@ -535,7 +533,7 @@ Networking has 2 sorts of IPs:
 
 Types:
 
-- **Cluster**: Instance are placed in same AZs.
+- **Cluster**: Instance are placed close together in same AZs.
     - **goal** : low latency, high throughput
     - cluster instances into a low latency group in a single availability zones.
     - If AZ fails → all impacted
@@ -546,12 +544,11 @@ Types:
     - limit: Max 7 instances per AZ (per group)
     - can spread across different AZs
     - reduced risk of simultaneous failure.
-- **Partitions**: Instances split into isolated partitions in multiple AZs. each partitions can have multiple EC2 instances.
+- **Partitions**: Instances are divided into Parititions. Each partition uses separate hardware.
     - goal: Balance **scale + fault isolation**
     - scale: Hundreds of instances per group
-    - can span across multiple AZs in the same region
-    - The instance in the partition does not share rack with the instances in the other partitions
-    - A partition failure can affect many EC2 but won’t affect other partition.
+    - If one partition fails, others are not affected.
+    - can span across multiple AZs in the same region.
     - EC2 instances get access to the partition information as metadata.
 
 ### **Elastic Network Interface (ENI)**
@@ -559,7 +556,7 @@ Types:
 **It is virtual network card** that is attached to an EC2 instance in **Amazon EC2**.
 - provides network connectivity for instances within an VPC.
 - Without ENI, an EC2 instance cannot communicate.
-	- ENI gives:IP address, Network identity, Ability to send/receive data
+	-** ENI gives**: IP address, Network identity, Ability to send/receive data
 
  -  Simple Analogy
 	- ENI is like a SIM card in a phone
@@ -584,16 +581,10 @@ create ENI independently and attach them on the fly(move them) on EC2 instances 
 
 ### Why ENIs are useful
 
-- High availability / failover
-    - Detach ENI from a failed instance
-    - Attach it to a healthy instance
-    - **IP address stays the same**
-- Multiple network interfaces
-    - One instance can have **multiple ENIs**
-    - Separate traffic (public vs backend)
-- Security separation
-    - Different **security groups per ENI**
-    - Isolate traffic types
+- keep the same private IP: detach an ENI from one instance and attach it to another.
+- If an EC2 instance fails, move the ENI to another instance quickly helps to reduce downtime.
+- EC2 instace can have multiple ENI's. useful for separating traffic.
+- When ENI moves, the security configuration moves too.
 
 ### **EC2 Hibernation**
 
@@ -625,9 +616,9 @@ An **EBS volume (Elastic Block Store volume)** is a **persistent block storage d
 - EBS can only be mounted to one instance at a time.
 - Data remains safe even if the instance is stopped.
 - Can attach/detach volumes anytime
-- Its locked to specific AZ zone
-an EBS volume in us-east-1a cannot be attached to us-east-1b
-To move data across, you need to create a snapshot of it (backup).
+- Its locked to specific AZ zone,
+	- an EBS volume in us-east-1a cannot be attached to us-east-1b
+	- To move data across, you need to create a snapshot of it (backup).
     
     ### **EBS SNAPSHOTS**
     
@@ -671,7 +662,9 @@ It contains everything needed to launch an instance:
 - Configuration settings
 
 AMI are built to specific region(and can be copied across regions)
+
 Uses **EBS snapshots** internally
+
 AMI is created from EBS snapshots
 
 Type of AMI to launch EC2 instances:
@@ -691,10 +684,9 @@ AMI process(from an EC2 instance)
 
 ### EC2 Instance Store
 
-An **EC2 Instance Store** is a **temporary (ephemeral) block storage** that is physically attached to the host machine running your EC2 instance.
+It is a **temporary (ephemeral) block storage** that is physically attached to the host machine of an EC2 instance. 
 
- A **local hard disk of the server** (not network storage like EBS)
-
+ A **local hard disk of the server**:
 - very fast but data is lost when the instance stops/ terminates.
 - High performance- very low latency.
 - High IOPS (input/output operations per second).
@@ -714,8 +706,8 @@ EBS Volume types
 	- Best default choice for most workloads
 	- Balanced cost and performance
 	- Independent configuration of:
-	- IOPS (up to 16,000)
-	- Throughput (up to 1,000 MB/s)
+		- IOPS (up to 16,000)
+		- Throughput (up to 1,000 MB/s)
 	- 	Use for:
 		- Web servers
 		- Small/medi-um databases
@@ -759,37 +751,39 @@ EBS Volume types
 		- Archives
 
 NOTE:
-gp3 → Default choice for most use cases
-io2 → High-performance, critical workloads
-st1 → Large sequential workloads
-sc1 → Cold/archival data
+- SSD-> Fast
+- HDD-> Cheap (storage)
+  
+- gp3 → Default choice for most use cases
+- io2 → High-performance, critical workloads
+- st1 → Large sequential workloads
+- sc1 → Cold/archival data
 
 
 ### EBS Multi attach
-- attach the same EBS Volume to multiple EC2 in the same AZ
+- feature that allows to attach the same EBS Volume to multiple EC2 in the same AZ.
 - each instance has full read & write permissions to the high performance volume
 - can attach up to 16 EC2 instance at a time
 
+NOTE: 
+- Normal EBS: One volume-> one EC2
+- EBS Multi- attach: Once Volume -> Multiple EC2
 
 ### EBS Encryption
 EBS encryption ensures that data stored in an EBS volume is:
+- Encrypted at rest
+- Encrypted in transit between EC2 and EBS
+- Encrypted in snapshots and backups
 
-Encrypted at rest
-Encrypted in transit between EC2 and EBS
-Encrypted in snapshots and backups
 
-
-Encryption: encrypt an unencrypted EBS volume
-- create an EBS snapshot of the volume
-- encrypt the EBS snapshot (using copy)
-- create new ebs volume from the snapshot (the volume will also be encrypted)
+** Process to Encrypt an unencrypted EBS volume**
+- create a snapshot of the unencrypted EBS volume
+- copy the snapshot and enable encryption during the copy process.
+- create new EBS volume from the snapshot (the volume will also be encrypted)
 - now you can attach the encrypted volume to the original instance.
-
-
 
 ### KMS key 
 - A KMS key in Amazon EBS is the encryption key used to protect your data when you enable EBS encryption.
-
 
 ### EFS (Elastic File System)
 
@@ -847,6 +841,7 @@ example:
 
 **Vertical Scaling** 
 - Increase instance size
+
 **Horizontal Scaling**
 - Increase number of instances
     - Auto Scaling Group
@@ -872,9 +867,7 @@ example:
 
 ### **What is Elastic Load Balancing (ELB)?**
 
-**Automatically distributes incoming traffic across multiple targets (EC2, containers, IPs)**
-
-to keep your application **highly available, scalable, and fault-tolerant**
+**Automatically distributes incoming traffic across multiple targets (EC2, containers, IPs)** to keep your application **highly available, scalable, and fault-tolerant**
 
 ### Health Checks
 
@@ -938,8 +931,8 @@ Deploy, Scale and Manage a fleet of 3rd party network virtual appliances in AWS.
 
 Combines the following functions:
 
-- Transparent Network Gateway: single entry/exit for all traffic.
-- Load Balancer: distributes traffic to virtual appliances.
+- **Transparent Network Gateway:** single entry/exit for all traffic.
+- **Load Balancer:** distributes traffic to virtual appliances.
 
 Uses the GENEVE protocol on port 6081
 
@@ -966,6 +959,7 @@ GLB Target groups:
 - Used only in **legacy systems**
 - Not recommended for new apps
 
+---
 ### Security groups
 
 It act as a virtual firewall for your load balancer, controlling both the inbound traffic it accepts from clients and the outbound traffic it sends to backend targets.
@@ -990,12 +984,11 @@ NLB Target Groups:
 - IP addresses
 - application Load Balancer
 - Health checks support the TCP HTTP and HTTPS protocol.
-
+---
 ### STICKY SESSIONS (Session Affinity)
 
- user’s requests are always sent to the **same backend server** for a period of time.
-
-Instead of distributing each request randomly, the load balancer “sticks” the user to **one instance**.
+- user’s requests are always sent to the **same backend server** for a period of time.
+- Instead of distributing each request randomly, the load balancer “sticks” the user to **one instance**.
 
 This works for ALB & CLB.
 
@@ -1010,7 +1003,7 @@ This works for ALB & CLB.
 
    Used when application stores:
 
-- Login session in memory
+- Login session in-memory
 - Shopping cart data
 - Temporary user data
 
@@ -1056,7 +1049,7 @@ So next time:
         2. ALB → Instance A
         3. ALB sends cookie: `AWSALB=xyz`
         4. For the configured duration (e.g., 1 hour), all requests go to Instance A.
-
+---
 ### CROSS-ZONE LOAD BALANCING
 
 The load balancer distributes traffic **equally across all registered targets in all Availability Zones**, regardless of which AZ the request came from.
@@ -1132,7 +1125,7 @@ Each instance gets:
   • pay charges if enabled | ✅ Yes | Enabling may incur cross-AZ data charges |
 | AWS Gateway Load Balancer | ✅ Yes | ❌ Disabled
 • pay charges if enabled | ✅ Yes | Used mainly for network appliances |
-
+---
 ### SSL/TLS
 
 **SSL (Secure Sockets Layer)** and **TLS (Transport Layer Security)** are protocols used to:
@@ -1172,7 +1165,7 @@ With SSL/TLS:
 ### Load Balancer - SSL Certificates
 
 - load balancer uses an X.509 certificate (SSL/TLS server certificate)
-- SSL Certificate is a file that encrypts the data between the user & server.
+- **SSL Certificate is a file that encrypts the data between the user & server.**
 - HTTPS traffic is encrypted from user to load balancer.
 - Load balancer uses an SSL certificate (via ACM)
 - It decrypts and forwards traffic to backend servers
