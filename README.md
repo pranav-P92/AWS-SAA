@@ -38,7 +38,7 @@ AWS Cloud Use Cases
 
 ## AWS REGION
 
-- AWS Regions are geographical areas around the world where Amazon Web Services (AWS) hosts its data centres.
+- AWS Regions are geographical areas around the world where AWS hosts its data centres.
 - Each **Region** is in a **different country or area**
     
     Examples:
@@ -73,6 +73,7 @@ Independent Data Centres inside a AWS Region.
 ## AWS Edge Locations
 
 These are AWS sites placed close to end users **to deliver content faster.**
+They **do NOT run your EC2 servers or databases.** They only **cache and serve content.**
 
 They are mainly used by:
 
@@ -80,7 +81,6 @@ They are mainly used by:
 - Route 53
 - AWS Shield / WAF
 
-They **do NOT run your EC2 servers or databases.** They only **cache and serve content.**
 
 ## What do Edge Locations do?
 
@@ -113,9 +113,9 @@ So users don’t need to go all the way to your main Region every time.
 ### **IAM USERS**
 
 - A **person or application** that needs access to AWS.
+- Permanent Identity/ Long-term credentials
     
     **Example**:
-    
     - You (developer)
     - Admin user
     - Application user
