@@ -72,8 +72,8 @@ Independent Data Centres inside a AWS Region.
 
 ## AWS Edge Locations
 
-These are AWS sites placed close to end users **to deliver content faster.**
-They **do NOT run your EC2 servers or databases.** They only **cache and serve content.**
+- These are AWS sites placed close to end users **to deliver content faster.**
+- They **do NOT run your EC2 servers or databases.** They only **cache and serve content.**
 
 They are mainly used by:
 
@@ -82,17 +82,11 @@ They are mainly used by:
 - AWS Shield / WAF
 
 
-## What do Edge Locations do?
+### What do Edge Locations do?
 
 They store **copies of your static content**, like:
 
-✅ Images
-
-✅ Videos
-
-✅ CSS / JS files
-
-✅ HTML pages
+✅ Images/ Videos/ CSS / JS files/ HTML pages
 
 So users don’t need to go all the way to your main Region every time.
 
