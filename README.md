@@ -2193,28 +2193,28 @@ Instead of every app opening its own DB connection:
 	- helps relieve load in RDS.
 
 ### **ElastiCache Solution Architecture - User Session Store**
-    - Instead of storing user session data (like login info, cart, preferences) in app server or DB, it stores in ElastiCache (usually Redis).
-  
-   **How it works**
-        - User logs in
-        - Your app creates a session ID. example- sessionId: abc123xyz.
-        - Session data is stored in ElastiCache (redis)
-        	- session data:
-         		- key: sessionId: abc123xyz
-           		- value: {
+- Instead of storing user session data (like login info, cart, preferences) in app server or DB, it stores in ElastiCache (usually Redis).
+
+**How it works**
+- User logs in
+  - Your app creates a session ID. example- sessionId: abc123xyz.
+    - Session data is stored in ElastiCache (redis)
+      - session data:
+        - key: sessionId: abc123xyz
+          - value: {
 							  userId: 101,
 							  name: "John",
 							  role: "admin"
-							}   
-        - Redis server send cookie (sessionId) to browser. example: set-cookie: sessionId=abc123xyz.
-        - browses stores the cookie.
-        - On next request:
-            - App reads cookie -> get session Id
-            - uses session Id to fetch result from ElastiCache (Redis) (server RAM)
-            - Fetches session data from ElastiCache(redis)
+							}
+- Redis server send cookie (sessionId) to browser. example: set-cookie: sessionId=abc123xyz.
+- browses stores the cookie.
+- On next request:
+  - App reads cookie -> get session Id
+  - uses session Id to fetch result from ElastiCache (Redis) (server RAM)
+    - Fetches session data from ElastiCache(redis)
          
-        - REDIS: software
-        - ElastiCache: AWS managed service that runs REDIS/ MEMCACHED
+- REDIS: software
+- ElastiCache: AWS managed service that runs REDIS/ MEMCACHED
 - Architecture: User → Load Balancer → App Servers → ElastiCache (Redis)
 
 ### **ElastiCache Redis VS Memcached**
@@ -2503,6 +2503,7 @@ routes traffic to the AWS region that provides the lowest network latency.
     - **Rolling** → updates in batches
     - **Rolling with additional batch** → safer
     - **Immutable** → new instances created (most reliable)
+
 | **Aspect**                  | **Elastic Beanstalk**                           | **AWS Lambda**                                           |
 | --------------------------- | ----------------------------------------------- | -------------------------------------------------------- |
 | **Service Type**            | Platform as a Service (PaaS)                    | Function as a Service (FaaS) / Serverless                |
@@ -2574,14 +2575,13 @@ Think of S3 like a **cloud storage drive**:
     - **Metadata** → extra information about the object
 
 **Structure**:
-
-Object
-    ├── Key: images/profile.png
-    ├── Data: (image file)
-   └── Metadata:
-        ├── Size: 2MB
-        ├── Content-Type: image/png
-       └── Last-Modified: date
+- Object
+	-  Key: images/profile.png
+ 	-  Data: (image file)
+  	-  Metadata:
+  		-  Size: 2MB
+  	 	-  Content-Type: image/png
+  	  	-  Last-Modified: date
 
 **Features:**
 
@@ -2593,9 +2593,9 @@ Object
     
 - **Metadata types**
     - **System metadata:** managed by AWS
-    example: size, last modified date
+    	- example: size, last modified date
     - **User metadata:** custom metadata you define
-    example: **x-amz-meta-userid: 123**
+    	- example: **x-amz-meta-userid: 123**
 
 **Key Features of S3 Objects**
 
@@ -2658,7 +2658,7 @@ S3 security is about **protecting your data** by controlling:
     - Bucket Policies:
         - Applied directly to a bucket
         - Controls **who can access the bucket**
-         Used for: Public access/ Cross-account access
+      		- Used for: Public access/ Cross-account access
 - Encryption:
     - Data at Rest:
         - **SSE-S3** → AWS-managed keys
@@ -2666,7 +2666,7 @@ S3 security is about **protecting your data** by controlling:
         - **Client-side encryption**
     - Data in Transit
         - Use **HTTPS (SSL/TLS)**
-        👉 Prevents data interception
+        - Prevents data interception
 
 **S3 bucket Policies:
 JSON-based access control policy** attached directly to an S3 bucket to define **who can access what and how**.
@@ -2829,10 +2829,10 @@ When versioning is enabled:
 
 Each object gets a **Version ID**:
 
-file.txt
-    ├── VersionId: A1 (old)
-    ├── VersionId: B2 (old)
-   └── VersionId: C3 (latest)
+file.txt 
+	- VersionId: A1 (old)
+	- VersionId: B2 (old)
+	-  VersionId: C3 (latest)
 
  By default, latest version is returned
 
@@ -2844,9 +2844,9 @@ It is **NOT permanently deleted**
 S3 adds a **Delete Marker**
 
 file.txt
-    ├── v1
-    ├── v2
-   └── Delete Marker (latest)
+	- v1
+    - v2
+    - Delete Marker (latest)
 
 File appears deleted, but old versions still exist
 
