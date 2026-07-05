@@ -302,8 +302,7 @@ An **IAM policy** is a **JSON document** that defines **permissions**
 
 It is a feature of **Amazon EC2** that lets you **run a script automatically when an EC2 instance starts for the first time**. 
 
-**(startup instructions for the server ~bootstrap script)
-**
+**(startup instructions for the server ~bootstrap script)**
 - It runs on first launch.
 - executes as root user.
 - used to install software(Apache, Docker, Node.js,….), update OS packages, start services etc
@@ -425,7 +424,7 @@ ex: m5.2xlarge (API name)
     - recommend for steady usage application
 
 3. **EC2 Savings Plan**
-    -** get more discount based on long-term usage**. (upto 72%)
+    -**get more discount based on long-term usage**. (upto 72%)
     - commit to a certain type of usage ($10/hr for 1 or 3 yrs)
     - usage beyond EC2 Savings plan is billed at the on-demand price
 
@@ -495,7 +494,7 @@ Networking has 2 sorts of IPs:
 ### Public IP
 
 - **Used to access the instance from the internet.**
-- Assigned by AW
+- Assigned by AWS
 - Changes when instance is stopped or started
 - Only works if:
     - Instance is in a **public subnet**
@@ -550,7 +549,7 @@ Types:
 **It is virtual network card** that is attached to an EC2 instance in **Amazon EC2**.
 - provides network connectivity for instances within an VPC.
 - Without ENI, an EC2 instance cannot communicate.
-	-** ENI gives**: IP address, Network identity, Ability to send/receive data
+	- **ENI gives**: IP address, Network identity, Ability to send/receive data
 
  -  Simple Analogy
 	- ENI is like a SIM card in a phone
@@ -623,9 +622,9 @@ An **EBS volume (Elastic Block Store volume)** is a **persistent block storage d
     - Create a new volume
     - Recover from failures
     
-    - Snapshots are stored in Amazon S3
-    - Snapshots are stored at **region level** (not AZ)
-    - Supports encryption
+	    - Snapshots are stored in Amazon S3
+	    - Snapshots are stored at **region level** (not AZ)
+	    - Supports encryption
     
     ### EBS Snapshot Features
     
@@ -645,9 +644,9 @@ An **EBS volume (Elastic Block Store volume)** is a **persistent block storage d
 
 ### AMI (Amazon Machine Image)
 
-An **AMI** is a **pre-configured template** used to launch EC2 instances in AWS. or
+An AMI is a pre-configured template used to launch(create) EC2 instances in AWS.
 
-A **ready-made OS + software package** that you use to create virtual machines.
+One AMI can be used to launch many EC2 instances with the same configuration. 
 
 It contains everything needed to launch an instance:
 
@@ -656,10 +655,8 @@ It contains everything needed to launch an instance:
 - Configuration settings
 
 AMI are built to specific region(and can be copied across regions)
-
-Uses **EBS snapshots** internally
-
-AMI is created from EBS snapshots
+- Uses **EBS snapshots** internally
+- AMI is created from EBS snapshots
 
 Type of AMI to launch EC2 instances:
 
@@ -669,7 +666,7 @@ Type of AMI to launch EC2 instances:
 | **Private AMI** | Only your account |
 | **Marketplace AMI** | Paid AMIs from AWS Marketplace (someone else made and sells) |
 
-AMI process(from an EC2 instance)
+**AMI process(from an EC2 instance)**
 
 - Start an EC2 instance and customise it.
 - Stop the instance (for data integrity)
@@ -678,7 +675,7 @@ AMI process(from an EC2 instance)
 
 ### EC2 Instance Store
 
-It is a **temporary (ephemeral) block storage** that is physically attached to the host machine of an EC2 instance. 
+a temporary (ephemeral) block storage that is physically attached to the host machine running your EC2 instance.
 
  A **local hard disk of the server**:
 - very fast but data is lost when the instance stops/ terminates.
