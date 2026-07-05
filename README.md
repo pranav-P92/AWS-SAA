@@ -2997,7 +2997,7 @@ Data → Single AZ (high speed)
     - IA → Glacier
     - Glacier → Deep Archive
 
-![image.png](attachment:2ec3c7e3-6bd5-48d1-aebc-230c3b710542:image.png)
+![My local image](storageClass2.png)
 
 - **Expiration Actions**
     - Permanently delete objects after a time
@@ -3039,7 +3039,6 @@ Rules can be applied based on
 **Amazon S3 analytics -Storage class analysis**
 
 - helps you decide when to transition objects to right storage class.
-- determine the optimal timing for moving obejcts between storage tiers effectively.
 - recommendations for standard and standard IA
 - does not work for one zone IA or glacier
 - report is updated daily
@@ -3079,41 +3078,36 @@ When it’s useful
     - Amazon SQD: queue for asynchronous processing
     - Amazon Event bridge: advanced event routing (advanced filterin options with JSON rules )
  
-- Example use cases
-Automatically resize images after upload (Lambda)
-Send alerts when files are deleted (SNS)
-Process logs asynchronously (SQS)
-Trigger workflows or pipelines (EventBridge)
+- Example use cases:
+	- Automatically resize images after upload (Lambda)
+ 	- Send alerts when files are deleted (SNS)
+	- Process logs asynchronously (SQS)
+	- Trigger workflows or pipelines (EventBridge)
 
-- How it works (simple flow)
-File is uploaded to S3
-S3 detects the event
-Notification is sent to the configured destination
-Destination service processes it
+**How it works (simple flow)**
+- File is uploaded to S3
+- S3 detects the event
+- Notification is sent to the configured destination
+- Destination service processes it
 
 - note: Event Notifications need IAM permissions.
 
 **Amazon S3- Baseline Performance**
 - default throughput and request scaling behavior you get from S3 without any special tuning.
-
-- Request rate performance
-
 - Per prefix (folder-like path), S3 supports at least:
 
     - 3,500 PUT/COPY/POST/DELETE requests per second
     - 5,500 GET/HEAD requests per second
-
--  And you can have unlimited prefixes, so you can scale horizontally by spreading objects across prefixes.
 -  More parallel requests + more prefixes = more performance
 
   **S3 Performance**
   - Multi-part upload:
       - recommend for files > 100mb, must use for files > 5GB.
-      - can help parallelize uploads
-    multi part upload: Instead of uploading one big file:
-        - Break it into pieces
-        - Upload pieces at the same time
-        - S3 joins them into one file
+      - can help parallelize uploads:
+    		- Instead of uploading one big file:
+		        - Break it into pieces
+		        - Upload pieces at the same time
+		        - S3 joins them into one file
 - S3 Transfer acceleration:
     - Instead of sending data directly to S3:
         -  Your data goes to the nearest AWS edge location
@@ -3123,20 +3117,19 @@ Destination service processes it
     - let you download only a specific part of a file instead of the whole object.
  
 **Amazon S3- Batch Operations**
+
 - perform bulk operations on existing S3 objects with a single request
-example:
+- example:
     - modify object metadata & properties.
     - copy objects between S3 buckets.
     - encrypt un-encrypted objects.
-    - restore objects from S3 glaciers.
-- use S3 inventory to get object list and use Athena to query and filter objects.
-
 
 **Amazon S3 - Storage Lens**
-helps you analyze and monitor how your S3 storage is being used.
-- It gives you a dashboard + metrics about your S3 usage
-- So you can optimize cost, security, and performance
 
+- helps you analyze and monitor how your S3 storage is being used.
+	- It gives you a dashboard + metrics about your S3 usage
+	- So you can optimize cost, security, and performance
+	
 
 - Metrics:
     - Summary Metrics:
@@ -3238,23 +3231,13 @@ helps you analyze and monitor how your S3 storage is being used.
 - They are records of every request made to your S3 bucket.
 - helpful in auditing, debug
 
-- How to enable S3 access logs:
+- **How to enable S3 access logs:**
     - go to your bucket in AWS
     - open properties
     - scroll to server access logging
     - enable it
     - choose a target bucket (where logs will be stored)
-- Amazon S3 can generate log files showing:
-    - who accessed objects
-    - request type
-  - thes logs are stored as text files in another s3 bucket.
-  - normally these logs are hard to read manually.
-  - athena lets you:
-      - query logs using SQL
-      - search specific events
-      - generate reports
-      - detect suspicious activity
-    - without moving data from S3.  
+ 
 ### Amazon S3- Pre signed URLS
 - its a temporary, secure link that lets someone access a private S3 object without AWS credentials.
 - expiry: you set a time limit (eg. 5min, 1hr, 7days max with SDKs)
@@ -3265,12 +3248,12 @@ helps you analyze and monitor how your S3 storage is being used.
 
 **S3 Glacier Vault Lock**
 
-- It's a feature that lets you lock a policy on a vault so it cannot be changed.
+- lets you lock a policy on a vault so it cannot be changed.
 - it ensures data cannot be deleted or modified before a certain time.
 - eg: financial regulations, healthcare data retention
-- adopt Write Once Read Many model
+- **adopt WORM : Write Once Read Many model**
 - **S3 Object Lock:** versioning must be enabled
-    - adopt a WORM model
+    - adopt a **WORM** model
     - once saved, this file is locked- no one can change or delete it.
     - Retention modes:
         - **Governance mode:**(user with permission can delete/modify)
@@ -3316,20 +3299,22 @@ Create:
 - Access happens via a **VPC Endpoint**
 
 👉 No internet access allowed
+
 **S3 Object Lambda**
+
 Amazon S3 Object Lambda lets you modify the data returned by S3 GET requests using a Lambda function, without changing the original object.
 
 - Think of it as a “middleman” that can transform your files on-the-fly.
 -  Example:
-- You have a file in S3: example.txt containing: Hello world!
+	- You have a file in S3: example.txt containing: Hello world!
     - You create an S3 Object Lambda with a Lambda function that converts text to uppercase.
-`    - When someone GETs example.txt through the Object Lambda endpoint, they see: HELLO WORLD!
-…but the file in S3 stays unchanged.
+    - When someone GETs example.txt through the Object Lambda endpoint, they see: HELLO WORLD!
+    - …but the file in S3 stays unchanged.
 
 
 ### AWS Snowball
 
-- it is a physical data transport device used to transfer large amounts of data into and out of AWS securely and quickly.
+- physical data transport device used to transfer large amounts of data into and out of AWS securely and quickly.
 - Instead of transferring terabytes or petabytes over the internet, AWS ships a secure device to your location.
 
 **Why Snowball is Used**
@@ -3393,7 +3378,7 @@ Using Snowball:
 
 ### Amazon FSx
 
-- It is a fully managed file storage service in AWS that provides high-performance file systems for different workloads.
+- file storage service in AWS that provides high-performance file systems for different workloads.
     
     AWS handles:
     
@@ -3511,7 +3496,7 @@ Using Snowball:
 ### Storage Gateway
 
 - it is a hybrid cloud storage service  that connects on-premises environments with AWS cloud storage.
-- bridge between on-premises data and cloud data.
+- **bridge between on-premises data and cloud data.**
 - use cases:
     - disaster recovery
     - backup & restore
@@ -3607,7 +3592,7 @@ AWS Transfer Family allows them to:
 - Partners continue using SFTP
 - Files stored directly in S3
 
-![image.png](attachment:69bb1abb-682b-4689-b196-7c54c00aebc4:image.png)
+![My local image](storageComparison.png)
 
 | Feature | AWS DataSync | AWS Transfer Family | AWS Snowball |
 | --- | --- | --- | --- |
@@ -3644,7 +3629,7 @@ AWS Transfer Family allows them to:
 
 - It enables applications and services to communicate asynchronously by sending messages through queues.
 - SQS helps:
-    - Decouple applications
+    - **Decouple applications**:  do not directly communicate with each other but instead use messages that are placed in a queue
     - Store messages temporarily
     
     **How SQS Works**
@@ -3671,19 +3656,30 @@ AWS Transfer Family allows them to:
     - retention of messages in queue:
         - default: 4days
         - maximum: 14 days
-    - low latency
     - can have duplicate messages
     - At-least-once delivery: A message is never lost, but it may sometimes be delivered multiple times (duplicates can occur).
+
+**SQS- FIFO Queues**
+
+- Messages are processed in the exact order they are sent (**First-In-First-Out ordering)**
+- **Exactly-once message processing (** by removing duplicates using Deduplication ID **)**
+- no duplicates allowed.
+- message group is supported through message group IDs
+- Different groups: Can process in parallel
+
+**Standard Queue:** use when order is not important, application can handle duplicate messages, need maximum throughput.
+
+**FIFO Queue:** use when order is important, data consistency is critical, no duplicates. 
     
-    **Amazon SQS- Security**
-    
-    - **Encryption**:
-        - In flight encryption using HTTPS API
-        - At-rest encryption using KMS keys
-        - client-side encryption if the client wants to perform encryption/decryption itself
-    - **Access controls :** IAM policies to regulate access to the SQS API
-    - **SQS access policies:**
-        - useful for cross-account access to SQS queues.
+	
+**Amazon SQS- Security**
+- **Encryption**:
+	- In flight encryption using HTTPS API
+    - At-rest encryption using KMS keys
+    - client-side encryption if the client wants to perform encryption/decryption itself
+- **Access controls :** IAM policies to regulate access to the SQS API
+- **SQS access policies:**
+  - useful for cross-account access to SQS queues.
 
 **SQS- Message visibility Timeout**
 
@@ -3700,23 +3696,12 @@ AWS Transfer Family allows them to:
 - the wait time can be between 1sec-20sec
 - long polling can be enabled at the queue level or at the API level using **WaitTimeSeconds**.
 
-**SQS- FIFO Queues**
-
-- Messages are processed in the exact order they are sent.
-- **First-In-First-Out ordering**
-- **Exactly-once message processing (** by removing duplicates using Deduplication ID **)**
-- FIFO queues use:
-    - Message Group IDs
-- Messages in the same group:
-    - Processed sequentially and in order
-- Different groups:
-    - Can process in parallel
-- no duplicates allowed.
 
 ### **Amazon Simple Notification Service (SNS)**
 
 - It is fully managed **publish/subscribe (Pub/Sub)** messaging service
-- used to send messages or notifications to multiple subscribers simultaneously. (One message can be delivered to many receivers.)
+- used to send messages or notifications to multiple subscribers simultaneously.
+-  (One message can be delivered to many receivers.)
 
 **How SNS Works**
 
@@ -3782,12 +3767,12 @@ SNS can send notifications to:
 - **SQS access policies:**
     - useful for cross-account access to SNS topics.
 
-**SNS and SQS Fan-Out Pattern**
+**SNS and SQS Fan-Out Pattern**: Send Messages to multiple SQS queues.
 
 The **Fan-Out Pattern** in AWS is a messaging architecture where:
 
 - One message is sent to an SNS topic
-- SNS distributes copies of the message to multiple SQS queues
+- SNS distributes copies of the **message to multiple SQS queues**
 
 This allows multiple services to process the same event independently.
 
@@ -3799,10 +3784,8 @@ This allows multiple services to process the same event independently.
 - Different services process messages independently.
 
 **Why Use Fan-Out Pattern?**
-
-**Without fan-out:** Producer must send separate messages to every service.
-
-**With fan-out:** Producer sends only once.
+- **Without fan-out:** Producer must send separate messages to every service.
+- **With fan-out:** Producer sends only once.
 
 SNS handles distribution automatically.
 
@@ -3901,8 +3884,6 @@ Many enterprise applications already use:
 - ActiveMQ
 - RabbitMQ
 - JMS
-- AMQP
-- MQTT
 
 Amazon MQ helps migrate these applications to AWS without changing existing messaging logic.
 
@@ -3923,7 +3904,6 @@ Application continues working with minimal changes.
 - apps are packaged in containers that can be run on any OS.
 - app run the same, regardless of where they're run:
     - any machine
-    - no compatibility issues
     - easier to maintain and deploy
     - works with any language, any OS, any technology.
 
@@ -3934,10 +3914,16 @@ Application continues working with minimal changes.
       - find base images for many techonologies or OS
    
 **Amazon ECR (Amazon Elastic Container Registry)**
-- fully managed container image registry service used to store, manage, and deploy Docker and OCI container images.
+- used to store, manage, and retrieve container images for applications running on:
+    - Amazon Elastic Container Service (ECS)
+    - Amazon Elastic Kubernetes Service (EKS)
+    - AWS Fargate
+- (**container image:** blueprint of application- code, libraries, dependencies, configuration files)
+- `docker build` creates the container image, `docker push` stores it in ECR, and ECS/EKS/Fargate `pull` the image from ECR and run it as a container.
 - private repository
 
--  What ECR does
+-  **What ECR does?**
+
 You can:
 - Push Docker images
 - Pull images into deployments
@@ -3946,13 +3932,8 @@ You can:
 - Replicate images across AWS regions/accounts
 - Control access using IAM policies
 
-ECR supports:
-- Docker images
-- OCI images
-- OCI artifacts (Helm charts, signatures, et
 
-
-Typical workflow
+**workflow**
 - Build a Docker image locally
 - Authenticate Docker to ECR
 - Push image to an ECR repository
@@ -3962,38 +3943,38 @@ Typical workflow
     - Kubernetes
     - EC2 instances
     - Lambda container images
-
-- docker vs VM
-    - docker is sort of virtualization technology, but not exactly
-    -  resources are shared with the host-> many containers on one server.
-
+      
+- **ECR** stores container images.
+- **ECS** runs those images as containers.
 
 
-### Amazon ECS 
-- fully managed container orchestration service from AWS
- used to run and scale Docker containers in production.
+### Amazon ECS (Elastic Container Service)
+- used to run and scale Docker containers in production.
 - It helps you deploy containers without managing your own Kubernetes control plane.
 
-- two ECS launch types:
-- EC2 launch type → You manage the servers
-Fargate → AWS manages the servers
-    - EC2 launch type:
+- **two ECS launch types:**
+	- EC2 launch type → You manage the servers
+	- Fargate → AWS manages the servers
+    
+	- **EC2 launch type:**
         - launch Docker containers on AWS = launch ECS tasks on ECS Clusters
         - you must provision and maintain the infrastructure
         - each EC2 instance must run the ECS agent to register in the ECS cluster.
-        - How it works
-Create EC2 instances
-Install ECS agent automatically
-Add EC2 instances to ECS cluster
-Deploy containers to those EC2 machines       
-    - Fargate (serverless containers):
+        - **How it works**
+		    - Create EC2 instances
+		    - Install ECS agent automatically
+		    - Add EC2 instances to ECS cluster
+		    - Deploy containers to those EC2 machines
+		- **ECS Agent** = software running on EC2 that manages communication between ECS and Docker containers. (bridge btw EC2 and ECS)   
+    - **Fargate (serverless containers):**
         -  Fargate Launch Type:
             - launch docker containers on AWS.
             - you do not provision the infrastructure
             - you just create task definitions
-            - AWS just runs ECS tasks for you based on CPU/ RAM u need
-            - to scale, just increase the no of task.
-           | Feature           | ECS EC2 Launch Type       | Fargate                          |
+            - AWS just runs ECS tasks for you based on CPU/ RAM u need to scale, just increase the no of task.
+
+
+| Feature           | ECS EC2 Launch Type       | Fargate                          |
 | ----------------- | ------------------------- | -------------------------------- |
 | Server management | You manage EC2 instances  | AWS manages infrastructure       |
 | Setup complexity  | More                      | Less                             |
@@ -4020,14 +4001,6 @@ Deploy containers to those EC2 machines
       - task role is defined in task definition
 
 
-### Amazon ECR
-- ECR= Elastic Container Registry
-- store and manage docker images on AWS
-- private and public repository
-- fully integrated with ECS, backed by Amazon S3
-- access is controlled through IAM
-- example: let docker images are in ECR repsority, using the IAM roles those images are pulled to the ECS cluster.
-
 ### Amazon EKS
 - Amazon Elastic Kubernetes service
 - Runs Kubernetes clusters on AWS infrastructure
@@ -4038,10 +4011,10 @@ Deploy containers to those EC2 machines
 
   **Amazon EKS - Node types**
   - Managed Node Groups:
-      - creates and manages nodes (EC2 instances) for you.
-      - nodes are part of an ASG managed by EKS
-      - supports on-demand or spot instances
-      - aws automatically manages: EC2 provisioning, updates, scaling, lifecycle management.
+  	- EKS creates and manages the worker nodes for you.
+	- The nodes run in an Auto Scaling Group (ASG).
+	- Supports both On-Demand and Spot Instances.
+	- AWS handles provisioning, updates, scaling, and lifecycle management.
    
 - Self-managed Nodes:
     -  nodes created by you and registered to the EKS cluster and managed by an ASG
@@ -4059,18 +4032,13 @@ Deploy containers to those EC2 machines
   - start with your source code or container image
   - automatically builds and deploy the web app
   - automatic scaling, highly available, load balancer, encryption
-  - VPC access support
   - connect to database, cache, and message queue services
  
   ### AWS App2Container (A2C)
   - CLI tool for migrating and modernizing JAVA and .NET web apps into docker containers.
   - Lift-and-shift your apps running in on-premises bare metal, virtual machines or in any cloud to AWS
-  - accelerate modernization, no code changes, migrate legacy apps
-  - generate cloudformation templates
   - register generated docker containers to ECR
-  - deploy to ECS, EKS or app runner
-  - supports pre-built CI/CD pipelines
- 
+  - deploy to ECS, EKS or app runner 
     
 ### AWS Lambda integrations
 - API Gateway
@@ -4089,7 +4057,6 @@ Deploy containers to those EC2 machines
       - Memory allocation: 128 MB- 10 GB (1 MB increment)
       - Maximum execution time: 900 seconds (15minutes)
       - Environment Variables : 4kb
-      - disk capacity in the 'function continaer' (/tmp): 512mb- 10gb
       - concurrency executions: 1000
   - Deployment:
       - lambda function deployment size (compresse.zip): 50mb
@@ -4098,23 +4065,22 @@ Deploy containers to those EC2 machines
       - size of env variables: 4kb
 
 ### Lambda Concurrency
-- number of instances your Lambda function running at the same time
-- Each concurrent request is runs in its own separate execution environment.
-- concurrency limit: upto 1000 concurrent executions
+- number of Lambda function instances that can run simultaneously.
+- If multiple requests arrive at the same time, AWS Lambda creates multiple instances of the function to handle them.
+- Each concurrent requests, runs in its own separate execution environment.
+- concurrency limit: upto 1000 concurrent executions.
 - can set a 'reserved concurrency' at a function level (can set limit)
 - each invocation over the concurrency limit will trigger a 'Throttle'
- **Throttling** happens when the number of incoming requests exceeds the available concurrency.
-  if a function is throttled, 
-  - if synchronous invocation: return ThrottleError-429
-  - if asynchronous invocation: retry automatically and then go to DLQ
-
--Throttling occurs in these scenarios:
-    - The function exceeds reserved concurrency.
-    - The account exceeds regional concurrency limits.
-    - Burst of traffic exceeds available provisioned/unreserved concurrency.
+- **Throttling** happens when the number of incoming requests exceeds the available concurrency. if a function is throttled,
+	- if synchronous invocation: return ThrottleError-429
+	- if asynchronous invocation: retry automatically and then go to DLQ
+- Throttling occurs in these scenarios:
+	- The function exceeds reserved concurrency. 
+	- The account exceeds regional concurrency limits. 
+ 	- Burst of traffic exceeds available provisioned/unreserved concurrency.
 
   example:
-  | Function | Reserved Concurrency | Incoming Requests | Result                                                                |
+| Function | Reserved Concurrency | Incoming Requests | Result                                                                |
 | -------- | -------------------- | ----------------- | --------------------------------------------------------------------- |
 | MyFunc   | 10                   | 8                 | All 8 requests execute immediately.                                   |
 | MyFunc   | 10                   | 15                | 10 execute immediately, 5 throttled (for async triggers, they retry). |
@@ -4165,7 +4131,7 @@ AWS maintains a specified number of warm execution environments continuously.
 
  
  ### Lambda SnapStart
- -reduces cold start latency by restoring Lambda execution environments from a pre-initialized snapshot instead of initializing them from scratch every time.
+ - reduces cold start latency by restoring Lambda execution environments from a pre-initialized snapshot instead of initializing them from scratch every time.
  - improve the lambda function performance upto 10X at no extra cost for JAVA, python & .NET
  - when enabled, function is invoked from a pre-initialized state
 - when you publish a new version:
@@ -4173,19 +4139,18 @@ AWS maintains a specified number of warm execution environments continuously.
     - takes a snapshot of memory and disk state of the initialized function
     - snapshot is cached for low-latency access.
           
-- How SnapStart Works
-Without SnapStart
-Request arrives
-    → Lambda creates environment
-    → Runtime initializes
-    → Code initializes
-    → Function executes
+- **How SnapStart Works Without SnapStart?**
+	- Request arrives
+  	- Lambda creates environment
+	- Runtime initializes
+   	- Code initializes
+   	- Function executes
 
 - Cold start latency is high.
 
 - With SnapStart
 
--When you publish a Lambda version:
+- When you publish a Lambda version:
 
 Lambda initializes function once
 → Creates encrypted memory snapshot
@@ -4224,70 +4189,40 @@ Instead of rebuilding the environment, AWS restores it from the saved state.
 - scales to massive workloads, distributed database.
 - millions of requests per second
 - integrated with IAM for security, authorization and administration
-- low cost and auto scaling capabilities
 
 - dynamoDB is made of tables
-- each table has a primary key (must be decided at craetion time)
-- each table can have an infinite no of items (rows)
-- each item has attributes (can be added over time- can be null) (columns)
+	- each table has a primary key (must be decided at craetion time)
+	- each table can have an infinite no of items (rows)
+	- each item has attributes (can be added over time- can be null) (columns)
 - maximum size of an item is 400kb
-- dynamo db is better than RDS & Aurora
-
-- DynamoDB Capacity Modes
-    -Provisioned Capacity Mode:
-      - manually specify:
-          - read capacity units (RCUs)
-          - write capacity units (WCUs)
-      How it works
-
-    - Example:
-    
-    - 100 RCUs
+- **dynamo db is better than RDS & Aurora**
+- Example:
+	- 100 RCUs
     - 50 WCUs
-    
-    The table can handle:
-    
-    100 strongly consistent reads/sec (4 KB items)
-    50 writes/sec (1 KB items)
-    
-    If traffic exceeds provisioned capacity:
-    
-    requests may get throttled
-    you receive ProvisionedThroughputExceededException
-    - AutoScaling:
-        - dynamo can automatically increase/decrease RCUs, WCUs based on traffic utilization.
-    
-    
-    -  On demand capcity mode:
+    - The table can handle:
+    	- 100 strongly consistent reads/sec (4 KB items) 50 writes/sec (1 KB items)
+     	- If traffic exceeds provisioned capacity:
+		- requests may get throttled you receive ProvisionedThroughputExceededException
       
-        - do not specify RCUS, wcuS
-        - DynamoDB automatically:
-            - scales up, scales down based on incoming traffic
-          - pay for what you use
-          - no capacity planning needed
 
 ### DynamoDB Accelerator (DAX)
 - fully managed, in-memory cache for Amazon DynamoDB.
 - improves read performance from : milliseconds -> microseconds
 - 5 minutes TTL for cache (default)
--  What is DAX?
 
-DAX sits between: your application & DynamoDB table
+**What is DAX?**
+- DAX sits between: your application & DynamoDB table
 
 - Architecture:
+	- Application -> DAX -> DynamoDB
+-  DAX caches frequently accessed data in memory.
 
-Application
-     ↓
-    DAX
-     ↓
- DynamoDB  
- - DAX caches frequently accessed data in memory.
- - Why Use DAX?
+- **Why Use DAX?**
+	- Without DAX: every read goes to DynamoDB
+	- With DAX: repeated reads are served from cache
 
-- Without DAX: every read goes to DynamoDB
-- With DAX: repeated reads are served from cache
 
-- | Feature             | DAX                   | ElastiCache     |
+| Feature             | DAX                   | ElastiCache     |
 | ------------------- | --------------------- | --------------- |
 | Built for DynamoDB  | Yes                   | No              |
 | API compatible      | Yes                   | No              |
@@ -4298,87 +4233,47 @@ Application
 ### DynamoDB stream Processing
 - captures changes made to a DynamoDB table and allows you to process them in near real time.
 - Whenever an item in DynamoDB is:
-inserted
-updated
-deleted
-- a stream record is generated automatically.
-- Applications can consume these events for processing.
-- Stream Prcoessing flow:
-- DynamoDB Table
-      ↓
- DynamoDB Stream
-      ↓
- Lambda / Kinesis / App
-      ↓
- Process Event
+	- inserted, updated, deleted a stream record is generated automatically.
+ 	- Applications can consume these events for processing. 
+- **Stream Prcoessing flow:**
+	- DynamoDB Table -> DynamoDB Stream -> Lambda / Kinesis / App -> Process Event
 - each stream record contains: event type, timestamp, keys, old image, new image
 
 - DynamoDB global tables:
     - They replicate table data automatically across multiple AWS regions.
-    - active active writes
     - application can READ and WRITE to the table in any region
     - must enable DynamoDB streams as pre-requisite
     - user access nearest AWS region
     - if one region fails, other regions continues serving the traffic
 
-  -How Replication Works
 
-DynamoDB uses:
+**How Replication Works ?**
 
-DynamoDB Streams internally
-
-to replicate changes across regions.
-
-When item changes in one region:
-
-change captured
-replicated asynchronously
-applied to other regions
-
+- DynamoDB uses: DynamoDB Streams internally to replicate changes across regions.
+- When item changes in one region: change captured replicated asynchronously applied to other regions
 
 ### DynamoDB -TTL
 - automatically delete items after an expiry timestamp
 - workflow:
-- Application
-    ↓
-Write item with expiration timestamp
-    ↓
-DynamoDB TTL process
-    ↓
-Expired item automatically deleted
-
+- Application -> Write item with expiration timestamp -> DynamoDB TTL process -> Expired item automatically deleted
 
 
 ### API Gateway
-- API Gateway receives client requests and routes them to backend services like:
+- receives client requests and routes them to backend services like:
+	- AWS Lambda/ EC2/ ECS/ DynamoDB/ HTTP services
 
-AWS Lambda
-EC2
-ECS
-DynamoDB
-HTTP services
-- Architecture:
-- Client
-   ↓
-API Gateway
-   ↓
-Backend Service
-(Lambda / EC2 / ECS / DynamoDB)
+- **Architecture**:
+	- Client → API Gateway → Backend Service (Lambda / EC2 / ECS / DynamoDB) 
 
 - support WebSocket protocol
 - handle API versioning
-- hadnle different environments (dev,prod,test,..)
+- handle different environments (dev,prod,test,..)
 - create API keys, handle request throttling
 - cache API responses
 - swagger/Open API import to quickly define APIs
 
-- Flow:
-
-Request hits API Gateway
-Authentication validated
-Routed to Lambda
-Lambda queries DynamoDB
-Response returned to user
+- **Flow**:
+	- Request hits API Gateway→ Authentication validated→ Routed to Lambda → Lambda queries DynamoDB → Response returned to user 
 
 - Lamdba Function: easy way to expose REST API backed by AWS lambda
 - HTTP: expose HTTP endpoints in the backend
@@ -4397,73 +4292,44 @@ Response returned to user
      
 ### Step Functions
 - serverless workflow orchestration service used to coordinate multiple AWS services into a sequence of steps.
-- -Step Functions allow you to define workflows as:
+- Step Functions allow you to define workflows as:
 
 states
 transitions
 
 using JSON-based Amazon States Language (ASL).
 - architecture:
-- Start
-  ↓
-Lambda Function
-  ↓
-Choice / Condition
-  ↓
-Another Service
-  ↓
-Success / Failure
+- Start-> Lambda Function -> Choice / Condition -> Another Service -> Success / Failure
 
--Why Use It?
-
-Instead of writing complex code for:
-
-retries
-waiting
-sequencing
-error handling
-
-AWS manages it for you.
+**Why Use It?**
+- Instead of writing complex code for:retries, waiting , sequencing, error handling AWS manages it for you.
 
 ### Amazon Cognito:
 - gives users an identity to interact with our web or mobile applications
 - Cognito = Login system for applications.
--used for: user authentication, authorization, user management
+- used for: user authentication, authorization, user management
 
 It helps users:
+- sign up/ sign in access applications securely
 
-sign up
-sign in
-access applications securely
+**What Cognito Does?**
 
-- What Cognito Does
+- It manages:
+	- usernames/passwords
+	- social logins
+	- OTP verification
+	- JWT tokens
+	- user sessions
 
-It manages:
+- Example:
 
-usernames/passwords
-social logins
-OTP verification
-JWT tokens
-user sessions
+**Mobile app login flow:**
+	- User Login -> Amazon Cognito -> Verify User -> Return Token -> Access App APIs
 
-- Example
-
-Mobile app login flow:
-
-User Login
-    ↓
-Amazon Cognito
-    ↓
-Verify User
-    ↓
-Return Token
-    ↓
-Access App APIs
-
-- User Pool: handles sign up, sign in, authentication
+- **User Pool:** handles sign up, sign in, authentication
   - acts like a user database.
   - example: email/password login
-- Identity Pool:
+- **Identity Pool:**
     -  get identities for 'users' to obtain temporary AWS credentials
     - used when app need access to S3, dynamoDB, other AWS services
 
@@ -4559,11 +4425,11 @@ Returns results
 | AWS Identity and Access Management IAM | Access control/security |
 ```
 Data Source
-↓
+	↓
 Athena / Redshift / RDS
-↓
+	↓
 QuickSight
-↓
+	↓
 Dashboards & Reports
 ```
 ### Redshift
@@ -4594,11 +4460,11 @@ Dashboards & Reports
 **Architecture:**
 ```
 Client SQL Query
-↓
+	↓
 Leader Node
-↓
+	↓
 Compute Nodes
-↓
+	↓
 Parallel Processing
 ```
 | Component | Purpose |
@@ -4618,7 +4484,7 @@ Parallel Processing
 **Example**
 
 ```
-Company Sales Data
+   Company Sales Data
         ↓
    Amazon Redshift
         ↓
@@ -4704,11 +4570,11 @@ Amazon OpenSearch Serverless:
 EMR creates a cluster of EC2 instances to process big data in parallel.
 ```
 Large Dataset
-↓
+	↓
 Split Across Multiple Machines
-↓
+	↓
 Parallel Processing
-↓
+	↓
 Fast Results
 ```
 **Why EMR is Needed**
@@ -4726,7 +4592,7 @@ EMR solves this using:
 
 ### AWS Glue
 
-- Serverless ETL (Extract, Transform, Load) service
+- **Serverless ETL (Extract, Transform, Load) service**
 - Used to:
     - discover data
     - transform data
@@ -4812,7 +4678,6 @@ Consumers
 | Consumers | Read messages |
 | ZooKeeper / KRaft | Cluster coordination |
 
-![image.png](attachment:725f111f-a03a-4c37-b76f-ae636e1b2a04:image.png)
 
 ### Big Data Ingestion Pipeline
 
@@ -4876,13 +4741,13 @@ QuickSight Dashboard
 
 ### Amazon Rekognition
 - cloud-based AI service from AWS that lets developers add image and video analysis capabilities to applications without building machine learning models from scratch.
-- What Amazon Rekognition Can Do
-	-** Image Analysis**
+- **What Amazon Rekognition Can Do?**
+	- **Image Analysis**
 		- Detect objects (cars, people, pets, etc.)
     	- Identify scenes and activities
 		- Extract text from images
 		- Recognize celebrities
-	-** Facial analysis** (age range, emotions, smile, beard, etc.)
+	- **Facial analysis** (age range, emotions, smile, beard, etc.)
 		- Face Features
 		- Face detection
 		- Face comparison
@@ -4894,7 +4759,7 @@ QuickSight Dashboard
 
 - Basic Architecture
   ```
-	- Typical workflow:
+	- Workflow:
 		- Upload image/video to Amazon S3
 		- Application sends request to Rekognition API
 		- Rekognition returns labels, faces, text, or analysis results
@@ -4965,7 +4830,7 @@ The same technology powers Amazon Alexa.
 
 - workflow: User → Lex Bot → Lambda → Response
 
--** Amazon Connect:**
+- **Amazon Connect:**
 	- Amazon Connect is a cloud-based customer service platform.
  	- Features: Incoming/outgoing calls, IVR systems, Call routing, Agent management, Real-time analytics, Contact recording
   - workflow:
@@ -5052,15 +4917,15 @@ Sentiment / Entities / Insights
 	- Amazon SageMaker provides an end-to-end workflow for AI:
 
 1. Data Preparation: Clean and prepare datasets
-- Use tools like notebooks and data labeling
+	- Use tools like notebooks and data labeling
 2. Model Building: Use built-in algorithms or custom code (Python, TensorFlow, PyTorch)
-- Run experiments in Jupyter notebooks
+	- Run experiments in Jupyter notebooks
 3. Model Training: Train models using scalable cloud infrastructure
-- Supports GPU/CPU instances
+	- Supports GPU/CPU instances
 4. Model Tuning: Automatically optimize hyperparameters (AutoML features)
 5. Model Deployment: Deploy models as real-time APIs
 
-- workflow: Data → SageMaker → Train Model → Deploy API → Predictions
+- workflow:Data → SageMaker → Train Model → Deploy API → Predictions
 - Example Use Cases:
 	- Fraud detection (banking)
 	- Product recommendations (e-commerce)
@@ -5157,6 +5022,7 @@ Structured JSON Output
 
 ### Amazon Cloud watch metrics
 - monitor the performance and health of AWS resources, applications, and services.
+
 | Service | Example Metrics                        |
 | ------- | -------------------------------------- |
 | EC2     | CPUUtilization, NetworkIn, DiskReadOps |
@@ -5185,6 +5051,7 @@ Structured JSON Output
 - can setup KMS based encryption with your own keys.
 
 - log sources:
+
 | Source        | Example                       |
 | ------------- | ----------------------------- |
 | EC2           | Application logs, system logs |
