@@ -2938,7 +2938,6 @@ Types of Storage Class
 | Glacier | Rare | Very Low | Minutes–Hours | long time archives |
 | Deep Archive | Very Rare | Lowest | Hours | old backups |
 
-![image.png](attachment:507f631a-a15c-469e-900f-a6dbf00419e1:image.png)
 ![My local image](storageClass.png)
 Lifecycle Example 
 
