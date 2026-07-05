@@ -745,10 +745,10 @@ NOTE:
 - SSD-> Fast
 - HDD-> Cheap (storage)
   
-- gp3 → Default choice for most use cases
-- io2 → High-performance, critical workloads
-- st1 → Large sequential workloads
-- sc1 → Cold/archival data
+	- gp3 → Default choice for most use cases
+	- io2 → High-performance, critical workloads
+	- st1 → Large sequential workloads
+	- sc1 → Cold/archival data
 
 
 ### EBS Multi attach
@@ -767,7 +767,7 @@ EBS encryption ensures that data stored in an EBS volume is:
 - Encrypted in snapshots and backups
 
 
-** Process to Encrypt an unencrypted EBS volume**
+**Process to Encrypt an unencrypted EBS volume**
 - create a snapshot of the unencrypted EBS volume
 - copy the snapshot and enable encryption during the copy process.
 - create new EBS volume from the snapshot (the volume will also be encrypted)
@@ -874,26 +874,23 @@ If the response is not 200(OK), then the instance is unhealthy and ELB will not 
 
 **Best for**
 
-- Web applications
-- REST APIs
-- Microservices
+- Web applications/ REST APIs/ Microservices
 
 **Key features**
 
 - Path-based routing (`/login`, `/orders`)
 - Host-based routing (`api.example.com`)
 - Works with containers (ECS, EKS)
-- Supports WebSockets
 
 ### Target Groups:
 
--logical groupings of backend resources that receive routed traffic based on rules
+- logical groupings of backend resources that receive routed traffic based on rules
 
-- EC2 instances (can be managed by an Auto Scaling)- HTTP
-- EC2 tasks (managed by ECS itself) - HTTP
-- Lambda Functions- HTTP request is translated into a JSON event
-- IP addresses- must be private IPs
-- ALB can route to multiple target groups
+	- EC2 instances (can be managed by an Auto Scaling)- HTTP
+	- EC2 tasks (managed by ECS itself) - HTTP
+	- Lambda Functions- HTTP request is translated into a JSON event
+	- IP addresses- must be private IPs
+	- ALB can route to multiple target groups
 
 ---
 
@@ -903,9 +900,7 @@ If the response is not 200(OK), then the instance is unhealthy and ELB will not 
 
 **Best for**
 
-- Ultra-high performance
-- Low latency apps
-- Millions of requests per second
+- Ultra-high performance/ Low latency apps/ Millions of requests per second
 
 **Key features**
 
@@ -918,7 +913,7 @@ If the response is not 200(OK), then the instance is unhealthy and ELB will not 
 
 **Layer:** 3/4
 
-Deploy, Scale and Manage a fleet of 3rd party network virtual appliances in AWS.
+Deploy, Scale and Manage 3rd party network virtual appliances in AWS.
 
 Combines the following functions:
 
@@ -956,7 +951,7 @@ GLB Target groups:
 It act as a virtual firewall for your load balancer, controlling both the inbound traffic it accepts from clients and the outbound traffic it sends to backend targets.
 
 - **Load Balancer security group:** accepts request from anywhere.
-- **EC2 load balancer security groups:** accepts requests only from the ec2 load balancer security group.
+- **EC2 load balancer security groups:** accepts requests only from the EC2 load balancer security group.
 
 ### Network Load Balancer
 
@@ -966,7 +961,6 @@ It handles **TCP, UDP, and TLS** traffic and is designed for **high performance 
 
 - NLB allows to forward TCP & UDP traffic to instances
 - NLB handles **millions of requests** per seconds
-- NLB has less latency ~100 ms
 - NLB has one static IP per AZ, and supports  Elastic IP(helpful for whitelisting specific IP)
 
 NLB Target Groups:
@@ -1407,9 +1401,8 @@ Now AWS automatically:
         - Alarm state becomes **ALARM**
         
         Alarm triggers an action:
-        
-        - Send notification (SNS)
-        - Trigger Auto Scaling
+	        - Send notification (SNS)
+	        - Trigger Auto Scaling
         - Based on the alarm we can create :
             - **Scale-out policies** (increase number of instances)
             - **Scale-in policies** (decrease number of instances)
@@ -1418,11 +1411,12 @@ Now AWS automatically:
         
         Imagine your website:
         
-        Normal traffic → 2 instances
-        Evening traffic spike → CPU goes 75%
-        CloudWatch alarm triggers → ASG launches 2 more instances
+        - Normal traffic → 2 instances
+        - Evening traffic spike → CPU goes 75%
+        - CloudWatch alarm triggers → ASG launches 2 more instances
         
         At night → CPU drops to 20%
+
         Scale-in policy removes extra instances
         
         💰 You pay only for required resources.
@@ -1570,7 +1564,9 @@ Now AWS automatically:
 ### Amazon CloudFront
 
 **Amazon CloudFront** is a **Content Delivery Network (CDN)** service provided by AWS.
-- delivers content to users with low latency and high speed by caching it at locations closer to users.
+
+delivers content to users with low latency and high speed by caching it at locations closer to users.
+
 It helps you **deliver content (websites, APIs, videos, images, apps)** to users with:
 
 - 🚀 **Low latency (fast loading)**
@@ -1661,8 +1657,8 @@ It allows you to run **small pieces of JavaScript code at AWS edge locations**.
 
 It runs at **CloudFront Edge Locations** during:
 
-✅ Viewer Request
-✅ Viewer Response
+- Viewer Request
+- Viewer Response
 
 ⚠ It does NOT run at origin request/response stage.
 
@@ -1701,7 +1697,6 @@ Without touching: EC2,ALB, Backend server
 
 - Licensing restrictions (e.g., movies allowed only in India)
 - Region-specific content delivery
-- Legal compliance
 - Security reasons
 
 **How It Works (Simple Flow)**
@@ -1733,6 +1728,7 @@ Without touching: EC2,ALB, Backend server
     ### CloudFront - Pricing:
     
     CloudFront edge locations all over the world.
+
     The cost of data out per edge locations varies.
     
     **How CloudFront Charges You?**
@@ -1760,9 +1756,8 @@ Without touching: EC2,ALB, Backend server
         - India
         
 ### Cache Invalidations
-👉 Removing cached files from CloudFront edge locations
-
-👉 Before their TTL (Time To Live) expires
+- Removing cached files from CloudFront edge locations
+- Before their TTL (Time To Live) expires
 
 So users get **updated content immediately**.
 
@@ -1867,12 +1862,11 @@ Solution:
 5. Delivered to your application
 
 Global Accelerator can route traffic to:
-
-- **Amazon EC2**
-- **Elastic Load Balancing**
-- **Amazon EIP**
-- **Application Load Balancer**
-- **Network Load Balancer**
+	- **Amazon EC2**
+	- **Elastic Load Balancing**
+	- **Amazon EIP**
+	- **Application Load Balancer**
+	- **Network Load Balancer**
 
 - Consistent Performance:
     - intelligent routing to lowest latency and fast regional failover
@@ -1881,8 +1875,7 @@ Global Accelerator can route traffic to:
     - Global Accelerator performs a health check for the application.
     - great for the disaster recovery.
     - helps make application global (failover less than 1 minute for unhealthy.)
-    - If one region fails
-    - Traffic automatically shifts to healthy region
+    - If one region fails->Traffic automatically shifts to healthy region
 
 **🔹 Global Accelerator vs CloudFront**
 
@@ -1897,24 +1890,16 @@ Global Accelerator can route traffic to:
 **When To Use What?**
 
 📌 Use CloudFront:
-
-Static content
-
-CDN caching
-
-Website acceleration
+	- Static content
+	- CDN caching
+	- Website acceleration
 
 📌 Use Global Accelerator:
-
-Real-time apps
-
-Gaming
-
-VoIP
-
-API acceleration without caching
-
-Need static IP
+	- Real-time apps
+	- Gaming
+	- VoIP
+	- API acceleration without caching
+	- Need static IP
 
 ### Serverless
 
@@ -1927,11 +1912,8 @@ Need static IP
 **AWS Lambda** is **a serverless, event-driven compute service that lets you run code without configuring or managing servers**. You simply upload your code (as a ZIP file or container image), and AWS handles all the underlying infrastructure management, including capacity provisioning, automatic scaling, and maintenance.
 
 - Run code without servers
-- scaling is automated
-- Run on demand
 - Pay per execution time (milliseconds)
 - free tier of 1,000,000 AWS Lambda requests and 400,000 GBs compute time.
-- easy monitoring using AWS CloudWatch.
 - increasing RAM will also increase CPU and network.
 
 **Event-Driven:** Lambda functions run in response to specific events. These events can come from a variety of sources, such as:
@@ -1943,13 +1925,13 @@ Need static IP
 
 ### **Lambda container image**
 
-It is a package format that allows developers to deploy their AWS Lambda function code and dependencies using standard container tooling like [Docker](https://www.docker.com/), in addition to the traditional ZIP archive method.
+allows developers to deploy their AWS Lambda function code and dependencies using standard container tooling like Docker, in addition to the traditional ZIP archive method.
 
 👉 **Lambda@Edge = Powerful but heavier (deal with origin request & response)**
 
 ### **Lambda@Edge**
 
-- It is an extension of AWS Lambda that allows you to run code at **CloudFront edge locations**.
+- extension of AWS Lambda that allows you to run code at **CloudFront edge locations**.
 - It lets you execute logic **closer to users**, before or after content is served.
 - It works together with Amazon CloudFront.
 
@@ -1962,8 +1944,6 @@ It is a package format that allows developers to deploy their AWS Lambda functi
 | Viewer Response | Before response sent to user |
 | Origin Request | Before request goes to origin |
 | Origin Response | Before response cached |
-
-👉 This gives more flexibility than CloudFront Functions.
 
 **Example Use Case**
 
@@ -2024,15 +2004,16 @@ Advantage over using RDS VS deploying DB on EC2
 - have one main database (primary DB).
 - AWS creates copies (Read Replicas) of that database. These replicas are used only for reading data.
 
-**Writes** (INSERT, UPDATE, DELETE) → go to the main DB
- **Reads** (SELECT) → go to Read Replicas
+	- **WRITES** (INSERT, UPDATE, DELETE) → go to the main DB
+	- **READS** (SELECT) → go to Read Replicas
 - This spreads the load and makes your app faster.
 
 - Supports upto 15 read replicas.
-- within AZ, Cross AZ , Cross region.
-- Replication is ASYNC, so reads are eventually consistent
+- Replication is ASYNC, so reads are eventually consistent.
+  
 **example**: If many users are reading data (like viewing products, posts, etc.), one DB can get slow. Read Replicas handle those reads, so the main DB is not overloaded.
 - RDS read replicas within the same region- don’t pay the fee. 
+
 for cross region - fees are applicable
 
 **RDS Multi AZ (Disaster Recovery)**
@@ -2042,6 +2023,7 @@ AWS creates two copies of your database:
 - Primary DB (active)
 - Standby DB (backup, in another Availability Zone)
 - Your app connects only to the primary DB, AWS automatically copies data to the standby DB(synchronously) 
+
 If the primary fails → AWS automatically switches to the standby DB.
 
 **SYNC replication:** Data is written to both primary and standby at the same time.
@@ -2053,10 +2035,10 @@ If the primary fails → AWS automatically switches to the standby DB.
 **RDS from Single AZ to Multi AZ**
 
 Single-AZ → one database in one data centre
- Multi-AZ → one primary DB + one standby DB in another zone
 
-converting Single AZ -> Multi AZ
+Multi-AZ → one primary DB + one standby DB in another zone
 
+**converting Single AZ -> Multi AZ**
 - Go to RDS Dashboard
 - Select your database
 - Click Modify
@@ -2069,6 +2051,7 @@ converting Single AZ -> Multi AZ
 **RDS Custom**
 
 RDS Custom = Managed database + root/admin access
+
 Normal RDS is fully managed, so You can’t access OS and  can’t install custom software.
 
 RDS Custom can:
@@ -2098,15 +2081,7 @@ Key features:
 - Helps handle heavy read traffic
 - Continuous backups to S3
 - Self-healing storage system
-
-**Aurora High availability and Read scaling**
-
-- 6 copies of your data across 3 AZ:
-    - 4 copies out of 6 needed for writes (4/6)
-    - 3 copies out of 6 need for read (3/6)
-    - self healing with peer to peer replication
-    - storage is striped across 100s of volumes
-- **One aurora instance takes writes (master)**
+- **One aurora instance takes WRITES (master)**
 - automated failover for master in less than 30 seconds
 
 **Aurora DB Cluster**
@@ -2118,6 +2093,7 @@ Key features:
 **Aurora Replicas - Auto Scaling**
 
 - automatically adds or removes read replicas based on demand. 
+
 **example**:
     - You have an Aurora database cluster (1 writer + some readers).
     - AWS monitors load (like CPU or connections).
@@ -2132,7 +2108,8 @@ Key features:
 **Aurora Serverless**
 
 - version of Amazon Aurora where you don’t manage database instances at all. 
- AWS automatically:
+
+AWS automatically:
     - Starts the database
     - Scales capacity up/down
     - Can pause when not in use
@@ -2150,6 +2127,7 @@ Key features:
         - retention of backup for as long as you want.
 
 In a stopped RDS DB, you will still pay for storage.
+
 If you plan on stopping it for long time, then take a snapshot and restore instead.
 
 **Aurora Backups**
@@ -2161,17 +2139,17 @@ If you plan on stopping it for long time, then take a snapshot and restore inste
     - manually triggered by the user
     - retention of backup for as long as you want.
     
-    **RBS & Aurora restore options**
+**RBS & Aurora restore options**
     
-    - Restoring a RDS/ Aurora backup or a snapshot creates a new DB.
-    - Restoring MySQL RDS DB from S3
-        - create a backup of your on-premise database
-        - store it on amazon s3
-        - restore the backup file onto a new RDS instance running MySQL
-    - Restoring MySQL Aurora cluster from S3
-        - create a backup of your on-premises database using Percona XtraBackup
-        - store the backup file on amazon S3
-        - restore the backup file onto a new aurora cluster running MySQL
+- Restoring a RDS/ Aurora backup or a snapshot creates a new DB.
+- Restoring MySQL RDS DB from S3
+	- create a backup of your on-premise database
+   	- store it on amazon s3
+  	- restore the backup file onto a new RDS instance running MySQL
+- Restoring MySQL Aurora cluster from S3
+     - create a backup of your on-premises database using Percona XtraBackup
+     - store the backup file on amazon S3
+     - restore the backup file onto a new aurora cluster running MySQL
     
     **Aurora DB cloning**
     
@@ -2194,26 +2172,29 @@ If you plan on stopping it for long time, then take a snapshot and restore inste
 
 - allows apps to reuse and share DB connections established with the DB.
 - Databases can struggle when there are too many connections. 
- Instead of every app opening its own DB connection:
-    - RDS Proxy reuses connections reduces load on the database serverless, autoscaling. RDS proxy is never publicly accessible (must be accessed from VPC)
 
-**Example:** 1000 users hit your app Without proxy → 1000 DB connections ❌ 
-With proxy → maybe only 100 active connections ✅
+Instead of every app opening its own DB connection:
+    - RDS Proxy reuses connections reduces load on the database serverless, autoscaling.
+	- RDS proxy is never publicly accessible (must be accessed from VPC)
+
+**Example:** 1000 users hit your app
+- Without proxy → 1000 DB connections ❌ 
+- With proxy → maybe only 100 active connections ✅
 
 ### **ElastiCache**
 
 -helps app run faster by storing frequently used data in memory (RAM) instead of fetching it from a database every time.
 - service that gives you a very fast in-memory cache.
-- caches are in-memory databases with high performance, low latency.
 - helps reduce load/traffic
 
-    ### **ElastiCache Solution Architecture - DB Cache**
-      - Applications queries ElastiCache, if not available, get it from RDS and store in ElastiCache.
-      - helps relieve load in RDS.
-      - Cache must have an invalidation strategy to make sure only the most current data is used in there.
+### **ElastiCache Solution Architecture - DB Cache**
+- Applications queries ElastiCache,
+	-  if not available, get it from RDS and store in ElastiCache.
+	- helps relieve load in RDS.
 
-    ### **ElastiCache Solution Architecture - User Session Store**
+### **ElastiCache Solution Architecture - User Session Store**
     - Instead of storing user session data (like login info, cart, preferences) in app server or DB, it stores in ElastiCache (usually Redis).
+  
    **How it works**
         - User logs in
         - Your app creates a session ID. example- sessionId: abc123xyz.
@@ -2234,44 +2215,34 @@ With proxy → maybe only 100 active connections ✅
          
         - REDIS: software
         - ElastiCache: AWS managed service that runs REDIS/ MEMCACHED
-- work flow:
-- Browser (Cookie)
-     |
-     | sessionId=abc123xyz
-     v
-Application Server
-     |
-     v
-Redis (RAM)
-     |
-     v
-User session data
+- Architecture: User → Load Balancer → App Servers → ElastiCache (Redis)
 
-  Architecture: User → Load Balancer → App Servers → ElastiCache (Redis)
-
-    ### **ElastiCache Redis VS Memcached**
+### **ElastiCache Redis VS Memcached**
   - Redis = powerful, feature-rich
   - Memcached = simple, lightweight cache
- | Feature           | Redis                            | Memcached                      |
-| ----------------- | -------------------------------- | ------------------------------ |
-| Data types        | Strings, lists, sets, hashes     | Only key-value (string)        |
-| Persistence       | ✅ Yes (can save to disk)         | ❌ No                           |
-| High availability | ✅ Replication + failover         | ❌ No native failover           |
-| Scaling           | ✅ Cluster mode (sharding)        | ✅ Easy horizontal scaling      |
-| Performance       | Very fast                        | Slightly faster for simple use |
-| Use case          | Sessions, queues, real-time apps | Simple caching                 |
-- failover: automatically switching to a backup system when the main system fails.
-- Cluster node sharding: means splitting your data across multiple nodes so you can store more data and handle more traffic.
+    
+| **Feature**           | **Redis**                        | **Memcached**                  |
+| --------------------- | -------------------------------- | ------------------------------ |
+| **Data types**        | Strings, Lists, Sets, Hashes     | Only key-value (String)        |
+| **Persistence**       | ✅ Yes (can save to disk)         | ❌ No                           |
+| **High availability** | ✅ Replication + Failover         | ❌ No native failover           |
+| **Scaling**           | ✅ Cluster mode (Sharding)        | ✅ Easy horizontal scaling      |
+| **Performance**       | Very fast                        | Slightly faster for simple use |
+| **Use case**          | Sessions, Queues, Real-time apps | Simple caching                 |
+
+- **failover**: automatically switching to a backup system when the main system fails.
+- **Cluster node sharding:** means splitting your data across multiple nodes so you can store more data and handle more traffic.
+
 Use Redis if:
-You need session storage
-You want data persistence
-You need advanced features (pub/sub, counters, queues)
-You need high availability
+- You need session storage
+- You want data persistence
+- You need advanced features (pub/sub, counters, queues)
+- You need high availability
 
 Use Memcached if:
-You only need simple caching
-No need to save data permanently
-You want a very lightweight setup
+- You only need simple caching
+- No need to save data permanently
+- You want a very lightweight setup
 
 - If your app is complex → Redis
 - If your need is basic caching → Memcached
@@ -2286,35 +2257,39 @@ You want a very lightweight setup
 
 
     ### **Patterns for ElastiCache**
-- Cache-Aside (Lazy Loading)
-    How it works:
+- **Cache-Aside (Lazy Loading)**
+
+  **How it works:**
     - App checks cache
     - If data is found → return it ✅
     - If not → fetch from DB ❌
     - Store in cache for next time
  use when data is read frequently.
 
-- Write-Through: cache is updated along with database
-      How it works:
+- **Write-Through:** cache is updated along with database
+
+  **How it works:**
       - App writes data
       - data goes to DB + cache together
+
   use when you want cache always up-to-date.
 
- - Write-behind: cache updates DB later (async)
-       How it works:
+ - **Write-behind:** cache updates DB later (async)
+       **How it works:**
        - App writes to cache
        - Cache updates DB after some time
-    use when high write performance is needed
 
-  - Session Store: store user sessions in cache
+   use when high write performance is needed
+
+- **Session Store**: store user sessions in cache
       - use when multiple app servers and need fast session access
 
-   - Leaderboard/ Counter
-    - Redis uses a data structure called a sorted set (ZSET).
-    - each element has value-score.
-    - keeps elements unique and maintains them sorted by score.
+- **Leaderboard/ Counter**:
+	- Redis uses a data structure called a sorted set (ZSET).
+	- each element has value-score.
+	- keeps elements unique and maintains them sorted by score.
       
-      How it works:
+**How it works:**
     - Add/update a user score
     - Redis inserts or updates the value
     - It automatically reorders ranking in real time
@@ -2322,29 +2297,28 @@ You want a very lightweight setup
     - uses: Gaming leaderboard, rankings
  
 - Cache-Aside → most common
-Write-Through → consistent but heavier
-Write-Behind → fast writes, some risk
-Read-Through → simpler app logic
-Session Store → user sessions
-Leaderboard → real-time ranking
+- Write-Through → consistent but heavier
+- Write-Behind → fast writes, some risk
+- Read-Through → simpler app logic
+- Session Store → user sessions
+- Leaderboard → real-time ranking
 
 **AWS ROUTE 53**
+
+- It is a scalable DNS that **translates domain names into IP addresses** and routes users to the correct servers.
+- example: If a user types **`www.google.com`**, Route 53 finds the **IP address of the server** where the website is hosted and directs the user there.
 
 **DNS**
 
 - Domain Name system: translates the hostname into IP addresses.
-- [www.google.com](http://www.google.com/) -> 172.216.13.45.14
+- www.google.com -> 172.216.13.45.14
+- DNS uses port 53
+- **DNS** is a collection of rules and records which helps clients understand **how to reach a server through URLs.**
 
 **DNS Terminologies** :
 **- Domain Registrar:** where you can buy a domain 
 **- DNS record:** provide information about a domain
 
-| Record Type | Purpose |
-| --- | --- |
-| A | Maps Domain name → IPv4 address |
-| AAAA | Maps Domain name → IPv6 address |
-| CNAME | creates alias to another domain (points to other domain) |
-| Alias | Maps domain to AWS resource |
 - **zone files:** file that stores all DNS records of a domain
 - **Name server:** server that responds to DNS queries for a domain
 - **Top level domain(TLD):** last segment of a domain 
@@ -2354,22 +2328,20 @@ example: in example.com -> example is SLD.
 - **sub domain:** part of a larger domain. 
 example: mail.google.com ->mail is sub domain
 - **FQDN (fully qualified domain name):** complete domain name including all levels and ending with a dot.
-    - example: [www.google.com](http://www.google.com/)
+    - example: www.google.com
 - **Protocol**: set of rules that defines how data is transmitted over a network
 
 **How DNS Works** 
 Check Cache → Browser looks for saved IP, if not then: 
-Ask Resolver → If not found Root → TLD → Name Server → Find correct server Get IP → Name server returns IP Load Website → Browser connects using IP
+Ask Resolver → If not found, 
+Root → TLD → Name Server → Find correct server, 
+Get IP → Name server returns IP- Load Website → Browser connects using IP
+
 - Route 53 Resolver = DNS server that looks up records and forwards queries when necessary.
-
 - DNS finds IP address step by step, then loads website.
-- **It is a scalable DNS that translates domain names into IP addresses and routes users to the correct servers.**
-    - example: If a user types **`www.google.com`**, Route 53 finds the **IP address of the server** where the website is hosted and directs the user there.
-    - **Route 53:** routes traffic to correct destination. DNS uses port 53.
-- DNS is a collection of rules and records which helps clients understand how to reach a server through URLs.
-
-**Route 53 Record**
-
+    
+    ### **Route 53 Record**
+    
 - DNS record stored in amazon route 53 that tells how your domain should behave.
 - example: web browser→ dns request to Route 53 (A)→ sends back IP to web browser.
 - Route 53 can use:
@@ -2395,7 +2367,9 @@ Ask Resolver → If not found Root → TLD → Name Server → Find correct serv
 
 **Route 53 TTL (Time To Live):**
 
-- It is the time a DNS record is stored in cache before it is refreshed. example: [www.example.com](http://www.example.com/) → 93.184.216.34 → TTL = 300 seconds 
+- It is the time a DNS record is stored in cache before it is refreshed.
+- example: [www.example.com](http://www.example.com/) → 93.184.216.34 → TTL = 300 seconds 
+
 This means:
     - Save result for 5 minutes
     - After 5 minutes → ask DNS again
@@ -2404,11 +2378,13 @@ This means:
 
 - CNAM (Canonical Name):
     - Points one domain to another domain name 
-    example: [www.example.com](http://www.example.com/) → example.com
+    
+	example: [www.example.com](http://www.example.com/) → example.com
     - Only for NON ROOT DOMAIN
 - Alias:
     - Points a domain directly to AWS resources
-     example: example.com → AWS Load Balancer / S3 / CloudFront
+
+	example: example.com → AWS Load Balancer / S3 / CloudFront
     - Works for both ROOT DOMAIN & NON ROOT DOMAIN
 - **ROOT DOMAIN:** main domain name without any prefix 
 example: example.com, google.com
@@ -2424,16 +2400,8 @@ Can point to:
 - Another domain
 - Alias record is always of type A/ AAAA for AWS resource( IPv4/IPv6)
 - you can't set the TTL
-    
-    **Alias Record Targets**
-    
-    - ELB
-    - CloudFront distributions
-    - API Gateway
-    - S3 websites
-    - VPC interface endpoints
 
-**Route 53 - Routing Policy** Types
+**Route 53 - Routing Policy Types**
 
 - Simple → Send traffic to one single resource(server)
 - Weighted → Split traffic (% based) -example: 80% -> server A, 20% -> server B
@@ -2442,7 +2410,7 @@ routes traffic to the AWS region that provides the lowest network latency.
     - example: India user-> India server, US user -> US server
 - Failover → Switch to Backup if main fails
 - Geolocation → routes traffic based on user’s location 
-example: India user -> India server
+  - example: India user -> India server
 - Multi-value → Returns multiple IPs
     - client picks one.
 - Geo-proximity -> ability to shift more traffic to resources based on the defined bias.
@@ -2453,7 +2421,7 @@ example: India user -> India server
 - allows  bidirectional DNS resolution between AWS VPCs and on-premises networks using Route 53 resolver inbound and outbound endpoints.
 - 2 DNS systems talk to each other: AWS DNS <----> On-Prem DNS
 
-- Hybrid DNS lets: resolving DNS queries between VPC (Route 53 resolver) and your network (other DNS resolvers)
+- **Hybrid DNS lets:** resolving DNS queries between VPC (Route 53 resolver) and your network (other DNS resolvers)
     - On-prem systems resolve AWS private domains (like app.internal)
     - AWS resources resolve on-prem domains (like corp.local)
 
@@ -2467,14 +2435,14 @@ example: India user -> India server
 
  - Inbound Endpoint: receives DNS queries coming into AWS (On-prem->AWS)
  - Outbound Endpoint: send DNS queries out of AWS (AWS->On-prem)
-- *** section 11 important Recap of all concepts****
-
+- ***section 11 important Recap of all concepts****
+---
 - **Stateless Web App:** does NOT store client session information on the server between requests.
-    - Each request is treated as independent and complete on its own. 
-    example: REST APIs, microservices
+    - Each request is treated as independent and complete on its own.
+    	- example: REST APIs, microservices
 - **Stateful Web App:**  stores user session data on the server so it can “remember” previous interactions.
- example: shopping cart, banking web
-
+	- example: shopping cart, banking web
+---
 ### **Instantiating Applications Quickly**
 
 - EC2 instances:
@@ -2499,16 +2467,6 @@ example: India user -> India server
 👉 You just focus on **writing code**, not managing servers.
 
 - elastic beanstalk VS AWS lambda
-| Aspect                    | **Elastic Beanstalk**                                   | **AWS Lambda**                                |
-| ------------------------- | ------------------------------------------------------- | --------------------------------------------- |
-| **Service Type**          | Platform as a Service (PaaS)                            | Function as a Service (FaaS) / Serverless     |
-| **Deployment Unit**       | Entire application                                      | Individual function                           |
-| **Infrastructure**        | Runs on EC2 instances managed by AWS                    | No servers visible or managed by you          |
-| **Execution**             | Application runs continuously                           | Function runs only when triggered             |
-| **Scaling**               | Scales EC2 instances using Auto Scaling                 | Automatically scales per invocation           |
-| **Execution Duration**    | Suitable for long-running processes                     | Limited execution time per invocation         |
-| **Use Cases**             | Web apps, APIs, enterprise applications                 | Event processing, automation, serverless APIs |
-
 
 **Beanstalk Components:**
 
@@ -2545,6 +2503,16 @@ example: India user -> India server
     - **Rolling** → updates in batches
     - **Rolling with additional batch** → safer
     - **Immutable** → new instances created (most reliable)
+| **Aspect**                  | **Elastic Beanstalk**                           | **AWS Lambda**                                           |
+| --------------------------- | ----------------------------------------------- | -------------------------------------------------------- |
+| **Service Type**            | Platform as a Service (PaaS)                    | Function as a Service (FaaS) / Serverless                |
+| **Deployment Unit**         | Entire application                              | Individual function                                      |
+| **Infrastructure**          | Runs on EC2 instances managed by AWS            | No servers visible or managed by you                     |
+| **Execution**               | Application runs continuously                   | Function runs only when triggered                        |
+| **Scaling**                 | Scales EC2 instances using Auto Scaling         | Automatically scales per invocation                      |
+| **Execution Duration**      | Suitable for long-running processes             | Limited execution time per invocation (up to 15 minutes) |
+| **Operating System Access** | Full access to underlying EC2 instances         | No access to underlying servers                          |
+| **Use Cases**               | Web applications, APIs, enterprise applications | Event processing, automation, serverless APIs            |
 
 ### Amazon S3 (Simple Storage Service)
 
@@ -2560,11 +2528,11 @@ Think of S3 like a **cloud storage drive**:
 
 **Structure**
 - Data is stored in buckets, and inside buckets you store objects (files + metadata).
-- Bucket (like a folder)
-     └── Object (file)
-            ├── Data (actual content)
-            ├── Metadata
-           └── Key (unique name/path)
+- **Bucket (like a folder)**
+	- Object (file)
+ 		- Data (actual content)
+   		- Metadata
+     	- Key (unique name/path)
 
 **Features**
 
@@ -2578,24 +2546,20 @@ Think of S3 like a **cloud storage drive**:
 - Store website assets (images, CSS, JS)
 - Backup & restore data
 - Log storage
-- Static website hosting
   
 **Amazon S3- Buckets**
 
 - It is the **top-level container** used to store data (objects/files).
-**Bucket** (like a folder)
-     └── Object (file)
-            ├── Data (actual content)
-            ├── Metadata
-           └── Key (unique name/path)
+- **Bucket** (like a folder)
+  	- Object (file)
+  		- Data (actual content)
+  	 	- Metadata
+  	  	-  Key (unique name/path)
 - buckets are defined at region level
 - Each bucket has:
     - Unique name (globally)
     - Region
     - Access permissions
-- Naming:
-    - Shared Global Namespace: have a globally unique name (across all regions all accounts)
-    - Account Regional Namespace: allows for ‘reuse’ of the same bucket name across regions.
 
 **Amazon S3- Objects**
 
@@ -2603,9 +2567,10 @@ Think of S3 like a **cloud storage drive**:
 - Each object consists of:
     - **Data** → actual content (image, video, file, etc.)
     - **Key** → unique name (path)
-    Key is composed of prefix + object name
-    example: s3://my-bucket/**my_file.txt**
-                     s3://my-bucket/**my_folder/folder2/my_file.txt**
+    	- Key is composed of prefix + object name
+     	- example:
+      		- s3://my-bucket/**my_file.txt**
+      		- s3://my-bucket/**my_folder/folder2/my_file.txt**
     - **Metadata** → extra information about the object
 
 **Structure**:
