@@ -2,7 +2,7 @@
 - https://github.com/nityaboyapati99/AWS-Handbook/blob/main/AWS_SAA_Handbook.md
 - Resources
     
-    https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqbUYzNUZPdVZuUVE0X3J1aEQzanE4OVI4WmJzZ3xBQ3Jtc0tuYXhGa3VxMUZpTFFncTBEZzRBZ2ZobWNBTlRldW8xdmxVUWZvdHZUZDlkMWppVEluU3BaMzQ1eGkzYTFmTERIMUprWGhfd0VZQWdYc1ZKRlE1Zlo2alluWjVwbGJBT3ZUSGZoOUFqendldzczWmFzaw&q=https%3A%2F%2Fwww.udemy.com%2Fcourse%2Faws-certified-solutions-architect-associate-saa-c03%2F%3Fdeal_code%3DUDEAFNULP0324%26utm_term%3DHomepage%26utm_content%3DTextlink%26utm_campaign%3DNewUserLP0324%26utm_source%3Daff-campaign%26utm_medium%3Dudemyads%26LSNPUBID%3Dznpz0s2okgU%26ranMID%3D47901%26ranEAID%3Dznpz0s2okgU%26ranSiteID%3Dznpz0s2okgU-hXF7jTQhcT8LsgomWJDo7g%26gad_source%3D1&v=Rnr5hp4njq0sn
+    https://www.youtube.com/redirect?sevent=video_description&redir_token=QUFFLUhqbUYzNUZPdVZuUVE0X3J1aEQzanE4OVI4WmJzZ3xBQ3Jtc0tuYXhGa3VxMUZpTFFncTBEZzRBZ2ZobWNBTlRldW8xdmxVUWZvdHZUZDlkMWppVEluU3BaMzQ1eGkzYTFmTERIMUprWGhfd0VZQWdYc1ZKRlE1Zlo2alluWjVwbGJBT3ZUSGZoOUFqendldzczWmFzaw&q=https%3A%2F%2Fwww.udemy.com%2Fcourse%2Faws-certified-solutions-architect-associate-saa-c03%2F%3Fdeal_code%3DUDEAFNULP0324%26utm_term%3DHomepage%26utm_content%3DTextlink%26utm_campaign%3DNewUserLP0324%26utm_source%3Daff-campaign%26utm_medium%3Dudemyads%26LSNPUBID%3Dznpz0s2okgU%26ranMID%3D47901%26ranEAID%3Dznpz0s2okgU%26ranSiteID%3Dznpz0s2okgU-hXF7jTQhcT8LsgomWJDo7g%26gad_source%3D1&v=Rnr5hp4njq0sn
     
     https://www.udemy.com/course/practice-test-aws-certified-solutions-architect-associate/
     
@@ -1471,13 +1471,15 @@ Now AWS automatically:
         ### **Types of Dynamic Scaling Policies**
         
         - **Simple Scaling (Older method)**
-            - Adds/removes fixed number of instances.
+            - this scaling action is performed whenever the cloud watch alrm is triggered.
+            -  Adds/removes **fixed** number of instances.
             - Has cooldown period (wait time before next action).
                 
                 Example:
                 
+                > CPU Threshold =70%
                 > If CPU > 70% → Add 1 instance
-                > 
+                > no further scaling occurs.
                 > 
                 > If CPU < 30% → remove 1 instance
                 > 
@@ -1485,15 +1487,17 @@ Now AWS automatically:
                 > 
         - **Step Scaling (Better)**
             
-            Scaling depends on how much threshold is crossed.
+            Scaling **depends on how much threshold** is crossed.
+
+	   		- alarm Threshold = 70%
             
             Example:
             
             | CPU Level | Action |
             | --- | --- |
-            | 70–80% | Add 1 instance |
-            | 80–90% | Add 2 instances |
-            | >90% | Add 3 instances |
+            | 70–80% | Add 1 instance -  step 1 |
+            | 80–90% | Add 2 instances - step 2 | 
+            | >90% | Add 4 instances - step 3 | 
             
             ✔ More flexible than simple scaling.
             
@@ -1517,7 +1521,33 @@ Now AWS automatically:
             
             ✔ Easy and intelligent
             
-        
+        ```
+        Simple Scaling
+		--------------
+		CPU > 70%
+		      ↓
+		+2 instances
+		      ↓
+		Cooldown
+		      ↓
+		Check again
+		
+		
+		Step Scaling
+		------------
+		70–80% → +1
+		80–90% → +2
+		90%+   → +4
+		
+		
+		Target Tracking
+		---------------
+		Target CPU = 50%
+		
+		45% → No action
+		60% → AWS decides how much to scale out
+		35% → AWS decides how much to scale in
+		```
         ### **Predictive Scaling**
         
         automatically increases capacity **before** traffic increases by using machine learning to forecast future demand.
@@ -1603,20 +1633,35 @@ It helps you **deliver content (websites, APIs, videos, images, apps)** to users
 - 📈 **High performance**
 - 216 point of presence globally.
 
+**How CloudFront Works (Simple Flow)** 
+1. User requests website
+2. The Request goes to nearest **Edge Location**
+3. If the file is already cached:
+    - Served immediately
+4. If not cached:
+    - Cloudfront Fetch from Origin
+    - Store in cache for future request.
+    - Return to user
+5. The next nearby user receives the content directly from the edge cache.
+
+   
 **Why Do We Need CloudFront?**
+- Suppose your origin server is in US East (N. Virginia) and you have users from different countries.
 
-Imagine:
+- **First user (India)**
+	- User requests image.jpg.
+	- The request goes to the nearest CloudFront edge location (for example, Mumbai).
+	- The Mumbai edge location checks its cache.
+	- Cache miss (the file isn't cached).
+	- CloudFront fetches the file from the origin server (S3, EC2, ALB, etc.).
+	- CloudFront returns the file to the user.
+	- The Mumbai edge location stores the file in its cache.
 
-- Your server is in **Mumbai (ap-south-1)**
-- A user from **USA** opens your website
-
-Without CloudFront:
-
-👉 Request travels all the way to Mumbai → Slow response
-
-With CloudFront:
-
-👉 Content is served from the nearest **Edge Location in USA** → Faster response
+- **Second user (India)**
+	- Another user in India requests the same file.
+	- Request goes to the Mumbai edge location.
+	- Cache hit.
+	- CloudFront serves the file directly.
 
 ### Edge Locations
 
@@ -1632,17 +1677,6 @@ The main source of content. It can be:
 - 🖥️ **Amazon EC2**
 - ⚖️ **Elastic Load Balancing**
 - Any external HTTP server
-
-**How CloudFront Works (Simple Flow)**
-
-1. User requests website
-2. Request goes to nearest **Edge Location**
-3. If cached:
-    - Served immediately
-4. If not cached:
-    - Fetch from Origin
-    - Store in cache
-    - Return to user
 
  **Cloud Front- Origins**
  - S3 bucket:
@@ -1671,7 +1705,7 @@ If you host a static website in S3:
 	- Users can access content only through CloudFront.
 	- Direct access to the S3 bucket can be blocked.
 
-### Cloud Front Functions
+### Cloud Front Functions (JS Code)
 
 **CloudFront Functions** is a lightweight serverless feature of **Amazon CloudFront**
 
@@ -1724,7 +1758,7 @@ Without touching: EC2,ALB, Backend server
 **Why Do We Use It?**
 
 - Licensing restrictions (e.g., movies allowed only in India)
-- Region-specific content delivery
+- **Region-specific content delivery**
 - Security reasons
 
 **How It Works (Simple Flow)**
@@ -1843,6 +1877,14 @@ Your EC2 server has IP: `13.x.x.x`
 
 All requests go to that single machine
 
+```
+              IP: 203.0.113.10
+
+USA User -----------------> Germany Server
+India User ---------------> Germany Server
+Japan User ---------------> Germany Server
+
+```
 ### Anycast IP
 
 **Anycast** means
@@ -1853,6 +1895,17 @@ Multiple servers share **the same IP address**.
 
 Routing automatically sends user to the **closest location**.
 Anycast IP sends the traffic directly to Edge location.
+
+```
+              IP: 203.0.113.10
+
+USA User -----------------> USA Edge Location
+
+India User ---------------> India Edge Location
+
+Germany User -------------> Germany Edge Location
+
+```
 ### **AWS Global Accelerator (GA)**
 
 It is a networking service that:
