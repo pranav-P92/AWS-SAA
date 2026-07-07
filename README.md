@@ -1164,7 +1164,35 @@ With SSL/TLS:
 	- It then forwards request to EC2 instances:
 		- Either as HTTP (unencrypted inside VPC)
 		- Or HTTPS (re-encrypted if needed)
- 
+ ```
+Browser --> HTTPS Encrypted message --> Load Balancer
+Load Balancer --> Decrypts --> Orginal HTTP request --> Server
+
+End-to-End encryption
+Browser --> HTTPS --> Load Balancer --> HTTPS --> Server
+
+Step by Step
+1. user opens https://amazon.com
+2. browser connects to load balancer
+	- the load balancer sends its certificate.
+3. TLS Handshake: the browser & load balancer establish a secure session.
+	- a shared session key is created
+	- Browser <-- session key --> load balancer
+4. user sends encrypted data
+	- GET/products (encrypted using session key)
+	- Encryped data --> Load balancer
+5. load balancer decryptes it.
+	- Encrypted request --> Load Balancer --> GET/products (decrypted data)
+	- this is called SSL/TLS Termination
+	- because secure HTTPS connection ends at load balancer.
+	- Why does the load balancer decrypts the data?
+		- read the URL
+		- read the headers
+		- apply routing rules
+		- it can't do any of it if the traffic is encrypted.
+	therefore, Browser -> HTTPS -> Load Balancer -> HTTP -> Server
+
+```
 | Mode            | Description                                    |
 | --------------- | ---------------------------------------------- |
 | SSL termination | Decrypt at load balancer, send HTTP to backend |
