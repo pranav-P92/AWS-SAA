@@ -1723,17 +1723,28 @@ It runs at **CloudFront Edge Locations** during:
 - Viewer Response
 
 ⚠ It does NOT run at origin request/response stage.
-
+```
+User
+ |
+ | HTTP Request
+ ▼
+CloudFront Edge Location
+ |
+ |--> CloudFront Function runs here
+ |
+ ▼
+Origin (S3 / EC2 / ALB / Custom Server)
+```
 **Why Do We Use It?**
 
-To modify: URL, Headers, Cookies, Redirects, Basic authentication, A/B testing
+**To modify**: URL, Headers, Cookies, Redirects, Basic authentication, A/B testing
 
-Without touching: EC2,ALB, Backend server
+Without touching: EC2, ALB, Backend server
 
 **How It Works (Simple Flow)**
 
 - User sends request
-- CloudFront receives it
+- CloudFront Edge location receives it
 - CloudFront Function executes
 - Request is modified (if needed)
 - Forwarded to origin (or served from cache)
@@ -1943,11 +1954,11 @@ Solution:
 5. Delivered to your application
 
 Global Accelerator can route traffic to:
-	- **Amazon EC2**
-	- **Elastic Load Balancing**
-	- **Amazon EIP**
-	- **Application Load Balancer**
-	- **Network Load Balancer**
+- **Amazon EC2**
+- **Elastic Load Balancing**
+- **Amazon EIP**
+- **Application Load Balancer**
+- **Network Load Balancer**
 
 - Consistent Performance:
     - intelligent routing to lowest latency and fast regional failover
@@ -1970,12 +1981,12 @@ Global Accelerator can route traffic to:
 
 **When To Use What?**
 
-📌 Use CloudFront:
+- Use CloudFront:
 	- Static content
 	- CDN caching
 	- Website acceleration
 
-📌 Use Global Accelerator:
+- Use Global Accelerator:
 	- Real-time apps
 	- Gaming
 	- VoIP
@@ -1997,6 +2008,27 @@ Global Accelerator can route traffic to:
 - free tier of 1,000,000 AWS Lambda requests and 400,000 GBs compute time.
 - increasing RAM will also increase CPU and network.
 
+- example:
+```
+when an event occurs:
+
+  User uploads file to S3
+	  		 |
+	         ▼
+  AWS Lambda service receives event
+    		 |
+             ▼
+  AWS Lambda starts an execution environment
+      		 |
+             ▼
+  	Runs your Lambda function
+      		 |
+             ▼
+ 	 Returns result
+      		 |
+             ▼
+  Stops (or waits for next request)
+```
 **Event-Driven:** Lambda functions run in response to specific events. These events can come from a variety of sources, such as:
 
 - An image file being uploaded to an Amazon S3 bucket.
@@ -2015,6 +2047,9 @@ allows developers to deploy their AWS Lambda function code and dependencies usin
 - extension of AWS Lambda that allows you to run code at **CloudFront edge locations**.
 - It lets you execute logic **closer to users**, before or after content is served.
 - It works together with Amazon CloudFront.
+
+**Why do we use Lambda@Edge?**
+- To customize requests and responses before they reach the origin or before they reach the user.
 
 **Where Can It Run?**
 - Lambda@Edge can execute at 4 different stages:
@@ -2050,23 +2085,22 @@ This cannot be done using CloudFront Functions.
 | Cost | Higher |
 | Latency | Slightly more than CF Functions |
 
-| Cloud Front Functions use case | Lambda@Edge use case  |
-| --- | --- |
-| Cache key normalisation: Transform request attributes (headers, url, cookies, query) to create an optimal cache key. | Longer Execution time |
-| Header Manipulation: insert/modify/delete HTTP headers in the request and response. | Adjustable CPU or Memory |
-| URL rewrites or redirects | your code depends on 3rd library |
-| Request authentication & authorisation: create and validate user created JWT tokens to allow/deny requests. | Network access to use external service for processing |
-
+- Cloud front Functions:
+	- Use this for **lightweight tasks** such as redirects, URL rewrites, and head manipulation because they are cheaper and faster.
+ 	- handle simple edge logics. 
+- Lambda@Edge:
+	- Use this when you **need advanced processing** such as inspecting request bodies, call external services, performing complex authentication, generating dynamic responses or integrating with other AWS services.
+ 	- supports more powerful workloads.   
 ### Lambda in VPC
 
 Lambda function is connected to your private network so it can **securely access resources inside that VPC** (like databases or internal services).
 
 ### **Amazon RDS**
 
-- RDS : Relational Database Service
+- RDS : Relational Database Service (SQL)
 - Instead of installing a database on your own server, AWS gives you a ready-to-use database.
 
-Advantage over using RDS VS deploying DB on EC2
+**Advantage over using RDS VS deploying DB on EC2**
 
 - RDS is a managed service:
     - continuous backups and restore to specific timestamps
@@ -2081,9 +2115,9 @@ Advantage over using RDS VS deploying DB on EC2
 
 **RDS Read Replicas for read scalability**
 
-- copies of the database used to handle more read traffic and improve performance
+- **copies of the database** used to handle more read traffic and improve performance
 - have one main database (primary DB).
-- AWS creates copies (Read Replicas) of that database. These replicas are used only for reading data.
+- AWS creates copies (Read Replicas) of that database. These **replicas** are **used only for reading data.**
 
 	- **WRITES** (INSERT, UPDATE, DELETE) → go to the main DB
 	- **READS** (SELECT) → go to Read Replicas
@@ -2092,10 +2126,11 @@ Advantage over using RDS VS deploying DB on EC2
 - Supports upto 15 read replicas.
 - Replication is ASYNC, so reads are eventually consistent.
   
-**example**: If many users are reading data (like viewing products, posts, etc.), one DB can get slow. Read Replicas handle those reads, so the main DB is not overloaded.
-- RDS read replicas within the same region- don’t pay the fee. 
-
-for cross region - fees are applicable
+**example**: If many users are reading data (like viewing products, posts, etc.), one DB can get slow.
+- READ Replicas handle those reads, so the main DB is not overloaded.
+- RDS read replicas:
+	- within the same region- don’t pay the fee.
+	- for cross region - fees are applicable
 
 **RDS Multi AZ (Disaster Recovery)**
 
@@ -2103,9 +2138,10 @@ AWS creates two copies of your database:
 
 - Primary DB (active)
 - Standby DB (backup, in another Availability Zone)
-- Your app connects only to the primary DB, AWS automatically copies data to the standby DB(synchronously) 
-
-If the primary fails → AWS automatically switches to the standby DB.
+	- Your app connects only to the primary DB, AWS automatically copies data to the standby DB(synchronously)
+ 	- initially standby DB doesn't handle INSERT, UPDATE, DELETE, SELECT queries.
+- If the primary fails → AWS automatically switches to the standby DB.
+- now the standby DB starts accepting INSERT, UPDATE, DELETE, SELECT queries.
 
 **SYNC replication:** Data is written to both primary and standby at the same time.
 
@@ -2125,7 +2161,7 @@ Multi-AZ → one primary DB + one standby DB in another zone
 - Click Modify
 - Enable Multi-AZ deployment:
     - A snapshot is taken
-    - A new DB is restored form the snapshot in a new AZ
+    - A new DB is restored from the snapshot in a new AZ
     - Synchronisation is established between the two DBs.
 - Save changes
 
@@ -2175,7 +2211,7 @@ Key features:
 
 - automatically adds or removes read replicas based on demand. 
 
-**example**:
+- **example**:
     - You have an Aurora database cluster (1 writer + some readers).
     - AWS monitors load (like CPU or connections).
     - If traffic increases : it adds read replicas.
@@ -2190,22 +2226,22 @@ Key features:
 
 - version of Amazon Aurora where you don’t manage database instances at all. 
 
-AWS automatically:
+- AWS automatically:
     - Starts the database
     - Scales capacity up/down
     - Can pause when not in use
     - good for infrequent, intermittent or unpredictable workloads
     - pay per second
     
-    **RDS Backups**
+**RDS Backups**
     
-    - automated Backups:
-        - daily full backup of the database
-        - transaction logs are backed-up by RDS every 5minutes.
-        - ability to restore to any piont in time
-    - Manual DB snapshots:
-        - manually triggered by the user
-        - retention of backup for as long as you want.
+ - automated Backups:
+ 	- daily full backup of the database
+	- transaction logs are backed-up by RDS every 5minutes.
+    - ability to restore to any piont in time
+ - Manual DB snapshots:
+ 	- manually triggered by the user
+    - retention of backup for as long as you want.
 
 In a stopped RDS DB, you will still pay for storage.
 
