@@ -3921,7 +3921,7 @@ SNS handles distribution automatically.
 | Consumer | Reads and processes data |
 - retention between up to 365 days.
 - ability to reprocess data by consumers
-- data can’t be deleted from kinesis (until it expires)
+- **data can’t be deleted from kinesis (until it expires)**
 - data ordering guarantee for data with the same ‘Partition ID’
 - Encryption:
     - at rest- KMS
@@ -3941,8 +3941,8 @@ SNS handles distribution automatically.
             
             | Operation | Capacity |
             | --- | --- |
-            | Write | 1 MB/sec or 1000 records/sec |
-            | Read | 2 MB/sec |
+            | WRITE | 1 MB/sec or 1000 records/sec |
+            | READ | 2 MB/sec |
     - Shard is the basic unit of storage, capacity, throughput.
     - **How Scaling Works**
         
@@ -3956,7 +3956,7 @@ SNS handles distribution automatically.
 
 ### Amazon Data Firehose
 
-- used to capture, transform, and load streaming data into storage and analytics services.
+- used to **capture, transform, and load** streaming data into storage and analytics services.
 - **What Firehose Does**
     - It:
         - Collects streaming data
@@ -3978,7 +3978,7 @@ No shard management required.
 
 | Data Firehose | Kinesis Data Streams |
 | --- | --- |
-| Load streaming data into S3/ Redshift/ OpenSearch | Streaming Data collection |
+| **Load streaming data into S3/ Redshift/ OpenSearch** | Streaming Data collection |
 | Fully managed | Producer & Consumer code |
 | Near real time | Real-time |
 | Automatic Scaling | Provisioned/ On-demand mode |
@@ -3999,7 +3999,7 @@ Many enterprise applications already use:
 - RabbitMQ
 - JMS
 
-Amazon MQ helps migrate these applications to AWS without changing existing messaging logic.
+**Amazon MQ helps migrate these applications to AWS without changing existing messaging logic.**
 
 **Example:** A company has an old Java application using:
 
@@ -4015,7 +4015,7 @@ Application continues working with minimal changes.
 
 ### Docker
 - it is a software development platform to deploy apps
-- apps are packaged in containers that can be run on any OS.
+- **apps are packaged in containers that can be run on any OS.**
 - app run the same, regardless of where they're run:
     - any machine
     - easier to maintain and deploy
@@ -4033,18 +4033,19 @@ Application continues working with minimal changes.
     - Amazon Elastic Kubernetes Service (EKS)
     - AWS Fargate
 - (**container image:** blueprint of application- code, libraries, dependencies, configuration files)
-- `docker build` creates the container image, `docker push` stores it in ECR, and ECS/EKS/Fargate `pull` the image from ECR and run it as a container.
+- `docker build` creates the container image
+-  `docker push` stores it in ECR
+-   ECS/EKS/Fargate `pull` the image from ECR and run it as a container.
 - private repository
 
 -  **What ECR does?**
-
-You can:
-- Push Docker images
-- Pull images into deployments
-- Store private or public container repositories
-- Scan images for vulnerabilities
-- Replicate images across AWS regions/accounts
-- Control access using IAM policies
+	- You can:
+		- Push Docker images
+		- Pull images into deployments
+		- Store private or public container repositories
+		- Scan images for vulnerabilities
+		- Replicate images across AWS regions/accounts
+		- Control access using IAM policies
 
 
 **workflow**
@@ -4063,7 +4064,7 @@ You can:
 
 
 ### Amazon ECS (Elastic Container Service)
-- used to run and scale Docker containers in production.
+- **used to run and scale Docker containers in production.**
 - It helps you deploy containers without managing your own Kubernetes control plane.
 
 - **two ECS launch types:**
@@ -4095,9 +4096,7 @@ You can:
 | Maintenance       | You patch/update servers  | AWS handles it                   |
 | Scaling           | You scale EC2 machines    | Automatic infrastructure scaling |
 | Control           | Full control over servers | Limited server access            |
-| Pricing           | Pay for EC2 instances     | Pay per container resources      |
 | Best for          | Large/custom workloads    | Simple microservices/apps        |
-| GPU support       | Yes                       | Limited                          |
 | OS access         | Yes (SSH possible)        | No SSH access                    |
 
 
@@ -4118,10 +4117,10 @@ You can:
 ### Amazon EKS
 - Amazon Elastic Kubernetes service
 - Runs Kubernetes clusters on AWS infrastructure
-- kubernetes is an open-source system for automatic deployment, scaling, and management of containerized application
+- **kubernetes is an open-source system for automatic deployment, scaling, and management of containerized application**
 - its an alternative to ECS
 - EKS supports EC2 if you want to deploy worker nodes or Fargate to deploy serverless containers.
-- Workeer nodes: machines that actually run your application containers(pods).
+- Worker nodes: machines that actually run your application containers(pods).
 
   **Amazon EKS - Node types**
   - Managed Node Groups:
@@ -4130,7 +4129,7 @@ You can:
 	- Supports both On-Demand and Spot Instances.
 	- AWS handles provisioning, updates, scaling, and lifecycle management.
    
-- Self-managed Nodes:
+  - Self-managed Nodes:
     -  nodes created by you and registered to the EKS cluster and managed by an ASG
     -  you can use prebuilt AMI- Amazon EKS Optimized AMI
     -  supports on-demand or spot instances
@@ -4150,7 +4149,7 @@ You can:
  
   ### AWS App2Container (A2C)
   - CLI tool for migrating and modernizing JAVA and .NET web apps into docker containers.
-  - Lift-and-shift your apps running in on-premises bare metal, virtual machines or in any cloud to AWS
+  - **Lift-and-shift your apps running in on-premises bare metal, virtual machines or in any cloud to AWS**
   - register generated docker containers to ECR
   - deploy to ECS, EKS or app runner 
     
@@ -4179,26 +4178,42 @@ You can:
       - size of env variables: 4kb
 
 ### Lambda Concurrency
-- number of Lambda function instances that can run simultaneously.
+- **number of Lambda function instances that can run simultaneously**.
 - If multiple requests arrive at the same time, AWS Lambda creates multiple instances of the function to handle them.
 - Each concurrent requests, runs in its own separate execution environment.
 - concurrency limit: upto 1000 concurrent executions.
 - can set a 'reserved concurrency' at a function level (can set limit)
 - each invocation over the concurrency limit will trigger a 'Throttle'
-- **Throttling** happens when the number of incoming requests exceeds the available concurrency. if a function is throttled,
-	- if synchronous invocation: return ThrottleError-429
-	- if asynchronous invocation: retry automatically and then go to DLQ
+- **Throttling** happens when the number of incoming requests exceeds the available concurrency.
+	- if a function is throttled, then
+		- if synchronous invocation: the requests are rejected & return ThrottleError-429
+		- if asynchronous invocation: retry automatically and then go to internal Queue.
+  		- if SQS: request remains in the same queue, waits until one by one gets executed.  
 - Throttling occurs in these scenarios:
 	- The function exceeds reserved concurrency. 
 	- The account exceeds regional concurrency limits. 
  	- Burst of traffic exceeds available provisioned/unreserved concurrency.
+````
+What is an execution environment?
 
+An execution environment is an isolated runtime that contains:
+
+Your function code
+The configured runtime (Node.js, Python, Java, etc.)
+Memory and CPU allocated to the function
+Temporary /tmp storage
+Environment variables
+Any initialized resources (for example, database connections created outside the handler)
+
+A single execution environment can process only one invocation at a time.
+```
   example:
+  
 | Function | Reserved Concurrency | Incoming Requests | Result                                                                |
 | -------- | -------------------- | ----------------- | --------------------------------------------------------------------- |
 | MyFunc   | 10                   | 8                 | All 8 requests execute immediately.                                   |
 | MyFunc   | 10                   | 15                | 10 execute immediately, 5 throttled (for async triggers, they retry). |
-| MyFunc   | None (default)       | 1,200             | If account limit is 1,000, 1,000 execute, 200 throttled.              |
+| MyFunc   | None (default)       | 1,200             | If account limit is 1,000. 1,000 execute, 200 throttled.              |
 
 
 When requests arrive:
