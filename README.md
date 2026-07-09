@@ -4193,7 +4193,7 @@ Application continues working with minimal changes.
 	- The function exceeds reserved concurrency. 
 	- The account exceeds regional concurrency limits. 
  	- Burst of traffic exceeds available provisioned/unreserved concurrency.
-````
+```
 What is an execution environment?
 
 An execution environment is an isolated runtime that contains:
