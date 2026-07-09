@@ -2290,7 +2290,7 @@ If you plan on stopping it for long time, then take a snapshot and restore inste
 - allows apps to reuse and share DB connections established with the DB.
 - Databases can struggle when there are too many connections. 
 
-Instead of every app opening its own DB connection:
+- Instead of every app opening its own DB connection:
     - RDS Proxy reuses connections reduces load on the database serverless, autoscaling.
 	- RDS proxy is never publicly accessible (must be accessed from VPC)
 
@@ -2300,7 +2300,7 @@ Instead of every app opening its own DB connection:
 
 ### **ElastiCache**
 
--helps app run faster by storing frequently used data in memory (RAM) instead of fetching it from a database every time.
+- helps app run faster by storing frequently used data in memory (RAM) instead of fetching it from a database every time.
 - service that gives you a very fast in-memory cache.
 - helps reduce load/traffic
 
@@ -2318,7 +2318,7 @@ Instead of every app opening its own DB connection:
     - Session data is stored in ElastiCache (redis)
       - session data:
         - key: sessionId: abc123xyz
-          - value: {
+        - value: {
 							  userId: 101,
 							  name: "John",
 							  role: "admin"
@@ -2361,8 +2361,8 @@ Use Memcached if:
 - No need to save data permanently
 - You want a very lightweight setup
 
-- If your app is complex → Redis
-- If your need is basic caching → Memcached
+- **If your app is complex → Redis**
+- **If your need is basic caching → Memcached**
 
     ### **ElastiCache - Cache Security**
 - ElastiCache is usually placed inside a private network, so security is mainly about who can access it and how.
@@ -2387,27 +2387,28 @@ Use Memcached if:
 
   **How it works:**
       - App writes data
-      - data goes to DB + cache together
+      - data goes to DB + cache together.
 
   use when you want cache always up-to-date.
 
  - **Write-behind:** cache updates DB later (async)
-       **How it works:**
-       - App writes to cache
-       - Cache updates DB after some time
 
-   use when high write performance is needed
+   **How it works:**
+       - App writes to cache
+       - Cache updates DB after some time.
+
+   use when high write performance is needed.
 
 - **Session Store**: store user sessions in cache
-      - use when multiple app servers and need fast session access
+	- use when multiple app servers and need fast session access
 
 - **Leaderboard/ Counter**:
 	- Redis uses a data structure called a sorted set (ZSET).
 	- each element has value-score.
 	- keeps elements unique and maintains them sorted by score.
       
-**How it works:**
-    - Add/update a user score
+- **How it works:**
+	- Add/update a user score
     - Redis inserts or updates the value
     - It automatically reorders ranking in real time
  
@@ -2420,7 +2421,7 @@ Use Memcached if:
 - Session Store → user sessions
 - Leaderboard → real-time ranking
 
-**AWS ROUTE 53**
+### AWS ROUTE 53
 
 - It is a scalable DNS that **translates domain names into IP addresses** and routes users to the correct servers.
 - example: If a user types **`www.google.com`**, Route 53 finds the **IP address of the server** where the website is hosted and directs the user there.
@@ -2433,31 +2434,31 @@ Use Memcached if:
 - **DNS** is a collection of rules and records which helps clients understand **how to reach a server through URLs.**
 
 **DNS Terminologies** :
-**- Domain Registrar:** where you can buy a domain 
-**- DNS record:** provide information about a domain
-
+- **Domain Registrar:** where you can buy a domain 
+- **DNS record:** provide information about a domain
 - **zone files:** file that stores all DNS records of a domain
 - **Name server:** server that responds to DNS queries for a domain
 - **Top level domain(TLD):** last segment of a domain 
-example: .com, .org, .net, .gov, .edu
+	- example: .com, .org, .net, .gov, .edu
 - **second level domain (SLD):** the part directly to the left of the TLD. 
-example: in example.com -> example is SLD.
+	- example: in example.com -> example is SLD.
 - **sub domain:** part of a larger domain. 
-example: mail.google.com ->mail is sub domain
+	- example: mail.google.com ->mail is sub domain
 - **FQDN (fully qualified domain name):** complete domain name including all levels and ending with a dot.
     - example: www.google.com
 - **Protocol**: set of rules that defines how data is transmitted over a network
 
 **How DNS Works** 
-Check Cache → Browser looks for saved IP, if not then: 
-Ask Resolver → If not found, 
-Root → TLD → Name Server → Find correct server, 
-Get IP → Name server returns IP- Load Website → Browser connects using IP
+- Check Cache → Browser looks for saved IP, if not then: 
+- Ask Resolver → If not found, 
+- Root → TLD → Name Server → Find correct server, 
+- Get IP → Name server returns IP- Load Website → Browser connects using IP
 
 - Route 53 Resolver = DNS server that looks up records and forwards queries when necessary.
 - DNS finds IP address step by step, then loads website.
     
-    ### **Route 53 Record**
+
+### **Route 53 Record**
     
 - DNS record stored in amazon route 53 that tells how your domain should behave.
 - example: web browser→ dns request to Route 53 (A)→ sends back IP to web browser.
@@ -2494,17 +2495,15 @@ This means:
 **Route 53 CNAME vs Alias :**
 
 - CNAM (Canonical Name):
-    - Points one domain to another domain name 
-    
-	example: [www.example.com](http://www.example.com/) → example.com
+    - Points one domain to another domain name
+    - example: [www.example.com](http://www.example.com/) → example.com
     - Only for NON ROOT DOMAIN
 - Alias:
-    - Points a domain directly to AWS resources
-
-	example: example.com → AWS Load Balancer / S3 / CloudFront
+    - ** Points a domain directly to AWS resources**
+    - example: google.com → AWS Load Balancer / S3 / CloudFront
     - Works for both ROOT DOMAIN & NON ROOT DOMAIN
 - **ROOT DOMAIN:** main domain name without any prefix 
-example: example.com, google.com
+example: amazon.com, google.com
 - **NON ROOT DOMAIN:** A child part of the main domain
  example: [www.example.com](http://www.example.com/), mail.example.com
 
@@ -2536,7 +2535,7 @@ routes traffic to the AWS region that provides the lowest network latency.
 
 **Route 53 - Hybrid DNS**
 - allows  bidirectional DNS resolution between AWS VPCs and on-premises networks using Route 53 resolver inbound and outbound endpoints.
-- 2 DNS systems talk to each other: AWS DNS <----> On-Prem DNS
+- **2 DNS systems talk to each other: AWS DNS <----> On-Prem DNS**
 
 - **Hybrid DNS lets:** resolving DNS queries between VPC (Route 53 resolver) and your network (other DNS resolvers)
     - On-prem systems resolve AWS private domains (like app.internal)
@@ -2550,8 +2549,8 @@ routes traffic to the AWS region that provides the lowest network latency.
 	- Connect networks using VPN or Direct Connect.
 	- Configure on-prem DNS conditional forwarders to send AWS domain queries to the inbound endpoint.
 
- - Inbound Endpoint: receives DNS queries coming into AWS (On-prem->AWS)
- - Outbound Endpoint: send DNS queries out of AWS (AWS->On-prem)
+ - **Inbound Endpoint: receives DNS queries coming into AWS (On-prem->AWS)**
+ - **Outbound Endpoint: send DNS queries out of AWS (AWS->On-prem)**
 - ***section 11 important Recap of all concepts****
 ---
 - **Stateless Web App:** does NOT store client session information on the server between requests.
@@ -2584,6 +2583,17 @@ routes traffic to the AWS region that provides the lowest network latency.
 👉 You just focus on **writing code**, not managing servers.
 
 - elastic beanstalk VS AWS lambda
+  
+| **Aspect**                  | **Elastic Beanstalk**                           | **AWS Lambda**                                           |
+| --------------------------- | ----------------------------------------------- | -------------------------------------------------------- |
+| **Service Type**            | Platform as a Service (PaaS)                    | Function as a Service (FaaS) / Serverless                |
+| **Deployment Unit**         | Entire application                              | Individual function                                      |
+| **Infrastructure**          | Runs on EC2 instances managed by AWS            | No servers visible or managed by you                     |
+| **Execution**               | Application runs continuously                   | Function runs only when triggered                        |
+| **Scaling**                 | Scales EC2 instances using Auto Scaling         | Automatically scales per invocation                      |
+| **Execution Duration**      | Suitable for long-running processes             | Limited execution time per invocation (up to 15 minutes) |
+| **Operating System Access** | Full access to underlying EC2 instances         | No access to underlying servers                          |
+| **Use Cases**               | Web applications, APIs, enterprise applications | Event processing, automation, serverless APIs            |
 
 **Beanstalk Components:**
 
@@ -2596,9 +2606,9 @@ routes traffic to the AWS region that provides the lowest network latency.
     - **Web Server Environment** → handles HTTP requests
     - **Worker Environment** → processes background jobs (via Amazon SQS)
 - can create multiple envs (dev, test, prod,…)
-
+```
 **create application → upload version → launch environment → manage environment**
-
+```
 - **Environment Tier**
 - Defines the **type of environment**:
     - **Web Tier**
@@ -2621,16 +2631,6 @@ routes traffic to the AWS region that provides the lowest network latency.
     - **Rolling with additional batch** → safer
     - **Immutable** → new instances created (most reliable)
 
-| **Aspect**                  | **Elastic Beanstalk**                           | **AWS Lambda**                                           |
-| --------------------------- | ----------------------------------------------- | -------------------------------------------------------- |
-| **Service Type**            | Platform as a Service (PaaS)                    | Function as a Service (FaaS) / Serverless                |
-| **Deployment Unit**         | Entire application                              | Individual function                                      |
-| **Infrastructure**          | Runs on EC2 instances managed by AWS            | No servers visible or managed by you                     |
-| **Execution**               | Application runs continuously                   | Function runs only when triggered                        |
-| **Scaling**                 | Scales EC2 instances using Auto Scaling         | Automatically scales per invocation                      |
-| **Execution Duration**      | Suitable for long-running processes             | Limited execution time per invocation (up to 15 minutes) |
-| **Operating System Access** | Full access to underlying EC2 instances         | No access to underlying servers                          |
-| **Use Cases**               | Web applications, APIs, enterprise applications | Event processing, automation, serverless APIs            |
 
 ### Amazon S3 (Simple Storage Service)
 
@@ -2716,8 +2716,7 @@ Think of S3 like a **cloud storage drive**:
 
 **Key Features of S3 Objects**
 
-- Versioning:
-    - Multiple versions of same object, helps recover deleted/overwritten files
+- Versioning: Multiple versions of same object, helps recover deleted/overwritten files
 - Encryption
     - Data security options:
         - SSE-S3
@@ -2734,9 +2733,9 @@ Think of S3 like a **cloud storage drive**:
     - Copy
     - Move (copy + delete)
 
- Example (Your Project)
+ Example:
 
-For your **Ampcharge app**:
+ In **Ampcharge app**:
 
 - Bucket: `ampcharge-data`
 - Objects:
@@ -2760,9 +2759,9 @@ https://ampcharge-data.s3.ap-south-1.amazonaws.com/users/101/profile.png
 
 S3 security is about **protecting your data** by controlling:
 
-- **Who can access it**
-- **How it is accessed**
-- **How it is encrypted**
+- **Who can access it ?**
+- **How it is accessed ?**
+- **How it is encrypted ?**
 
 **Access Control Mechanism**
 
@@ -2946,7 +2945,7 @@ When versioning is enabled:
 
 Each object gets a **Version ID**:
 
-file.txt 
+- file.txt 
 	- VersionId: A1 (old)
 	- VersionId: B2 (old)
 	-  VersionId: C3 (latest)
@@ -2955,12 +2954,10 @@ file.txt
 
 **Delete Behavior** 
 
-When you delete an object:
-
-It is **NOT permanently deleted**
-S3 adds a **Delete Marker**
-
-file.txt
+- When you delete an object:
+- It is **NOT permanently deleted**
+- S3 adds a **Delete Marker**
+- file.txt
 	- v1
     - v2
     - Delete Marker (latest)
@@ -3117,9 +3114,9 @@ Data → Single AZ (high speed)
 ![My local image](storageClass2.png)
 
 - **Expiration Actions**
-    - Permanently delete objects after a time
-    Example: Delete logs after 1 year
-    can be used to delete older version of files (if versioning is enabled)
+    - Permanently delete objects after a time.
+    - Example: Delete logs after 1 year
+    - can be used to delete older version of files (if versioning is enabled)
 
 Rules can be applied based on
 
@@ -3155,7 +3152,7 @@ Rules can be applied based on
 
 **Amazon S3 analytics -Storage class analysis**
 
-- helps you decide when to transition objects to right storage class.
+- **helps you decide when to transition objects to right storage class**.
 - recommendations for standard and standard IA
 - does not work for one zone IA or glacier
 - report is updated daily
