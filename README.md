@@ -4193,20 +4193,7 @@ Application continues working with minimal changes.
 	- The function exceeds reserved concurrency. 
 	- The account exceeds regional concurrency limits. 
  	- Burst of traffic exceeds available provisioned/unreserved concurrency.
-```
-What is an execution environment?
 
-An execution environment is an isolated runtime that contains:
-
-Your function code
-The configured runtime (Node.js, Python, Java, etc.)
-Memory and CPU allocated to the function
-Temporary /tmp storage
-Environment variables
-Any initialized resources (for example, database connections created outside the handler)
-
-A single execution environment can process only one invocation at a time.
-```
   example:
   
 | Function | Reserved Concurrency | Incoming Requests | Result                                                                |
@@ -4282,15 +4269,17 @@ AWS maintains a specified number of warm execution environments continuously.
 - When you publish a Lambda version:
 
 Lambda initializes function once
-→ Creates encrypted memory snapshot
-→ Stores snapshot
+
+- Creates encrypted memory snapshot.
+- Stores snapshot
 
 Later during invocation:
 
 Request arrives
-→ Lambda restores snapshot
-→ Function resumes quickly
-→ Function executes
+
+- Lambda restores snapshot
+- Function resumes quickly
+- Function executes
 
 Instead of rebuilding the environment, AWS restores it from the saved state.
 
@@ -4298,7 +4287,7 @@ Instead of rebuilding the environment, AWS restores it from the saved state.
 ### Lambda 
 **add this in lambda in VPC**
 
-- by default, lambda function is launched outsdie the VPC, therefore it cannot access resources in VPC (RDS, elasticcache, ELB,....)
+- by default, lambda function is launched outside the VPC, therefore it cannot access resources in VPC (RDS, elasticcache, ELB,....)
 - lambda in VPC: define the VPC ID, subnets and the security groups
     - lambda will create an ENI in your subnets
 
@@ -4312,15 +4301,15 @@ Instead of rebuilding the environment, AWS restores it from the saved state.
      - send notifications to SNS or subscribe to events using EventBridge
   
    
-### Amazon DynamoDB
-- it is a fast, scalable NoSQL database.
-- stores data in tables
+### Amazon DynamoDB (NoSQL)
+- it is a fast, scalable **NoSQL database.**
+- stores data in tables different from traditional relational database tables.
 - scales to massive workloads, distributed database.
 - millions of requests per second
 - integrated with IAM for security, authorization and administration
 
 - dynamoDB is made of tables
-	- each table has a primary key (must be decided at craetion time)
+	- each table has a primary key (must be decided at creation time)
 	- each table can have an infinite no of items (rows)
 	- each item has attributes (can be added over time- can be null) (columns)
 - maximum size of an item is 400kb
@@ -4351,14 +4340,19 @@ Instead of rebuilding the environment, AWS restores it from the saved state.
 	- With DAX: repeated reads are served from cache
 
 
-| Feature             | DAX                   | ElastiCache     |
-| ------------------- | --------------------- | --------------- |
-| Built for DynamoDB  | Yes                   | No              |
-| API compatible      | Yes                   | No              |
-| Managed cache logic | Automatic             | Manual          |
-| Setup complexity    | Simple                | Higher          |
-| Best for            | DynamoDB acceleration | General caching |
+**When to use which?**
 
+- Use DAX if:
+	- Your database is DynamoDB.
+	- You mainly want to speed up read operations.
+	- You prefer AWS to handle most of the caching behavior.
+
+- Use ElastiCache if:
+	- You use RDS, Aurora, DynamoDB, or multiple data sources.
+	- You need a general-purpose cache.
+	- You want advanced Redis features such as pub/sub, distributed locks, leaderboards, or session storage.
+
+   
 ### DynamoDB stream Processing
 - captures changes made to a DynamoDB table and allows you to process them in near real time.
 - Whenever an item in DynamoDB is:
@@ -4369,7 +4363,7 @@ Instead of rebuilding the environment, AWS restores it from the saved state.
 - each stream record contains: event type, timestamp, keys, old image, new image
 
 - DynamoDB global tables:
-    - They replicate table data automatically across multiple AWS regions.
+    - They replicate table data automatically across multiple AWS regions. (same data every regions ~ duplicate/replication)
     - application can READ and WRITE to the table in any region
     - must enable DynamoDB streams as pre-requisite
     - user access nearest AWS region
@@ -4402,8 +4396,9 @@ Instead of rebuilding the environment, AWS restores it from the saved state.
 - swagger/Open API import to quickly define APIs
 
 - **Flow**:
-	- Request hits API Gateway→ Authentication validated→ Routed to Lambda → Lambda queries DynamoDB → Response returned to user 
-
+```
+ Request hits API Gateway→ Authentication validated→ Routed to Lambda → Lambda queries DynamoDB → Response returned to user 
+```
 - Lamdba Function: easy way to expose REST API backed by AWS lambda
 - HTTP: expose HTTP endpoints in the backend
     - why? add rate limiting, caching , user authentication, API keys
@@ -4422,16 +4417,17 @@ Instead of rebuilding the environment, AWS restores it from the saved state.
 ### Step Functions
 - serverless workflow orchestration service used to coordinate multiple AWS services into a sequence of steps.
 - Step Functions allow you to define workflows as:
-
-states
-transitions
+	- states
+	- transitions
 
 using JSON-based Amazon States Language (ASL).
-- architecture:
-- Start-> Lambda Function -> Choice / Condition -> Another Service -> Success / Failure
 
+- architecture:
+```
+Start-> Lambda Function -> Choice / Condition -> Another Service -> Success / Failure
+```
 **Why Use It?**
-- Instead of writing complex code for:retries, waiting , sequencing, error handling AWS manages it for you.
+- Instead of writing complex code for: retries, waiting , sequencing, error handling AWS manages it for you.
 
 ### Amazon Cognito:
 - gives users an identity to interact with our web or mobile applications
@@ -4464,11 +4460,8 @@ It helps users:
 
 
 ## section 20 important
-
-
-
 ### Amazon Neptune
-- fully managed graph database
+- **fully managed graph database**
 - can store up to billions of relations and query the graph with milliseconds latency
 - example: a popular graph dataset would be a social network
     - users have friends
@@ -4478,30 +4471,30 @@ It helps users:
 - highly available across 3AZ, with upto 15 read replicas
 - build and run applications working with highly connected datasets
 - highly available with replications across multiple AZs
-
+---
 ### Amazon Neptune - Streams
 - real time ordered sequence of every change to your graph data
 - changes are available immediately after writing
 - no duplicates, strict order
 - streams data is accessible in an HTTP REST API
 
-
+---
 ### Amazon Keyspaces ( for Apache Cassandra)
 - open source NoSQL distributed database
 - automatically scale tables up/down based on the application's traffic
 - tables are replicated 3 times across multiple AZ
 - using the CQL(cassandra query language)
 - single digit millisecond latency at any scale, handle 1000s of requests per second
-
+---
 
  ### Amazon Timestream
- - serverless timeseries db.
+ - **serverless timeseries db.**
  - automatically scales up/down to adjust capacity
  - store and analayze trillions of events per day
  - 1000s times faster and 1/10th the cost of relational databases (cheaper)
  - scheduled queries, multi-measure records
  - encryption in transit and at rest
-   
+---
 ### Amazon Athena
 
 - **serverless query service** in AWS that allows you to analyze data directly in Amazon S3 using standard SQL.
@@ -4525,7 +4518,7 @@ Uses SQL to query data
         ↓
 Returns results
 ```
-
+---
 ### **Amazon QuickSight**
 
 - AWS tool for dashboards and data visualisation
@@ -4561,6 +4554,7 @@ QuickSight
 	↓
 Dashboards & Reports
 ```
+---
 ### Redshift
 
 - AWS data warehouse for analysing huge amounts of data
@@ -4656,12 +4650,12 @@ Redshift Specturm
         ↓
 	   S3
 ```
-
+---
 ### Amazon Open Search Service
 
 - OpenSearch is an open-source search and analytics engine.
 - in dynamoDB, queries only exist by primary key or indexes
-- with open search, you can search any field.
+- **with open search, you can search any field**.
 - doesn’t natively support SQL
 - AWS provides it as a managed service:
     - automatic scaling
@@ -4670,13 +4664,6 @@ Redshift Specturm
     - security
     - cluster management
 
-**OpenSearch Deployment Modes**
-
-| Mode | Description |
-| --- | --- |
-| Managed Cluster | Traditional cluster deployment |
-| Serverless | Auto-managed OpenSearch |
-
 **OpenSearch Serverless**
 
 Amazon OpenSearch Serverless:
@@ -4684,7 +4671,7 @@ Amazon OpenSearch Serverless:
 - removes cluster management
 - automatically scales
 - charges based on usage
-
+---
 ### Amazon EMR (Elastic MapReduce)
 
 - used to process and analyze **huge amounts of data** using big data frameworks.
@@ -4718,7 +4705,7 @@ EMR solves this using:
 
 - distributed clusters
 - parallel processing
-
+---
 ### AWS Glue
 
 - **Serverless ETL (Extract, Transform, Load) service**
@@ -4737,13 +4724,13 @@ EMR solves this using:
 | Glue Studio | Visual ETL builder |
 | Glue Job bookmarks | prevent re-processing old data |
 | Glue dataBrew | clean and normalize data using pre-built transformation |
-
+---
 ### AWS Lake
 
-- data lake: central place to have all data for analytic purpose
-- stores large amounts of raw data in its native format (structured, semi-structured, and unstructured) until it is needed for analysis.
+- **data lake: central place to have all data for analytic purpose**
+- **stores large amounts of raw data in its native format** (structured, semi-structured, and unstructured) until it is needed for analysis.
 - discover, cleanse, transform, ingest data into your data lake.
-- it automates many complex manual steps(collecting, cleansing, moving,..) and de-duplications (ML transfoms)
+- **it automates many complex manual steps(collecting, cleansing, moving,..) and de-duplications (ML transfoms)**
 - built on top of AWS Glue.
 
  **Architecture Flow**
@@ -4762,7 +4749,7 @@ AWS Lake Formation
 Analytics Services
 (Athena, Redshift Spectrum, EMR, QuickSight)
 ```
-
+---
 ### **Amazon MSK**
 
 - **Amazon MSK (Managed Streaming for Apache Kafka)** is a **fully managed Apache Kafka service** provided by AWS.
@@ -4866,9 +4853,9 @@ QuickSight Dashboard
 - Lambda can subscribe to SQS
 - **Athena**: serverless SQL service and results are stored in S3
 
+---
 
-
-### Amazon Rekognition
+### Amazon Rekognition (Detect Objects)
 - cloud-based AI service from AWS that lets developers add image and video analysis capabilities to applications without building machine learning models from scratch.
 - **What Amazon Rekognition Can Do?**
 	- **Image Analysis**
@@ -4911,6 +4898,7 @@ Amazon Rekognition Moderation API
         ↓
 Accept / Reject / Send for Human Review
 ```
+---
 ### Amazon Transcribe (speech -> text)
 - it is an automatic speech recognition (ASR) service from AWS that converts audio and video speech into text.
 - automatically remove the **personal identifiable information (PII)** using **Redaction**.
@@ -4922,7 +4910,7 @@ Accept / Reject / Send for Human Review
 	 - Call center analytics
 	 - Meeting transcription
 	 - Medical dictation
- 
+ ---
 ### Amazon Polly (text -> speech)
 - Text-to-Speech (TTS) service that converts written text into natural-sounding speech using AI and deep learning.
 - supports both Lexicons and SSML (Speech Synthesis Markup Language) to improve pronunciation and make speech sound more natural.
@@ -4934,7 +4922,7 @@ Accept / Reject / Send for Human Review
 	- for dynamic speech formatting. 
 	- It is XML-based markup used to control:Pauses, Pitch, Volume, Speaking rate, Emphasis, Pronunciation, Breathing sounds.
 
-
+---
 ### Amazon Translate
 - Neural Machine Translation (NMT) service that automatically translates text between multiple languages.
 	- Uses AI-based neural networks for:
@@ -4945,11 +4933,11 @@ Accept / Reject / Send for Human Review
 - allows you to localize content such as websites, applications to intermational users, easily translate large volumes of text efficiently.
 
 
-### Amazon Lex & Connect
-- Amazon Lex and Amazon Connect are commonly used together to build AI-powered customer support systems, chatbots, and voice assistants.
+### Amazon Lex & Connect (AI Chatbots, Support Systems, Voice Assistant)
+- Amazon Lex and Amazon Connect are commonly used together to **build AI-powered customer support systems, chatbots, and voice assistants.**
 
-- **Amazon Lex ** → understands user speech/text and manages conversations.
--** Amazon Connect** → cloud-based contact center for phone calls and customer support.
+- **Amazon Lex** → understands user speech/text and manages conversations.
+- **Amazon Connect** → cloud-based contact center for phone calls and customer support.
 - Together, they create intelligent IVR (Interactive Voice Response) systems.
 
 - **Amazon Lex:**
@@ -4963,7 +4951,7 @@ The same technology powers Amazon Alexa.
 	- Amazon Connect is a cloud-based customer service platform.
  	- Features: Incoming/outgoing calls, IVR systems, Call routing, Agent management, Real-time analytics, Contact recording
   - workflow:
-  ```
+```
  Customer Call
       ↓
 Amazon Connect
@@ -4983,9 +4971,9 @@ Agent or Automated Response
 		- Lambda fetches backend data
 		- Bot responds or transfers to agent
 
+---
 
-
-### Amazon Comprehend (NLP)
+### Amazon Comprehend (NLP) 
 - is a Natural Language Processing (NLP) service from AWS that uses machine learning to analyze and understand text.
 - It can identify:
 	- Sentiment
@@ -5026,7 +5014,7 @@ Sentiment / Entities / Insights
 | Amazon Connect     | Cloud contact center   | Customer support call centers                        |
 | Amazon Comprehend  | NLP text analysis      | Sentiment analysis, entity detection                 |
 
-
+---
 ### Amazon Comprehend medical
 - it is a specialized NLP service for healthcare and life sciences.
 - It extracts medical information from unstructured clinical text like doctor notes, prescriptions, and health records.
@@ -5039,7 +5027,7 @@ Sentiment / Entities / Insights
 | EHR systems  | Digital health records            |
 | Telemedicine | Automated report generation       |
 
-
+---
 ### SageMaker AI (build, train, and deploy ML models)
 - a ML and AI platform from AWS that helps developers and data scientists **build, train, and deploy ML models** at scale.
 - **What It Does?**
@@ -5061,11 +5049,11 @@ Sentiment / Entities / Insights
 	- Image classification
 	- Chatbot intelligence
 
-
+---
 ### Amazon Kendra (search service find answers in data using queries)
 - it is an AI-powered enterprise search service from AWS that helps users find answers from documents, databases, and internal knowledge sources using natural language queries.
 - **What It Does?**
-  	- Instead of keyword search, it uses AI-based semantic search (understands meaning, not just words).
+  	- **Instead of keyword search, it uses AI-based semantic search** (understands meaning, not just words).
  	- Amazon Kendra lets you search across multiple data sources like:
 		- PDFs and Word documents
 		- Websites
@@ -5103,7 +5091,7 @@ Sentiment / Entities / Insights
 5. Machine Learning Ranking:
 	- Results are ranked based on:
 		- Relevance/ Context/ User intent
-
+---
 
 ### Amazon Personalize (item recommendations to users)
 - helps you deliver personalized product, content, or item recommendations to users in real time.
