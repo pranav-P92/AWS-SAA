@@ -4932,7 +4932,7 @@ Accept / Reject / Send for Human Review
 - nature and accurate language translation.
 - allows you to localize content such as websites, applications to intermational users, easily translate large volumes of text efficiently.
 
-
+---
 ### Amazon Lex & Connect (AI Chatbots, Support Systems, Voice Assistant)
 - Amazon Lex and Amazon Connect are commonly used together to **build AI-powered customer support systems, chatbots, and voice assistants.**
 
@@ -5123,7 +5123,7 @@ Sentiment / Entities / Insights
 	- Recommended accessories
 	- Similar gadgets
 
-
+---
 ### Amazon Textract
 - ML service from AWS: extracts text, forms, and tables from scanned documents, PDFs, and images.
 - workflow
@@ -5136,7 +5136,7 @@ Extracted Text + Tables + Forms
         ↓
 Structured JSON Output
 ```
-
+---
 ### Amazon Cloud watch metrics
 - monitor the performance and health of AWS resources, applications, and services.
 
@@ -5148,20 +5148,20 @@ Structured JSON Output
 | ELB     | RequestCount, TargetResponseTime       |
 | S3      | BucketSizeBytes, NumberOfObjects       |
 
-
+---
 
 ### Amazon Cloud watch logs
-- centralized logging service in AWS: used to collect, store, monitor, and analyze log files from AWS resources, applications, and on-premises servers.
+- used to collect, store, monitor, and analyze log files from AWS resources, applications, and on-premises servers.
 - Main Components:
-	- Log Groups: A container for log streams, usually organized by application or service.
+	- **Log Groups:** A container for log streams, usually organized by application or service.
 	- Examples:
 		- /aws/lambda/my-function
 		- /ec2/app-server
-	- Log Streams: Sequences of log events from a single source.
+	- **Log Streams:** Sequences of log events from a single source.
 	- Examples:
 		- One EC2 instance
 		- One Lambda execution environment
-	- Log Events: Individual log records containing: Timestamp, Message
+	- **Log Events:** Individual log records containing: Timestamp, Message
 
 - can define log expiration period (never expire, 1 day-10 years)
 - logs are encrypted by default
@@ -5203,7 +5203,7 @@ Subscription Filter
 Lambda / Firehose / Kinesis
 ```
 - **Subscription filter** in Amazon CloudWatch Logs is a rule that continuously matches log events and forwards them to another AWS service in near real time.
-It acts like a pipeline between CloudWatch Logs and a destination service.
+- It acts like a pipeline between CloudWatch Logs and a destination service.
 - The filter:
 	- Watches incoming logs
 	- Matches logs using a pattern
@@ -5217,7 +5217,7 @@ It acts like a pipeline between CloudWatch Logs and a destination service.
  - the cloudwatch agent can be on-premises too.
 
 ### CloudWatch Logs Agent (Old Agent)
-- Purpose: Send log files to CloudWatch Logs
+- Purpose: **Send log files to CloudWatch Logs**
 - Typical logs:
 	- /var/log/messages
 	- /var/log/nginx/access.log
@@ -5263,10 +5263,31 @@ CloudWatch Metrics + Logs
   - no agents required to be installed
  
   ## Amazon Event Bridge (276 watch again)
-
-
+  - service that receives events and sends them to the right applications based on rules.
+  - example:
+  	- Imagine you order a pizza.
+    - You place an order.
+    - An "Order Created" event is generated.
+    - EventBridge receives the event.
+    - It sends the event to the right services:
+    	- 🍕 Kitchen → Start making the pizza
+		- 💳 Payment service → Process payment
+		- 📧 Email service → Send order confirmation
+		```
+		Order App
+		    |
+		    | Order Created
+		    v
+		Amazon EventBridge
+		   /      |       \
+		  /       |        \
+		Email   Payment   Kitchen
+		Service  Service   Service
+		```
+    - The ordering system doesn't need to contact each service directly. It only sends the event to EventBridge, and EventBridge handles the routing. 
   ### Amazon Container insights
   - used to collect, visualize, and analyze metrics and logs from containerized environments.
+    
 | Platform                  | Supported |
 | ------------------------- | --------- |
 | Amazon EKS                | Yes       |
@@ -5275,7 +5296,7 @@ CloudWatch Metrics + Logs
 | Docker                    | Yes       |
 
 - Architecture
-
+```
 Typical EKS setup:
 
 Pods / Containers
@@ -5285,24 +5306,23 @@ CloudWatch Agent + Fluent Bit
 CloudWatch Metrics + Logs
         ↓
 Dashboards / Alarms / Insights
+```
+- Components Used:
+- **CloudWatch Agent**
+- Collects:
+	- Metrics
+	- Performance data
 
-- Components Used
-- CloudWatch Agent
-Collects:
-Metrics
-Performance data
-
-- Fluent Bit
-Collects:
-Container logs
-Kubernetes logs
-- CloudWatch Logs Insights
-Used for querying logs.
+- **Fluent Bit**
+- Collects:
+	- Container logs
+	- Kubernetes logs
+- **CloudWatch Logs Insights**: Used for querying logs.
 
 ### Cloudwatch Lambda insights
 - monitoring and troubleshooting solution for serverless applications running on AWS lambda
 - collects, aggregates and summarizes system level metrics including CPU time, memory, disk, network
-- collects, aggregates adn summarizes diagnostic information such as cold starts and lambda worker shutdowns
+- collects, aggregates and summarizes diagnostic information such as cold starts and lambda worker shutdowns
 
 
 
@@ -5313,8 +5333,9 @@ Used for querying logs.
 -  Detect unauthorized or suspicious activity.
 -  Troubleshoot operational issues.
 
--  How CloudTrail Works: 
--	You enable CloudTrail in your AWS account.
+**How CloudTrail Works:**
+
+- You enable CloudTrail in your AWS account.
 - AWS begins logging API calls and events automatically.
 - Logs are delivered to your S3 bucket (optionally encrypted with KMS).
 - You can analyze logs directly or use Athena/CloudWatch/third-party tools.
