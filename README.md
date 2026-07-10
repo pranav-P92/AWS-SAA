@@ -5354,51 +5354,40 @@ Dashboards / Alarms / Insights
 ### CloudTrail Event Retention
 - events are stored for 90 days in cloudTrail.
 - to keep events beyond this period, log them to S3(long-term retention) and use Athena.
-
+---
 
 ### AWS Config
-- service that tracks and checks the configuration of AWS resources.
-
+- keeps track of your AWS resources and records any changes made to them.
+- helps you check whether resources comply with your organization's policies.
 - AWS Config continuously records:
-	- What resources exist (EC2, S3, IAM, VPCs, etc.)
-	- How they are configured
-	- How configurations change over time
+	- What resources exist (EC2, S3, IAM, VPCs, etc.) ?
+	- How they are configured ?
+	- How configurations change over time ?
  - Config Rules- remediation :automatically fixes resources that violate compliance rules.
- - How It Works
-	-	AWS Config Rule detects non-compliant resources
- 		-note : NON_COMPLIANT means a resource violates a rule or policy defined in an AWS Config Rule.		
-	- Remediation triggers an automatic fix
-	- Usually uses:
-		- Amazon Web Services SSM Automation
-		- Lambda
-		- Custom scripts
-  - Config Rule Notifications: alerts generated when a resource’s compliance status changes.
-  - workflow:
-  - AWS Config Rule
-      ↓
-- Compliance Change Detected
-      ↓
-- EventBridge / SNS Trigger
-      ↓
-- Email / Lambda / Slack / Ticket
+
+** How AWS Config Works**
+	- Enable AWS Config in your AWS account.
+	- AWS Config records the configurations of supported resources.
+   	- When a resource changes, AWS Config captures the updated configuration.
+   	- AWS Config evaluates the resource against configured rules.
+   	- Compliance results are displayed in the AWS Config dashboard and can trigger automated actions.
+
 
 | Service    | Purpose             | Tracks                         |
 | ---------- | ------------------- | ------------------------------ |
 | CloudWatch | Monitoring & alerts | Metrics, logs, performance     |
 | CloudTrail | API auditing        | Who did what in AWS            |
 | AWS Config | Resource compliance | Resource configuration changes |
-
+---
 
 ### AWS Organisation
-service used to centrally manage and govern multiple AWS accounts in one place.
-
-- What AWS Organizations Does
-
-It helps you:
-- Create and manage multiple AWS accounts
-- Apply central policies across accounts
-- Group accounts into Organizational Units (OUs)
-- Enable consolidated billing
+- helps you manage multiple AWS accounts from one place.
+- What AWS Organizations Does?
+- It helps you:
+	- Create and manage multiple AWS accounts
+	- Apply central policies across accounts
+	- Group accounts into Organizational Units (OUs)
+	- Enable consolidated billing
 
 | Component                | Meaning                             |
 | ------------------------ | ----------------------------------- |
@@ -5408,7 +5397,7 @@ It helps you:
 | Member Account           | Individual AWS account              |
 | Management Account       | Main account that controls others   |
 
-
+---
 ### IAM policy evaluation logic
 - it is the process AWS uses to decide whether an API request is allowed or denied.
 - So final decision is based on:
@@ -5416,7 +5405,8 @@ It helps you:
 	- Otherwise Allow → if permitted
 	- Default → Deny
  - evaluation Flow:
-   Request
+```
+Request
   ↓
 Is there an Explicit DENY?
   → YES → DENY (STOP)
@@ -5425,57 +5415,56 @@ Is there an Explicit ALLOW?
   → YES → ALLOW
   ↓ NO
 Implicit DENY → DENY
+```
 
-- What IAM Checks During Evaluation
-
-When you make a request (e.g., S3 access), AWS checks:
-
-- IAM User policies
-- IAM Group policies
-- IAM Role policies
-- Resource-based policies (like S3 bucket policy)
-- SCPs (if using Organizations)
-- Permission boundaries (if set)
-- Session policies (temporary role restrictions)
-
+**What IAM Checks During Evaluation ?**
+- When you make a request (e.g., S3 access), AWS checks:
+	- IAM User policies
+	- IAM Group policies
+	- IAM Role policies
+	- Resource-based policies (like S3 bucket policy)
+	- SCPs (if using Organizations)
+	- Permission boundaries (if set)
+	- Session policies (temporary role restrictions)
+---
 ### AWS control tower
-  - service that helps you set up and govern a secure multi-account AWS environment using best practices automatically.
-    - What AWS Control Tower Does
+  - automatically sets up and manages a secure multi-account AWS environment using AWS Organizations.
+    - **What AWS Control Tower Does ?**
 		- Automatically sets up a multi-account structure
 		- Creates an AWS Organizations setup
 		- Applies guardrails (governance rules)
 		- Provides a central dashboard for governance
-- governance: the rules, controls, and monitoring systems used to manage AWS accounts securely and consistently at scale.
-- Types:
-1. Preventive Guardrails
-- Block actions before they happen
-Example: “Do not delete CloudTrail”
-2. Detective Guardrails
-- Detect violations after they happen
-Example: “S3 buckets must be encrypted”
 
+Types:
+**1. Preventive Guardrails**
+- Block actions before they happen
+	- Example: “Do not delete CloudTrail”
+**2. Detective Guardrails**
+- Detect violations after they happen
+	- Example: “S3 buckets must be encrypted”
+---
 
 ### Encryption
-- In flight encryption: Data is encrypted before sending to server and data is decrypted after recieving to server.
-			- encryption key : sender
-			- decryption key: reciever   
-			- no man in middle attacks
-- Server side encryption: Data is encrypted after being recieved by the server. Data is decrypted before being sent to client.
-			- encryption key : server
-			- decryption key: server 
-- Client side encryption: Data is encrypted before sending to server. Data will be decrypted by the recieving client.
-			- encryption key : client
-			- decryption key: client
+- **In flight encryption:** Data is encrypted before sending to server and data is decrypted after recieving to server.
+	- encryption key : sender
+	- decryption key: reciever   
+	- no man in middle attacks
+- **Server side encryption:** Data is encrypted after being recieved by the server. Data is decrypted before being sent to client.
+	- encryption key : server
+	- decryption key: server 
+- **Client side encryption:** Data is encrypted before sending to server. Data will be decrypted by the recieving client.
+	- encryption key : client
+	- decryption key: client
 
-
+---
 ### KMS 
 - Key management via AWS Key Management Service
 - KMS -> AWS manages the software for encryption.
 - Types:
-- 	- Symmetric Keys:(AES-256):
+	- **Symmetric Keys:(AES-256):**
    		- single encryption key used for both encrypt and decrypt.
      	- AWS services integrated with KMS uses Symmetric CMKs (customer master key).  
-  	- Asymmetric Keys: (RSA & ECC key pairs):
+  	- **Asymmetric Keys: (RSA & ECC key pairs):**
    		- public key : encrypt
      	- private key : decrypt
     
@@ -5486,12 +5475,11 @@ Example: “S3 buckets must be encrypted”
 	 - one primary key
   	- one or more replica keys
   	- each replica keys is an independent KMS key with  its own IAM policy, tags, alias.
-
+---
 ### SSM parameter Store
 - lets you securely store, retrieve, and manage configuration data and secrets.
-- Store application configuration (e.g., DB host, API URLs)
-- Store secrets (e.g., passwords, API keys, tokens)
-
+- SSM Parameter Store = Secure storage for passwords, API keys, tokens and configuration values.
+---
 ### AWS Certificate manager
 - easily provision, manage, and deploy TLS certificates.
 - provide in-flight encryption for website (HTTPs)
@@ -5499,7 +5487,7 @@ Example: “S3 buckets must be encrypted”
 - free of charge for public TLS certificates.
 - automatic TLS certificate renewal
 
-
+---
 
 ### AWS CloudHSM
 - provides dedicated hardware security modules for managing and protecting cryptographic keys
@@ -5508,17 +5496,17 @@ Example: “S3 buckets must be encrypted”
 	- Safeguard encryption keys
 	- Perform secure cryptographic operations
 	- Prevent unauthorized access or tampering
-
+---
 ### AWS WAF (Web Application Firewall)
 - helps protect your web applications from common web exploits and attacks. (layer 7)
 - Layer 7: HTTP, Layer 4: TCP/UDP.
-- What WAF does:
+- **What WAF does ?**
 	- AWS WAF filters and monitors HTTP/HTTPS requests to your application and blocks malicious traffic such as:
-	❌ SQL Injection (SQLi)
-	❌ Cross-Site Scripting (XSS)
-	❌ Bots & scrapers
-	❌ DDoS-related application attacks
-	❌ IP-based threats
+		- ❌ SQL Injection (SQLi)
+		- ❌ Cross-Site Scripting (XSS)
+		- ❌ Bots & scrapers
+		- ❌ DDoS-related application attacks
+		- ❌ IP-based threats
 - WAF can be deployed on : ALB, API Gateway, CloudFront, AppSync QraphQL API, Cognito user pool
 
 - Web ACL(Access Control List):
@@ -5529,15 +5517,15 @@ Example: “S3 buckets must be encrypted”
 		- Geo location : (block/allow)
 		- Rate of requests  : DDos protection
  
-- How AWS WAF Works
-- User sends request to your app
-- WAF inspects the request
-- Applies rules from Web ACL
-- Decides:
-	Allow ✅
-	Block ❌
-	Monitor 🔍
-
+- **How AWS WAF Works ?**
+	- User sends request to your app
+	- WAF inspects the request
+	- Applies rules from Web ACL
+	- Decides:
+		Allow ✅
+		Block ❌
+		Monitor 🔍
+---
 ### AWS Shield
 -  managed Distributed Denial of Service (DDoS) protection service that safeguards applications running on AWS against attacks that try to overwhelm them with traffic.
 -   What AWS Shield Does
@@ -5545,8 +5533,8 @@ Example: “S3 buckets must be encrypted”
 		🚫 DDoS attacks (traffic flooding)
 		🚫 Network-level attacks (Layer 3 & 4)
 
-- Types of AWS Shield
-1. AWS Shield Standard (Free)
+**Types of AWS Shield**
+**1. AWS Shield Standard (Free)**
 - Automatically enabled for all AWS users
 - Protects against:
 	- Common DDoS attacks
@@ -5555,20 +5543,20 @@ Example: “S3 buckets must be encrypted”
 - Works with: CloudFront, Route 53, ELB, Global Accelator
 ✅ Best for basic protection
 
-2. AWS Shield Advanced (Paid)
-Advanced protection with additional features:
-🛡️ Protection against large & sophisticated attacks ($3000/month)
-📊 Detailed attack visibility & metrics
-🚨 24/7 access to AWS DDoS Response Team (DRT)
-🔗 Integrates with AWS WAF for advanced filtering
-💰 Suitable for mission-critical applications
+**2. AWS Shield Advanced (Paid)**   
+- Advanced protection with additional features:
+	- 🛡️ Protection against large & sophisticated attacks ($3000/month)
+	- 📊 Detailed attack visibility & metrics
+	- 🚨 24/7 access to AWS DDoS Response Team (DRT)
+	- 🔗 Integrates with AWS WAF for advanced filtering
+	- 💰 Suitable for mission-critical applications
 
 - Feature      AWS Shield                  AWS WAF
 - Protection typeDDoS protection          Web attack filtering
 - Layer    L3 (Network), L4 (Transport)    L7 (Application)
 - Automation    Fully automatic              Rule-based
 - Example        attackTraffic flooding     SQL injection, XSS
-
+```
 - Architecture:
  User Traffic
      |
@@ -5583,10 +5571,10 @@ Load Balancer / CloudFront
      |
      ↓
 Application
-
+```
 ### Shield = Protects from traffic floods (DDoS)
 ### WAF = Filters malicious requests
-
+---
 
 ### Firewall Manager
 - tool or system used to centrally control and manage firewall rules across multiple devices, networks, or environments.
