@@ -5365,12 +5365,12 @@ Dashboards / Alarms / Insights
 	- How configurations change over time ?
  - Config Rules- remediation :automatically fixes resources that violate compliance rules.
 
-** How AWS Config Works**
-	- Enable AWS Config in your AWS account.
-	- AWS Config records the configurations of supported resources.
-   	- When a resource changes, AWS Config captures the updated configuration.
-   	- AWS Config evaluates the resource against configured rules.
-   	- Compliance results are displayed in the AWS Config dashboard and can trigger automated actions.
+**How AWS Config Works**
+- Enable AWS Config in your AWS account.
+- AWS Config records the configurations of supported resources.
+- When a resource changes, AWS Config captures the updated configuration.
+- AWS Config evaluates the resource against configured rules.
+- Compliance results are displayed in the AWS Config dashboard and can trigger automated actions.
 
 
 | Service    | Purpose             | Tracks                         |
@@ -5382,7 +5382,7 @@ Dashboards / Alarms / Insights
 
 ### AWS Organisation
 - helps you manage multiple AWS accounts from one place.
-- What AWS Organizations Does?
+- **What AWS Organizations Does?**
 - It helps you:
 	- Create and manage multiple AWS accounts
 	- Apply central policies across accounts
@@ -5436,12 +5436,12 @@ Implicit DENY → DENY
 		- Provides a central dashboard for governance
 
 Types:
-**1. Preventive Guardrails**
-- Block actions before they happen
-	- Example: “Do not delete CloudTrail”
-**2. Detective Guardrails**
-- Detect violations after they happen
-	- Example: “S3 buckets must be encrypted”
+- **1. Preventive Guardrails**
+	- Block actions before they happen
+		- Example: “Do not delete CloudTrail”
+- **2. Detective Guardrails**
+	- Detect violations after they happen
+		- Example: “S3 buckets must be encrypted”
 ---
 
 ### Encryption
@@ -5490,23 +5490,23 @@ Types:
 ---
 
 ### AWS CloudHSM
-- provides dedicated hardware security modules for managing and protecting cryptographic keys
+- **provides dedicated hardware security modules for managing and protecting cryptographic keys**
 -  allows organizations to perform encryption, decryption, and key management in a highly secure, hardware-isolated environment.
 -  An HSM is a physical device designed to:
-	- Safeguard encryption keys
+	- **Safeguard encryption keys**
 	- Perform secure cryptographic operations
 	- Prevent unauthorized access or tampering
 ---
-### AWS WAF (Web Application Firewall)
+### AWS WAF (Web Application Firewall) [Filters malicious web traffic]
 - helps protect your web applications from common web exploits and attacks. (layer 7)
 - Layer 7: HTTP, Layer 4: TCP/UDP.
 - **What WAF does ?**
-	- AWS WAF filters and monitors HTTP/HTTPS requests to your application and blocks malicious traffic such as:
-		- ❌ SQL Injection (SQLi)
-		- ❌ Cross-Site Scripting (XSS)
-		- ❌ Bots & scrapers
-		- ❌ DDoS-related application attacks
-		- ❌ IP-based threats
+	- AWS WAF filters and **monitors HTTP/HTTPS requests** to your application and **blocks malicious traffic** such as:
+		- SQL Injection (SQLi)
+		- Cross-Site Scripting (XSS)
+		- Bots & scrapers
+		- DDoS-related application attacks
+		- IP-based threats
 - WAF can be deployed on : ALB, API Gateway, CloudFront, AppSync QraphQL API, Cognito user pool
 
 - Web ACL(Access Control List):
@@ -5522,42 +5522,44 @@ Types:
 	- WAF inspects the request
 	- Applies rules from Web ACL
 	- Decides:
-		Allow ✅
-		Block ❌
-		Monitor 🔍
+		- Allow ✅
+		- Block ❌
+		- Monitor 🔍
 ---
-### AWS Shield
+### AWS Shield (protect from DDoS attack)
 -  managed Distributed Denial of Service (DDoS) protection service that safeguards applications running on AWS against attacks that try to overwhelm them with traffic.
--   What AWS Shield Does
+-   **What AWS Shield Does ?**
 	- It protects your applications from:
-		🚫 DDoS attacks (traffic flooding)
-		🚫 Network-level attacks (Layer 3 & 4)
+		- DDoS attacks (traffic flooding)
+		- Network-level attacks (Layer 3 & 4)
 
 **Types of AWS Shield**
-**1. AWS Shield Standard (Free)**
-- Automatically enabled for all AWS users
-- Protects against:
-	- Common DDoS attacks
-	- SYN/UDP floods
-	- Reflection/amplification attacks
-- Works with: CloudFront, Route 53, ELB, Global Accelator
-✅ Best for basic protection
+- **1. AWS Shield Standard (Free)**
+	- Automatically enabled for all AWS users
+	- Protects against:
+		- Common DDoS attacks
+		- SYN/UDP floods
+		- Reflection/amplification attacks
+	- Works with: CloudFront, Route 53, ELB, Global Accelator
+	- **Best for basic protection**
 
 **2. AWS Shield Advanced (Paid)**   
 - Advanced protection with additional features:
 	- 🛡️ Protection against large & sophisticated attacks ($3000/month)
 	- 📊 Detailed attack visibility & metrics
-	- 🚨 24/7 access to AWS DDoS Response Team (DRT)
-	- 🔗 Integrates with AWS WAF for advanced filtering
+	- 🚨 **24/7 access** to AWS DDoS Response Team (DRT)
+	- 🔗 **Integrates with AWS WAF** for advanced filtering
 	- 💰 Suitable for mission-critical applications
 
-- Feature      AWS Shield                  AWS WAF
-- Protection typeDDoS protection          Web attack filtering
-- Layer    L3 (Network), L4 (Transport)    L7 (Application)
-- Automation    Fully automatic              Rule-based
-- Example        attackTraffic flooding     SQL injection, XSS
-```
+| Feature             | AWS Shield                             | AWS WAF                                          |
+| ------------------- | -------------------------------------- | ------------------------------------------------ |
+| **Protection Type** | DDoS protection                        | Web attack filtering                             |
+| **Layer**           | Layer 3 (Network), Layer 4 (Transport) | Layer 7 (Application)                            |
+| **Automation**      | Fully automatic                        | Rule-based                                       |
+| **Example Attacks** | Traffic flooding (DDoS attacks)        | SQL Injection (SQLi), Cross-Site Scripting (XSS) |
+
 - Architecture:
+```
  User Traffic
      |
      ↓
@@ -5577,86 +5579,102 @@ Application
 ---
 
 ### Firewall Manager
-- tool or system used to centrally control and manage firewall rules across multiple devices, networks, or environments.
+- tool or system used to **centrally control and manage firewall rules** across multiple devices, networks, or environments.
 - A Firewall Manager helps you:
 	- Create security rules
 	- Apply them across systems
 	- Monitor and update policies from one place
-👉 Instead of configuring each firewall manually, you manage everything centrally.
+- **Instead of configuring each firewall manually, you manage everything centrally.**
+  
+- Example:
+- Suppose your company has 50 AWS accounts.
+- Without Firewall Manager:
+	- You must configure AWS WAF rules separately in each account.
+- With Firewall Manager:
+	- Create the WAF policy once.
+	- Firewall Manager automatically deploys and enforces it across all accounts and new resources.
 
-
-### Amazon GaurdDuty
+ ---  
+### Amazon GaurdDuty (monitor malicious activity)
 - threat detection service that continuously monitors your AWS environment for malicious activity and unauthorized behavior.
 - GuardDuty analyzes data from multiple AWS sources to detect threats like:
-🚨 Unauthorized access attempts
-🐍 Malware and suspicious activity
-🌐 Communication with malicious IPs/domains
-🔓 Compromised AWS credentials
-⚠️ Unusual API activity
+	- 🚨 Unauthorized access attempts
+	- 🐍 Malware and suspicious activity
+	- 🌐 Communication with malicious IPs/domains
+	- 🔓 Compromised AWS credentials
+	- ⚠️ Unusual API activity
 - uses machine learning algorithms, anamoly detection, 3rd party data
 - analyses the threat by collecting:
-	- CloudTrail Event logs: unusual API calls, unauthorized deployment.
+	- **CloudTrail Event logs:** unusual API calls, unauthorized deployment.
  		- CloudTrail Management Events: create VPC, create subnets,....
    		- CloudTraild S3 data Events: getObject, list object, delete object,...
-     - VPC Flow logs: unusal interal traffic, unusual IP address
-     - DNS logs: compromised EC2 instances sending encoded data within DNS queries. 
+     - **VPC Flow logs:** unusal interal traffic, unusual IP address
+     - **DNS logs:** compromised EC2 instances sending encoded data within DNS queries. 
 
 
-- How It Works
+- **How It Works ?**
 	- GuardDuty collects logs (VPC, DNS, CloudTrail)
 	- Applies threat intelligence + ML models
 	- Detects unusual activity or known threats
 	- Generates findings (alerts)
 	- You can take action (block IP, rotate keys, etc.)
+---
 
-### AWS Inspector
+### AWS Inspector (identify vulnerabilities and security issues)
 -  automated security assessment service that helps you identify vulnerabilities and security issues in your AWS workloads.
--  inspector only for: EC2 instances, container images(ECR), lambda functions.
-- detect software vulnerabilities, security issues, weak configuration.
+-  **inspector only for: EC2 instances, container images(ECR), lambda functions.**
+- **detect software vulnerabilities, security issues, weak configuration.**
 - 🚨 Provides detailed findings with severity levels (score).
 -  Supports:
-	-  for Amazon EC2 instances:
+	-  **for Amazon EC2 instances:**
  		- analyse the unintended network accessibility.
    		- analyse the running OS against the know vunerabilities.   
-	- Container images (ECR):
+	- **Container images (ECR):**
  		- assessement of container images as they are pushed. 
-	- Lambda functions:
+	- **Lambda functions:**
  		- identifies the software vulnerabilities in function code and package dependencies.
    		- assessment of functions as they are deployed.
  
- - after assessment the inspector reports to AWS Security Hub and send findings to Event Bridge.
+ - **after assessment, the inspector reports to AWS Security Hub and send findings to Event Bridge.**
 
 
 
-FeatureAmazon InspectorAmazon GuardDuty🔍 PurposeVulnerability scanningThreat detection🎯 FocusSystem weaknessesSuspicious behavior🔐 TypePreventive securityDetective security📊 Data sourceSoftware, packages, configsLogs (CloudTrail, VPC, DNS)🚨 OutputVulnerability findingsThreat findings🧠 TechnologyCVE database scanningML + threat intelligence
+| Feature           | Amazon Inspector                   | Amazon GuardDuty                             |
+| ----------------- | ---------------------------------- | -------------------------------------------- |
+| **Purpose**       | Vulnerability scanning             | Threat detection                             |
+| **Focus**         | System weaknesses                  | Suspicious behavior                          |
+| **Security Type** | Preventive security                | Detective security                           |
+| **Data Source**   | Software, packages, configurations | AWS CloudTrail logs, VPC Flow Logs, DNS logs |
+| **Output**        | Vulnerability findings             | Threat findings                              |
+| **Technology**    | CVE database scanning              | Machine Learning (ML) + threat intelligence  |
 
-
+---
 
 ### Amazon Macie (protect sensitive data)
 -  data security and data privacy service that uses ML to discover, classify, and protect sensitive data in AWS (especially in S3 buckets).
--  helps you identify and protect sensitive data like: Credit card numbers, Personally Identifiable Information (PII), Health records, Confidential business data
+-  **helps you identify and protect sensitive data** like: Credit card numbers, Personally Identifiable Information (PII), Health records, Confidential business data
 -  Classifies data (public, private, sensitive)
 -  Generates alerts (findings) for risks
 
-- How It Works
-
+**How It Works ?**
 - Macie scans your S3 buckets
 - Identifies sensitive data using:
 	- ML models
 	- Regex/pattern matching
 - Classifies data (e.g., PII, financial info)
 - Detects risks like:
-	-Publicly accessible data 🌐
+	- Publicly accessible data 🌐
 	- Unencrypted sensitive files 🔓
 - Generates alerts (findings) 🚨
 
-
+---
 
 ## Networking VPC
+
 ### CIDR- IPv4
-- Classless Inter Domain Routing: method for allocating IP address
+- Classless Inter Domain Routing: **method for allocating IP address**
 - used in security group rules.
-- help to define Ip address range.
+- **help to define Ip address range.**
 - CIDR notation: IP Address / Prefix Length (eg: 192.168.1.0/24)
 - 2 components:
 	- Base IP: represent an IP contained in the range (XX.XX.XX.XX) 
