@@ -5671,11 +5671,38 @@ Application
 
 ## Networking VPC
 
+### Subnet
+- its a subnetwork which has a range of IP addresses inside the VPC where you launch your resources such as EC2 instances.
+
+**Why do we create Subnets ?**
+
+To organize and separate resources:
+- example:
+	- public subnet : Web servers
+ 	- private subnet: Application servers
+  	- private subnet: Databases
+- this improves the security. 
+  
+### Public Subnet
+- A subnet where EC2 instances can communicate directly with the internet.
+- it has a route to an Internet Gateway
+- EC2 instances can have a public IP address.
+
+- example:
+	- Internet -> Internet Gateway -> Public Subnet -> Web Server (public IP)
+
+### Private Subnet
+- a subnet where EC2 instances cannot be accessed directly from the internet.
+- does not have a direct route to the internet gateway.
+- EC2 instances usually have only private IP address.
+- example:
+	- Internet -> Internet Gateway -> Public Subnet -> NAT Gateway/ Bastion Host -> Private Subnet -> Database Server (No public IP)
+
 ### CIDR- IPv4
-- Classless Inter Domain Routing: **method for allocating IP address**
+- Classless Inter Domain Routing: **method for allocating IP address** and **help to define Ip address range.**
 - used in security group rules.
-- **help to define Ip address range.**
-- CIDR notation: IP Address / Prefix Length (eg: 192.168.1.0/24)
+- **CIDR notation:** IP Address / Prefix Length
+	- (eg: 192.168.1.0/24)
 - 2 components:
 	- Base IP: represent an IP contained in the range (XX.XX.XX.XX) 
 		- example: 10.0.1.31,....
@@ -5693,10 +5720,10 @@ Application
   - **note:** check ipaddressguide.com/cidr
 
 -example: What does this CIDR 10.0.4.0/28 corresponds?
-		- 2^(32-28)=> 2^4=>16 hosts
+	- 2^(32-28)=> 2^4=>16 hosts
 		
 ### VPC Subnet -IPv4
-- AWS reserves 5 IP address (1st 4 & last 1) in each subnet.
+- **AWS reserves 5 IP address (1st 4 & last 1) in each subnet.**
 - these 5 are not available to any users and can't be assign to any EC2 instance.
 - example: if the CIDR block 10.0.0.0/24 which has 256 hosts, then reserved IP address are:
 	- 10.0.0.0 : network address
@@ -5704,10 +5731,11 @@ Application
  	- 10.0.0.2 : reserved by AWS for mapping to amazon-provide DNS.  
  	- 10.0.0.3 : reserved by AWS for future use.  
  	- 10.0.0.255 : network broadcast address.
- 
+ ---
 ### Internet Gatway
-- allow resources (ec2 instances, lambda functions,..) in a VPC connect to the internet.
+- **allow resources (ec2 instances, lambda functions,..) in a VPC connect to the internet.**
 - internet gateway:  Entry and exit point between your VPC and the internet
+```
 - User (Internet)
       ↓
 Public IP / Elastic IP
@@ -5723,7 +5751,9 @@ Subnet (Public)
 Security Group (Firewall check)
       ↓
 EC2 Instance
-- routing table:  it is a data table stored in a router that decides where to send network packets.
+```
+
+- routing table:  **it is a data table stored in a router that decides where to send network packets.**
 -simple analogy:
 	- Internet = Outside world 🌍
 	- IGW = Main gate 🚪
@@ -5731,14 +5761,16 @@ EC2 Instance
 	- Security group = Security guard 👮
 	- EC2 = Person inside the house 👤
 
-
+---
  ### Bastion Host
- -  special server used to securely access a private network from outside.
- -  Protect internal servers from direct exposure
+ -  special server used to **securely access a private network from outside.**
+ -  Protect internal servers from direct exposure.
  -  bastion is in public subnet which is then connected to all the private subnets.
-    
+  ---
+
+## NAT Gateway / NAT Instance: (resources in private subnet can access the internet)
 ### NAT Instance
- - special type of EC2 instance that enables instances in a private subnet to access the internet without exposing them to inbound internet traffic.
+ - special type of EC2 instance that enables **instances in a private subnet to access the internet without exposing them to inbound internet traffic.**
  - allow EC2 instances in private subnets to connect to the internet.
  - NAT instance must be launched in public subnet and Elastic IP should be attached to it.
  - route tables must be configured to route traffic from private subnets to the NAT instance.
@@ -5746,10 +5778,10 @@ EC2 Instance
 
 ### NAT Gateway
 - allows instances in a private subnet to access the internet while preventing inbound internet traffic from directly reaching those instances.
-- Why NAT Gateway is needed
+- **Why NAT Gateway is needed ?**
 - In AWS VPC:
-	- Public subnet → has direct internet access (through Internet Gateway)
-	- Private subnet → no direct internet access
+	- **Public subnet → has direct internet access (through Internet Gateway)**
+	- **Private subnet → no direct internet access**
 
 - But private instances often need outbound access for:
 	- Downloading updates (e.g., yum, apt)
@@ -5758,7 +5790,7 @@ EC2 Instance
 
 👉 NAT Gateway solves this by allowing outbound traffic only.
 
-- How NAT Gateway works
+- **How NAT Gateway works ?**
 	- NAT Gateway is created in a public subnet
 	- It is associated with an Elastic IP (EIP)
 	- Private subnet route table sends internet-bound traffic to NAT Gateway
@@ -5772,22 +5804,22 @@ EC2 Instance
  -  created in a specific Availability Zone
  -  Covers the entire region
  -  Ensures high availability across AZs
+---
 
 ### Security Groups & NACL
 - NACL : Network Access Control List
-- NACL are like a firewall, which controls traffic from and to subnets.
+- **NACL are like a firewall, which controls traffic from and to subnets.**
 - newly created NACLs will deny everything by default.
 - block a specific IP address at the subnet level.
 
-- Ephemeral Ports:
-	- these are temporary ports used by a system when it initiates an outbound connection. 	
+- **Ephemeral Ports:**
+	- these are **temporary ports** used by a system **when it initiates an outbound connection.** 	
 	- for any two endpoints to establish a connection, they must use ports.
  	- client connect to a defined port, and expect a response on a ephemeral port.
 
-
-  - Security group:
+  - **Security group:**
   	- operates at the instance level
-   - supports allow rules only
+  	- supports allow rules only
    - stateful: return traffic is automatically allowed, regardless of any rules.
    - all rules are evaluated before deciding whether to allow traffic.
    - applies to an EC2 instance when specified by someone
@@ -5799,41 +5831,41 @@ EC2 Instance
  - rules are evaluated in order when deciding whether to allow traffic, first match wins
  - automatically applies to all EC2 instances in the subnet that it's assosicated with.
 
-
+---
 ### VPC peering
-- allow 2 VPCs to communicate with each other privately.
+- **allow 2 VPCs to communicate with each other privately.**
 - works within same region or across region
 - must not have overlapping CIDRs
 - example: consider there are 3 VPC: VPC-A, VPC-B, VPC-C
 	- VPC-A -> VPC-B -> VPC-C  
 	- VPC peering connection is established between A & B
  	- VPC peering connection is established between B & C
-  	- since A,B and B,C connected; This does't mean that VPC peering connection is established between A & C
+  	- since A,B and B,C connected; This does't mean that VPC peering connection is established between A & C (NOT Transitive)
   	- for the VPC-A & VPC-C to communicate, VPC peering connected should be established.
   
- 
+--- 
 ### VPC Endpoints
--  allow you to privately connect your VPC to AWS services without using the public internet, NAT Gateway, or Internet Gateway.
+-  **allow you to privately connect your VPC to AWS services without using the public internet, NAT Gateway, or Internet Gateway.**
 -  Without VPC Endpoint:
 		- Private EC2 → NAT Gateway → Internet → AWS Service
 - With VPC Endpoint:
 		- Private EC2 → VPC Endpoint → AWS Service
 
 - types of endpoints:
-	- Interface Endpoint:
+	- **Interface Endpoint:**
  		- Uses ENI with private IP
    		- requires security groups
      	- charged per hour + data
       	- used for most of AWS services 
       	- EC2 → Interface Endpoint (ENI) → AWS Service
 
-	- Gateway Endpoint:
+	- **Gateway Endpoint:**
  		- works via route tables
    		- no ENI
      	- used for only Amazon S3, DynamoDB
       	- free
       	- EC2 → Route Table → Gateway Endpoint → S3/DynamoDB
-
+---
 ### VPC Flow Logs
 - capture information about IP traffic going into your interfaces:
 	- VPC flow logs
@@ -5841,11 +5873,11 @@ EC2 Instance
   	- ENI flow logs   
 - helps to monitor & troubleshoot connectivity issues.
 - flow logs data stores in S3, Cloudwatch logs, Kinesis data firehose.
-- 
-  
+
+---
       
 ### AWS Site to Site VPN
-- secure connection between: Your office/local network and Your AWS cloud network (VPC)
+- **secure connection between: Your office/local network and Your AWS cloud network (VPC)**
 - It works like a private tunnel over the internet.
 
 - You use it to:
@@ -5854,9 +5886,14 @@ EC2 Instance
 	- Transfer data securely
 
  - Virtual Private Gateway (VGW):
-	- AWS side of the VPN
+	- it is the AWS side of the VPN
 	- Attached to your VPC
 	- Receives VPN connection from your office/router
+ 	- allows your on-premises network to communicate securely with your AWS VPC over internet.
+
+```
+office network -> office router -> VPN Tunnel -> VPG -> VPC -> EC2 instances
+```    
 
 - Simple idea:: AWS Cloud Router = Virtual Private Gateway
 
