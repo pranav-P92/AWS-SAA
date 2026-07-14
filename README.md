@@ -1,24 +1,19 @@
-	
+# AWS SAA (Solution Architect Associate)
+
 - Weightage
+	- Domain 1: Design Secure Architecture (20 Q’s)
+ 	- Domain 2: Design Resilient Architecture (17 Q’s)
+  	- Domain 3: Design High performing Architecture (16 Q’s)
+  	- Domain 4: Cost optimised Architecture (13 Q’s)
     
-    Domain 1: Design Secure Architecture (20 Q’s)
-    
-    Domain 2: Design Resilient Architecture (17 Q’s)
-    
-    Domain 3: Design High performing Architecture (16 Q’s)
-    
-    Domain 4: Cost optimised Architecture (13 Q’s)
-    
-
-AWS Cloud Use Cases
-
+## AWS Cloud Use Cases
+- AWS is used by companies to build, run, store, secure, and scale applications without managing physical servers.
 - Used to build scalable applications
 - Backup & Storage, Big Data Analytics
 - host website, Mobile & Social Apps
 - Gaming servers
 
-**AWS GLOBAL INFRASTRUTURE**: https://infrastructure.aws/
-
+## AWS GLOBAL INFRASTRUTURE: https://infrastructure.aws/
 - AWS Regions
 - AWS Availability Zones
 - AWS Data Centres
