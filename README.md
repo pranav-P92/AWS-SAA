@@ -5697,7 +5697,7 @@ To organize and separate resources:
 - EC2 instances usually have only private IP address.
 - example:
 	- Internet -> Internet Gateway -> Public Subnet -> NAT Gateway/ Bastion Host -> Private Subnet -> Database Server (No public IP)
-
+---
 ### CIDR- IPv4
 - Classless Inter Domain Routing: **method for allocating IP address** and **help to define Ip address range.**
 - used in security group rules.
@@ -5719,7 +5719,7 @@ To organize and separate resources:
   	- 192.168.0.0 - 192.168.255.255 (192.168.0.0/16)
   - **note:** check ipaddressguide.com/cidr
 
--example: What does this CIDR 10.0.4.0/28 corresponds?
+- example: What does this CIDR 10.0.4.0/28 corresponds?
 	- 2^(32-28)=> 2^4=>16 hosts
 		
 ### VPC Subnet -IPv4
@@ -5736,7 +5736,7 @@ To organize and separate resources:
 - **allow resources (ec2 instances, lambda functions,..) in a VPC connect to the internet.**
 - internet gateway:  Entry and exit point between your VPC and the internet
 ```
-- User (Internet)
+User (Internet)
       ↓
 Public IP / Elastic IP
       ↓
@@ -5754,7 +5754,7 @@ EC2 Instance
 ```
 
 - routing table:  **it is a data table stored in a router that decides where to send network packets.**
--simple analogy:
+- simple analogy:
 	- Internet = Outside world 🌍
 	- IGW = Main gate 🚪
 	- Route table = Directions 🗺️
@@ -5903,40 +5903,62 @@ office network -> office router -> VPN Tunnel -> VPG -> VPC -> EC2 instances
 	- Uses your public IP address
 
 - Simple idea: Office Router = Customer Gateway
-  
+---  
 ### AWS VPN Cloud Hub
 - allows to securely communicate with multiple sites using AWS VPN.
 - it operates on simple hub-and-spoke model that can use with or without VPC.
-  
+---
 ### AWS Direct Connect (DX)
 - dedicated private network connection between: Your office/data center and AWS
 - Unlike VPN, it does not use the public internet.
--  Instead of using the public internet, your traffic goes through a private fiber link.
+-  Instead of using the public internet, your traffic goes through a **private fiber link.**
 -  need to setup Virtual Private Gateway on your VPC.
 
 - Connection Types:
-	- Dedicated Connections: from 1Gbps to 400Gbps
-	 	- physical ethernet port dedicated to the customer.
+	- **Dedicated Connections:** from 1Gbps to 400Gbps
+	 	- physical **ethernet port dedicated to the customer**.
 	  	- request made to AWS first, then completed by AWS Direct Connect partners.
  
-  	- Host Connections: 50Mbps to 25Gbps
+  	- **Host Connections:** 50Mbps to 25Gbps
   		- capacity can be added or removed on demand.
   	 	- connection request are made via AWS Direct Connect Partners.
-  	 
+---
   ### Transit Gateway
   - central network hub in AWS.
-  - It connects:Multiple VPCs, VPNs, Direct Connect, On-premises networks
+  - **It connects: Multiple VPCs, VPNs, Direct Connect, On-premises networks**
 
 - Simple idea:
+```
         VPC1
           \
 VPC2 --- Transit Gateway --- VPN/Office
           /
        VPC3
-
-  - Without Transit Gateway: Every VPC needs separate connections
+```
+  - Without Transit Gateway: Every VPC needs separate connections, may need VPC peering.
   - With Transit Gateway: One central connection manages everything
-
+- example:
+- Suppose a company has:
+	- Production VPC (10.0.0.0/16)
+	- Development VPC (10.1.0.0/16)
+	- Testing VPC (10.2.0.0/16)
+	- On-premises data center (192.168.1.0/24)
+- Instead of creating multiple peering connections:
+```
+Prod <-> Dev
+Prod <-> Test
+Dev  <-> Test
+Prod <-> On-Prem
+Dev  <-> On-Prem
+Test <-> On-Prem
+```
+- create: 
+```
+Prod ----\
+Dev ------> Transit Gateway <------ On-Prem
+Test ----/
+```
+---
 ### VPC - Traffic mirroring
 - allows you to capture and inspect the network traffic in VPC
 - capture the traffic:
@@ -5944,7 +5966,7 @@ VPC2 --- Transit Gateway --- VPN/Office
  	- To (target): ENIs or NLB
 - Capture all the packets or the packets of your interest
 - source and target can be in same VPC or different VPC.
-
+---
 ### Egress - only internet Gateway
 - used for IPv6 outbound internet access only from a VPC.
 - It allows:Instances → Internet ✅
@@ -5971,8 +5993,9 @@ VPC2 --- Transit Gateway --- VPN/Office
 - Traffic Mirroring: copy netwrok traffic from ENIs for further analysis.
 - Egress-only internet gateway: like a NAT gateway, but for IPv6.
 
-
+---
 ### AWS Network Firewall
+- **checks network traffice entring and leaving the VPC.**
 - protect entire Amazon VPC
 - from layer3 to layer7 protection
 - inspect the VPC in any directions:
@@ -5982,51 +6005,64 @@ VPC2 --- Transit Gateway --- VPN/Office
   	- to/from DX & site-to-site VPN
 - internally AWS Network firewall uses AWS Gateway Load Balancer.
 
+- **What it can do ?**
+	- Allow only required traffic (e.g., HTTPS on port 443)
+	- Block unwanted ports (e.g., Telnet on port 23)
+	- Block malicious IP addresses or websites
+	- Inspect traffic before it reaches your applications
+---
 
 ## Disaster Recovery
--flow: -----RPO-----DISASTER--------RTO-----
+- process of restoring applications and data after a failure such as a server crash, data center outage, or natural disaster.
+- flow: -----RPO-----DISASTER--------RTO-----
+### RPO: Data loss
+### RTO: Downtime (how quickly it can restore after disaster)
 
-- RPO : Recovery Point Objective
-- The maximum acceptable amount of data loss measured in time.
+- **RPO : Recovery Point Objective**
+	- **maximum amount of data you can afford to lose.**
 - Example: If backups occur every 30 minutes:
 		- In a disaster, you may lose up to 30 minutes of data.
 		- RPO = 30 minutes
   - AWS Methods Affecting RPO
-| RPO Requirement | Typical AWS Solution     |
-| --------------- | ------------------------ |
-| 24 hours        | Daily backups            |
-| 1 hour          | Frequent snapshots       |
-| Minutes         | Cross-region replication |
-| Near zero       | Continuous replication   |
+    
+| RPO Requirement | Typical AWS Solution     | Explanation                                                                                                                                             |
+| --------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **24 hours**    | Daily backups            | Data is backed up once every 24 hours. If a disaster occurs, you could lose up to **24 hours of data**.                                                 |
+| **1 hour**      | Frequent snapshots       | Snapshots are taken every hour. If a failure happens, you may lose up to **1 hour of data**.          |
+| **Minutes**     | Cross-region replication | Data is continuously replicated to another AWS Region with only a small delay. If the primary Region fails, only a **few minutes of data** may be lost. |
+| **Near zero**   | Continuous replication   | Every data change is replicated almost immediately to another location. If a disaster occurs, **almost no data is lost**.                               |
 
-- RTO : Recovery Time Objective
-- The maximum acceptable time your application can be down after a disaster.
+
+- **RTO : Recovery Time Objective**
+	- **maximum time allowed to restore the application after a disaster.**
 - Example: If your business says:
 			- “Our application must be restored within 2 hours.”
 			- then: RTO = 2 hours
 - AWS Strategies by RTO
-| RTO Requirement    | AWS DR Strategy            |
-| ------------------ | -------------------------- |
-| Hours to days      | Backup & Restore           |
-| Minutes to hours   | Pilot Light                |
-| Minutes            | Warm Standby               |
-| Seconds to minutes | Multi-site / Active-Active |
+
+| RTO Requirement        | AWS DR Strategy                | Explanation                                                                                                                                                                                                          |
+| ---------------------- | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Hours to days**      | **Backup & Restore**           | Store backups. If a disaster occurs, create new infrastructure and restore the backups. This is the **lowest-cost** option but takes the longest to recover.    |
+| **Minutes to hours**   | **Pilot Light**                | Keep only the **critical components** (such as databases) always running in AWS. When a disaster happens, quickly launch the remaining application servers. Faster than backup & restore.                            |
+| **Minutes**            | **Warm Standby**               | Keep a **smaller version of the full application** running all the time. During a disaster, scale it up to full capacity. Recovery is faster because the application is already running.                             |
+| **Seconds to minutes** | **Multi-site / Active-Active** | Run the application **fully in two or more Regions** at the same time. If one Region fails, traffic is immediately routed to the other Region. This provides the **fastest recovery** but is the **most expensive**. |
 
 
+---
 ### AWS Elastic Disaster Recovery (DRS)
-- helps you quickly recover on-premises or cloud-based servers into AWS during outages or disasters.
+- helps you **quickly recover on-premises or cloud-based servers into AWS** during outages or disasters.
 - It continuously replicates your servers to AWS with low RPO and fast RTO.
 	- low RPO : Data loss can be seconds/minutes
  	- fast RTO: Recovery in minutes
-
+---
 ### AWS Data Migration Service (DMS)
-- used to migrate databases to AWS quickly and securely, with minimal downtime.
+- used to **migrate databases to AWS quickly and securely, with minimal downtime.**
 - used for database migration and replication, not full disaster recovery like AWS DRS.
 - AWS DMS helps you:
 	- Migrate on-prem databases → AWS databases
 	- Migrate AWS → AWS databases
 	- Keep source and target databases in sync (ongoing replication)
- - AWS Schema Conversion Tool (AWS SCT): used to convert database schemas from one engine to another when migrating databases to AWS.
+ - **AWS Schema Conversion Tool (AWS SCT):** used to **convert database schemas from one engine to another when migrating databases to AWS.**
  - Different databases have different SQL dialects.
 	- Example:
 		- Oracle uses PL/SQL
@@ -6034,7 +6070,7 @@ VPC2 --- Transit Gateway --- VPN/Office
 	- So you cannot directly move schema without conversion.
 	- SCT bridges that gap.
  	- if both the engines of same types/schema then no need to use SCT tool.
-
+---
 
 ### AWS Backup
 - fully managed backup service from AWS that lets you centrally manage and automate backups across AWS services and on-premises workloads.
@@ -6042,34 +6078,36 @@ VPC2 --- Transit Gateway --- VPN/Office
 - supports cross-account backups
 - tag based backup policies
 - create backup policies knowns as Backup plan
-
+---
 ### AWS Backup Vault Lock
 - enforce a WORM (write once read many) state for all the backups that you store in AWS Backup vault.
 - additional layer of defense to protect backup against:
 	- inadvertent or malicious delete operations
  	- updates the retention period.
 - even the root user cannot delete backups when enabled.
-
+---
 
 ### AWS Application Discovery Service
-- helps you identify, collect, and analyze information about on-premises applications before migrating them to AWS.
-- used in the planning phase of cloud migration.
+- helps you **identify, collect, and analyze information about on-premises applications before migrating them to AWS.**
+- **used in the planning phase of cloud migration**.
 - Two Discovery Methods
 1. Agent-Based Discovery
 	- Install an agent on each server
-	- Collects:CPU usage/ Memory usage/ Network activity/ Process details
+	- Collects: CPU usage/ Memory usage/ Network activity/ Process details
 2. Agentless Discovery (VMware only)
 	- Uses a collector appliance
 	- No need to install agents on every machine
 -  Easier setup for VMware environments
 
 -  resulting data will be viewed within AWS Migration Hub.
+---
 
 ### AWS Application Migration Service
 - helps you lift-and-shift migrate physical, virtual, or cloud servers to AWS with minimal downtime. or
-- converts your physical, virtual, cloud based servers to run natively on AWS.
+- **converts your physical, virtual, cloud based servers to run natively on AWS.**
 
 - work flow
+```
 Source Server (On-prem / VMware / Cloud)
         ↓
 MGN Replication Agent
@@ -6079,7 +6117,8 @@ Continuous Block-Level Replication
 Staging Area in AWS (low-cost EC2 + EBS)
         ↓
 Launch EC2 in AWS (Cutover)
-
+```
+---
 ## Other services
 ### Cloud Formation
 - lets you define and provision infrastructure as code (IaC).
