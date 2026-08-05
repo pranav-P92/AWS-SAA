@@ -80,7 +80,44 @@ So users don’t need to go all the way to your main Region every time.
 - **Region** → City (where your app servers live)
 - **AZ** → Data centres in that city
 - **Edge Location** → Nearby delivery points for users
+---
+## Active Directory
+- In Microsoft Active Directory, a trust allows users in one domain or forest to access resources in another without needing separate accounts. The direction of the trust determines who trusts whom.
 
+- **One-Way Domain Trust:** A trust between two domains (usually within the same forest or between different forests).
+
+Example:
+```
+Domain A  -------->  Domain B
+   (Trusts)            (Trusted)
+- Domain A trusts Domain B.
+- Users in Domain B can access resources in Domain A (if permissions are granted).
+- Users in Domain A cannot access Domain B's resources using this trust.
+```
+
+- **One-Way Forest Trust**: A trust between two entire Active Directory forests.
+
+Example:
+```
+Forest A  -------->  Forest B
+   (Trusts)             (Trusted)
+- Every domain in Forest A trusts every domain in Forest B.
+- Users from Forest B can access resources in Forest A (subject to permissions).
+- Users from Forest A cannot access Forest B's resources through this trust.
+```
+
+- **Two-Way Forest Trust**: Both forests trust each other.
+```
+Forest A  <-------->  Forest B
+- Users in Forest A can access resources in Forest B.
+- Users in Forest B can access resources in Forest A.
+- Access still depends on assigned permissions.
+```
+- Example: Forest A <-------> Forest B
+	- Users in A → Resources in B ✔
+	- Users in B → Resources in A ✔
+
+---
 ## IAM : Identity and Access Management
 
 - IAM allows you to **create users, roles, and permissions** to securely control access to AWS services and resources.
@@ -6185,6 +6222,7 @@ Amazon Pinpoint
 ---
 ### Amazon Appflow
 - **helps transfer data between applications automatically.**
+- **transfer data between SaaS applications and AWS service.**
 - source: salesforce, SAP, Zendesk, Slack, ServiceNow
 - destination: AWS services like Amazon S3, Amazon Redshift or non AWS services like SnowFlake, Saleforce.
 - example: A company wants customer data from Salesforce to be automatically stored in Amazon S3 every day.
