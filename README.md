@@ -6261,6 +6261,18 @@ Amazon Pinpoint
 
 ---
 
+| Component                     | Where is it?           | What does it do?                  | Public/Private path  |
+| ----------------------------- | ---------------------- | --------------------------------- | -------------------- |
+| **Route Table**               | Associated with subnet | Directs traffic                   | Depends on routes    |
+| **Internet Gateway**          | Attached to VPC        | Connects VPC ↔ Internet           | 🌐 Public            |
+| **NAT Gateway**               | **Public subnet**      | Private subnet → Internet         | 🌐 Outbound Internet |
+| **S3 Gateway Endpoint**       | **Route table**        | VPC → S3                          | 🔒 Private           |
+| **DynamoDB Gateway Endpoint** | **Route table**        | VPC → DynamoDB                    | 🔒 Private           |
+| **Interface Endpoint**        | **ENI in subnet**      | VPC → AWS service                 | 🔒 Private           |
+| **VPN Gateway**               | VPC                    | VPN connection                    | 🔒 Private/encrypted |
+| **Direct Connect Gateway**    | AWS networking         | Dedicated connection from on-prem | 🔒 Private           |
+
+---
 
 # Practice test:
 1. aws-exams.matthewntsiful.com : https://www.bing.com/ck/a?!&&p=b3c133c617e7eb2d6a717e21a4db934679eef360e2d643bfa7639165a787de89JmltdHM9MTc3OTY2NzIwMA&ptn=3&ver=2&hsh=4&fclid=1b870b20-d9fb-65ef-170b-1d26d84964b2&psq=aws+exam+matthewntsif&u=a1aHR0cHM6Ly9hd3MtZXhhbXMubWF0dGhld250c2lmdWwuY29tLw
