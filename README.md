@@ -2547,7 +2547,7 @@ routes traffic to the AWS region that provides the lowest network latency.
 - Failover → Switch to Backup if main fails
 - Geolocation → routes traffic based on user’s location 
   - example: India user -> India server
-- Multi-value → Returns multiple IPs
+- Multi-value → Returns multiple healthy IPs in response to a DNS query.
     - client picks one.
 - Geo-proximity -> ability to shift more traffic to resources based on the defined bias.
 - IP based routing -> routing is based on client's IP address.
