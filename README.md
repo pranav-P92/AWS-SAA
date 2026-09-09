@@ -6276,12 +6276,9 @@ Amazon Pinpoint
 
 # Practice test:
 1. aws-exams.matthewntsiful.com : https://www.bing.com/ck/a?!&&p=b3c133c617e7eb2d6a717e21a4db934679eef360e2d643bfa7639165a787de89JmltdHM9MTc3OTY2NzIwMA&ptn=3&ver=2&hsh=4&fclid=1b870b20-d9fb-65ef-170b-1d26d84964b2&psq=aws+exam+matthewntsif&u=a1aHR0cHM6Ly9hd3MtZXhhbXMubWF0dGhld250c2lmdWwuY29tLw
-2. https://www.tutorialslogic.com/certification-practice/aws-solutions-architect
-3. Mock test: https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqbTQ0b1ctczM3Q0E0NFBmMkJFSmh4eTk3NTlwQXxBQ3Jtc0tsYmhYcW41Wk5wNlRXYXJReF85dDJXRG1RRzByYnVXbUp5V0owOFlpWXR1TmVxYTU0cjRxMk9HejNOYVNwaEVidWJ1aFFNeWcwclM0OGxoUVA1QXYyMHJEcnhFUmlfNGxxaDVSU0xUZWliUzRPSGdjaw&q=https%3A%2F%2Fportal.tutorialsdojo.com%2Fproduct%2Faws-certified-solutions-architect-associate-practice-exams%2F&v=Rnr5hp4njq0
-4. https://www.udemy.com/course/practice-test-aws-certified-solutions-architect-associate/
-5. https://www.examtopics.com/exams/amazon/aws-certified-solutions-architect-associate-saa-c03/?utm_source=chatgpt.com
-6. https://4d7906f0.isolation.zscaler.com/profile/aa0fc3ba-fc2b-4872-9833-83f26367d34b/zia-session/?controls_id=0df33415-e93c-48ff-a871-ba2dbf96f771&region=hyd&tenant=8be389a82b37&user=c27914bd3faa94d9f66289f2f903e4806521dc8de1cd46f0722b19bde15c8863&original_url=https%3A%2F%2Faws-exams.matthewntsiful.com%2F&key=sh-1&hmac=2c9c05f809566ff65605d4d6281639f28070b37f1d11050525807753b663d4fd
-7. https://open-exam-prep.com/practice/aws-solutions-architect
+2. https://www.udemy.com/course/practice-test-aws-certified-solutions-architect-associate/
+3. https://www.examtopics.com/exams/amazon/aws-certified-solutions-architect-associate-saa-c03/?utm_source=chatgpt.com
+4. https://open-exam-prep.com/practice/aws-solutions-architect
 
 ---
 
